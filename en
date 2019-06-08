@@ -1,0 +1,34 @@
+<?
+$err_upd_size="Error while updating file size...";
+$err_sel_size="Problem selecting database...";
+$err_req_quota="Error while selecting quotas...";
+$err_sel_data="Problem connecting...";
+$err_req_dele="Problem while connecting to database...";
+$err_sel_file="Query 0 failed :";
+$err_sel_que1="Query 1 failed :";
+$err_sel_que2="Query 2 failed :";
+$err_del_file="ERROR deleting file: ";
+$err_del_req="DELETE Query failed";
+$java_confirm_delete="Are you sure to delete the selected events ?";
+$java_select_delete="Must select at least one event do delete !";
+$erase_selection="Delete selection";
+$config_motion="Configure Motion";
+$config_credits=">Carlos Ladeira (c) 2006";
+$config_title="MotionBrowser 1.01";
+$config_mailto="mailto:caladeira@gmail.com";
+$config_mailname="caladeira@gmail.com";
+$camera_name="Camera";
+$see_camera="View as webcam ";
+$no_events="No events on the selected day !";
+$vol1_quota="Volume ";
+$vol2_quota=" filled at ";
+$space1="Disk space on volume ";
+$low_space=" is very low...";
+$events="events";
+$today="today";
+$all="All";
+$nothing="Nothing";
+$bytes="B";
+$megabytes="Mb";
+$hours="h";
+?>
