@@ -1,21 +1,22 @@
 <?php
 /*
-	MotionBrowser 1.0.0
-	11/03/2006
+	MotionBrowser 1.1
+	20190422
 
-	thumbnail.php
+	config.inc
 
 	User interface for the result of Motion application
 	Developed by Carlos Ladeira (caladeira@gmail.com)
+	Updated by Nigel D. Pegram (ndpegram@gmail.com)
 	This software is distributed under the GNU public license
 
-	Tested with Motion 3.2.5.1
+	Tested with Motion 4.0
 	For more details, please visit:
 	http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 
 	*********************************************************
 
-	Output a thumbnail of o provided bigger image.
+	Output a thumbnail of a provided bigger image.
 
 */
 

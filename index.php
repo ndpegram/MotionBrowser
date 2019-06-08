@@ -1,15 +1,16 @@
 <?php
 /*
-	MotionBrowser 1.0.0
-	11/03/2006
+	MotionBrowser 1.1
+	20190422
 
-	index.php
+	config.inc
 
 	User interface for the result of Motion application
 	Developed by Carlos Ladeira (caladeira@gmail.com)
+	Updated by Nigel D. Pegram (ndpegram@gmail.com)
 	This software is distributed under the GNU public license
 
-	Tested with Motion 3.2.5.1
+	Tested with Motion 4.0
 	For more details, please visit:
 	http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 
@@ -46,42 +47,44 @@
 	mysql_password ...	(the password associated with user)
 
 */
-include("config.inc");
+require_once("config.inc");
+require_once("$lang");
 setlocale(LC_ALL, $locales);
-include("calendar.inc");
-include("$lang");
+require_once("calendar.inc");
+require_once("stream.php") ;
 
-    // Taille d'un fichier
+    // Taille d'un fichier (File size)
     function afftaille($fic)
     {
-    $tfic=filesize($fic)/1024;
-	if ($tfic > 1024)
-	   $tfic=(int)($tfic / 1024). $megabytes;
-        else
-	   $tfic=(int)($tfic). $bytes;
-    $majsize = mysql_query("update security set file_size='$tfic' where filename ='$fic';") or die($err_upd_size);
-    //mysql_free_result($majsize);
-    return $tfic;
+		global $megabytes, $bytes, $err_upd_size, $conn ;
+		
+		$tfic=filesize($fic)/1024;
+		if ($tfic > 1024) {
+		   $tfic=(int)($tfic / 1024). $megabytes;
+	   }
+		else {
+		   $tfic=(int)($tfic). $bytes;
+	   }
+	   $query = "update security set file_size='$tfic' where filename ='$fic';" ;
+		$majsize = mysqli_query($conn, $query) or die($err_upd_size."file: ".$fic." size: ".$tfic );
+		//mysql_free_result($majsize);
+		return $tfic;
     }
+    
     // connect to database
-    $db = mysql_connect($sql_host, $sql_user, $sql_pass) or die($err_sel_data);
-    mysql_select_db($sql_db) or die($err_sel_size);
+    $conn = mysqli_connect($sql_host, $sql_user, $sql_pass) or die($err_sel_data);
+    mysqli_select_db($conn, $sql_db) or die($err_sel_size);
 
-    // Récupération du chemin des fichiers de données
+    // Récupération du chemin des fichiers de données (Get path of the data files)
     if (!isset($datadisque))
 	{
-	$query = "SELECT filename FROM security order by time_stamp desc limit 0,1";
-        $result = mysql_query($query) or die ($err_req_quota);
-        $mquota = mysql_fetch_row($result);
-	// Recherche du path des fichiers de données
-        $maxquot=strlen($mquota[0]);
-	for ($mq=$maxquot ; $mq >=0 ; $mq--)
-	    if (substr($mquota[0],$mq,1) == '/')
-		{
-		$datadisque=substr($mquota[0],0,$mq);
-		$mq=0;
-		}
-	mysql_free_result($result);
+		$query = "SELECT filename FROM security order by time_stamp desc limit 0,1";
+		$result = mysqli_query($conn, $query) or die ($err_req_quota);
+		$mquota = mysqli_fetch_row($result);
+		// Recherche du path des fichiers de données (Search for Data Files Path)
+		$path_parts = pathinfo($mquota[0]);
+		$datadisque=$path_parts['dirname'].'/' ;
+		mysqli_free_result($result);
 	}    
 
     //
@@ -92,11 +95,11 @@ include("$lang");
 
 	  // get the list of filenames we are going to delete
 	  $query = "SELECT filename FROM security WHERE event_time_stamp IN (".$_GET['todelete'].")";
-	  $result = mysql_query($query) or die ($err_sel_file);
+	  $result = mysqli_query($conn, $query) or die ($err_sel_file);
 
 	  // loop for each one
-	  for ($i = 0; $i < mysql_num_rows($result); $i++) {
-	      $row = mysql_fetch_array($result);
+	  for ($i = 0; $i < mysqli_num_rows($result); $i++) {
+	      $row = mysqli_fetch_array($result);
 	      $filename = $row['filename'];
 
 	      // delete the file first
@@ -106,10 +109,10 @@ include("$lang");
 
 	      // if no problem, delete the record from the database
 	      $query = "DELETE FROM security WHERE filename='".$filename."'";
-	      mysql_query($query) or die ($err_del_req);
+	      mysqli_query($conn, $query) or die ($err_del_req);
 	  }
 
-	  mysql_free_result($result);
+	  mysqli_free_result($result);
        }
     }
 ?>
@@ -117,9 +120,9 @@ include("$lang");
 
 <html>
 <head>
-<title>MotionBrowser 1.01</title>
+<title><?php echo "$config_title $config_version"; ?></title>
 <link rel="stylesheet" href="motionbrowser.css" type="text/css" media="all">
-<script language="JavaScript">
+<script>
 <!--
 
 //
@@ -141,14 +144,14 @@ function validateForm(frm)
 
 	// if there are one or more events to delete ...
 	if (todelete) {
-		if (confirm("<?echo $java_confirm_delete;?>")) {
+		if (confirm("<?php echo $java_confirm_delete;?>")) {
 			frm.todelete.value = todelete;
 			return true;
 		}
 		else return false;
 	}
 	else {
-		alert("<?echo "$java_select_delete";?>");
+		alert("<?php echo "$java_select_delete";?>");
 		return false;
 	}
 }
@@ -229,9 +232,10 @@ function plusclick(image)
 		'FROM security '.
 		'WHERE event_time_stamp >= '.$date.'000000 '.
 		'AND event_time_stamp <= '.$date.'235959 '.
+		//'AND file_type=8 '. // list only movies
 		'ORDER BY hourfield, camera, timefield, file_type';
-	$result = mysql_query($query) or die ($err_sel_que1.$query);
-	$numofrows = mysql_num_rows($result);
+	$result = mysqli_query($conn, $query) or die ($err_sel_que1.$query);
+	$numofrows = mysqli_num_rows($result);
 	
 	// get also a list of all cameras that has events for the selected day
 	// fill the $camera_list with the result
@@ -241,48 +245,48 @@ function plusclick(image)
 		'WHERE event_time_stamp >= '.$date.'000000 '.
 		'AND event_time_stamp <= '.$date.'235959 '.
 		'ORDER BY camera';
-	$camera_list = mysql_query($query) or die ($err_sel_que2.$query);
+	$camera_list = mysqli_query($conn, $query) or die ($err_sel_que2.$query);
 	$cameras = array();
 	$num_cameras = 0;
-	for (; $num_cameras < mysql_num_rows($camera_list); $num_cameras++) {
-		$row = mysql_fetch_array($camera_list);
+	for (; $num_cameras < mysqli_num_rows($camera_list); $num_cameras++) {
+		$row = mysqli_fetch_array($camera_list);
 		$cameras[$num_cameras] = $row['camera'];
 	}
-	mysql_free_result($camera_list);
+	mysqli_free_result($camera_list);
 ?> 
 
 <body>
 
 <?php
 	// count the number of events (images) on screen
-        $event_count = 0;
-        $row_count = 2;
+	$event_count = 0;
+	$row_count = 2;
 
-        // prepare the form that will allow us to delete events
+	// prepare the form that will allow us to delete events
 	echo "<form name=iform action=".$_SERVER['PHP_SELF']." method=get onSubmit=\"javascript:return validateForm(this);\">";
-        echo "<input type=hidden name=view_date value=".$view_date.">";
-        echo "<input type=hidden name=what value=delete>\n";
-        echo "<input type=hidden name=todelete value=>\n";
-        echo '<table border=0> <tr><td valign=top>';
+	echo "<input type=hidden name=view_date value=".$view_date.">";
+	echo "<input type=hidden name=what value=delete>\n";
+	echo "<input type=hidden name=todelete value=>\n";
+	echo '<table border=0> <tr><td valign=top>';
 
-        echo "<span class=title><b>$config_title</b></class>\n";
-        echo "<br><br>\n";
+	echo "<span class=title><b>$config_title $config_version</b></class>\n";
+	echo "<br><br>\n";
 
-        // draw calendar
-        echo calendar($view_date);
+	// draw calendar
+	echo calendar($view_date);
 
 	echo "<center><br>\n";
 	echo "<a href=\"javascript:select_all();\">".$all."</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"javascript:select_none();\">".$nothing."</a><br>\n";
-        echo "<input type=submit value=\"$erase_selection\">\n";
+	echo "<input type=submit value=\"$erase_selection\">\n";
 
-        echo "<br><br>\n";
-        echo "<p><a href=\"http://$server_addr:$setup_port\" target=_blank>Configurer Motion</a></p>\n";
-        echo "<p>&nbsp;</p>\n";
-        echo "<span class=credits>Carlos Ladeira (c) 2006<br>";
-        echo "<a href=\"mailto:caladeira@gmail.com\">caladeira@gmail.com</a></class>\n";
-        echo "<br><br><br>\n";
+	echo "<br><br>\n";
+	echo "<p><a href=\"http://$server_addr:$setup_port\" target=_blank>$config_motion</a></p>\n";
+	echo "<p>&nbsp;</p>\n";
+	echo "<span class=credits>$config_credits<br>";
+	echo "<a href=\"$config_mailto\">$config_mailname</a></class>\n";
+	echo "<br><br><br>\n";
 
-        echo '</td><td>&nbsp;&nbsp;</td><td valign=top>';
+	echo '</td><td>&nbsp;&nbsp;</td><td valign=top>';
 	
 	// if there are any events on the present day
 	if ($numofrows != 0) {
@@ -291,8 +295,9 @@ function plusclick(image)
 
 		// show the column header only if they have any event
 		echo "<TR class=timeline-header><th>&nbsp;</th>";
+//		echo "<pre>".print_r($cameras)."</pre>" ;
 		foreach ($cameras as $cam) {
-			$webcam = "http://$server_addr:".$webcam_port[($cam-1)]."/";
+			$webcam = "http://$server_addr:".$webcam_port[($cam)]."/";
 			$title = "$camera_name $cam";
 			echo "<Th>&nbsp;$title<a href=\"javascript:openwindow('$webcam', '$title', $webcam_x, $webcam_y);\">&nbsp;&nbsp;<img src=icon_video.gif border=0 alt=\"$see_camera\"></a>&nbsp;</Th>";
 		}
@@ -313,7 +318,7 @@ function plusclick(image)
 		//
 		for($i = 0; $i < $numofrows; $i++) {
 
-			$row = mysql_fetch_array($result); //get a row from our result set
+			$row = mysqli_fetch_array($result); //get a row from our result set
 			$ev_ts = $row['time_stamp'];
 
 
@@ -361,7 +366,7 @@ function plusclick(image)
 
 					// end this row
 					echo "</tr>\n";
-					echo "<script language=JavaScript>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$hour_event_count."';\n//-->\n</script>\n";
+					echo "<script>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$hour_event_count."';\n//-->\n</script>\n";
 					$hour_event_count = 0;
 				}
 
@@ -404,7 +409,8 @@ function plusclick(image)
 
 			// add to the $temp_td the html for this event
 			$temp_td .= 
-				"<a href=\"download.php?file=".$row['filename']."\">".
+				"<a href=\"stream.php?file=".$row['filename']."\">".
+//				"<a href=\"download.php?file=".$row['filename']."\">".
 				"<img src=\"thumbnail.php?image=$image&width=$thumb_width&height=$thumb_height\" border=0>".
 				"</a><br>".
 				"<input type=checkbox name=img$event_count value=$ev_ts>".
@@ -432,7 +438,7 @@ function plusclick(image)
 
 		// end this row
 		echo "</tr>\n";
-		echo "<script language=JavaScript>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$hour_event_count."';\n//-->\n</script>\n";
+		echo "<script>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$hour_event_count."';\n//-->\n</script>\n";
 		
 		// now let's close the table and be done with it
 		echo "</TABLE>\n";
@@ -443,30 +449,32 @@ function plusclick(image)
 	echo '</td></tr></table>';
 
 	// free $result variable	
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	
 	// set the number of event on this page and close the form
 	echo "<input type=hidden name=event_count value=".$event_count.">\n";
 	echo "</form>\n";
 
-            // Affichage du quota disque
-	    if (isset($datadisque))
-		{
+	// Affichage du quota disque
+	if (isset($datadisque))
+	{
 		$ratio= 1 - (disk_free_space($datadisque)/disk_total_space($datadisque) ) ;
 		echo "<div class=\"quota\">\n";
 		echo $vol1_quota.$datadisque.$vol2_quota.number_format($ratio*100,2,","," ")." %\n";
 		echo "<img src=\"affquota.php?ratio=".$ratio."\">\n";
 		echo "</div>\n";
-                }
+	}
 ?>
 
-<script language="JavaScript">
+<script>
 <!--
 
 // collapse the timeline table
-for (i = 2; i < <?php echo $row_count; ?>; i += 2) ToggleRowVisibility(i);
+for (i = 2; i < <?php echo $row_count; ?>; i += 2){
+	ToggleRowVisibility(i);
+} 
 
-<?
+<?php
 if ($ratio > .9)
     echo 'alert("'.$space1.$datadisque.$low_space.' ")';
 ?>

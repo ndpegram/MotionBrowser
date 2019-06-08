@@ -1,0 +1,13 @@
+<html>
+		<head>
+		</head>
+		<body>
+			<H1>Motion webcam software main menu</H1>
+			
+			<ul>
+				<li><a href='http://security.pegram.homelinux.net/live'>Live Monitoring</a></li>
+				<li><a href='http://security.pegram.homelinux.net/mb/'>List of Events</a></li>
+			</ul>
+			
+		</body>
+</html>
