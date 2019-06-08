@@ -1,7 +1,6 @@
 <?php
 /*
-	MotionBrowser 1.1
-	20190422
+	MotionBrowser
 
 	config.inc
 
@@ -16,8 +15,8 @@
 
 	*********************************************************
 
-	This web page reads the mysql database filled by Motion and 
-	output events by day 
+	This web page reads the mysql database filled by Motion and
+	output events by day
 	It creates small thumbnail were you can click to watch the avi
 	file for the same event.
 	You can also delete the events you select.
@@ -47,72 +46,166 @@
 	mysql_password ...	(the password associated with user)
 
 */
-require_once("config.inc");
-require_once("$lang");
-setlocale(LC_ALL, $locales);
+require_once("lang.inc"); // brings in config.inc
 require_once("calendar.inc");
 require_once("stream.php") ;
+
+	/**
+	 * Dynamically generated forms are used to create POST vars for actions.
+	 *
+	 * POST VARS used
+	 *
+	 * Variable  : value
+	 *
+	 * view_date	:	date to display (e.g. on calendar click)
+	 * what			:	action to take. Options = {delete}
+	 * todelete		:	files to delete from database and disk
+	 *
+	 */
+
+
 
     // Taille d'un fichier (File size)
     function afftaille($fic)
     {
-		global $megabytes, $bytes, $err_upd_size, $conn ;
-		
+		global $conn ;
+
 		$tfic=filesize($fic)/1024;
 		if ($tfic > 1024) {
-		   $tfic=(int)($tfic / 1024). $megabytes;
+		   $tfic=(int)($tfic / 1024). gettext("megabytes") ;
 	   }
 		else {
-		   $tfic=(int)($tfic). $bytes;
+		   $tfic=(int)($tfic). gettext("bytes");
 	   }
 	   $query = "update security set file_size='$tfic' where filename ='$fic';" ;
-		$majsize = mysqli_query($conn, $query) or die($err_upd_size."file: ".$fic." size: ".$tfic );
+		$majsize = mysqli_query($conn, $query) or die(gettext("err_upd_size")." ".gettext("file").": ".$fic." ".gettext("size").": ".$tfic );
 		//mysql_free_result($majsize);
 		return $tfic;
     }
-    
-    // connect to database
-    $conn = mysqli_connect($sql_host, $sql_user, $sql_pass) or die($err_sel_data);
-    mysqli_select_db($conn, $sql_db) or die($err_sel_size);
+
+    /**
+     * Delete files and database entries. Called in response to POST
+     * @param	{}		IDs of items to delete.
+     * @return	{void}	nothing
+     */
+     function deleteItems($IDs){
+		global $testing, $conn  ;
+		$filenames = '' ;
+		$nFiles = 0 ;
+
+		$conn = getDBConnection() ;
+
+		if (is_array($IDs)){
+			$IDs = implode(", ", $IDs) ;
+		}
+
+		// get the list of filenames we are going to delete
+		$query = "SELECT `filename` FROM `security` WHERE `event_time_stamp` IN ($IDs)" ;
+		$result = mysqli_query($conn, $query) or
+			die (gettext("select query failed") . '<br />' .
+				gettext ("Debugging errno") . ': ' . mysqli_connect_errno() . '<br />' .
+				gettext ("Debugging error") . ': ' . mysqli_connect_error() . '<br />' .
+				__FILE__. "<br /> " .
+				gettext("line").": ".__LINE__ . '<br />' .
+				gettext("query: ") . $query . '<br />' .
+				gettext("result: "). $result);
+
+		// loop for each one
+		for ($i = 0; $i < mysqli_num_rows($result); $i++) {
+			// TODO: add sanity check to delete rows without matching files and vice versa (possibly on each call, or possibly using cron).
+			$row = mysqli_fetch_array($result);
+			$filename = $row['filename'];
+
+			if (!$testing){
+				// delete the file first
+				if (!unlink($filename)) {
+					die(gettext("err_del_file").": ".$filename);
+				}
+
+				// if no problem, delete the record from the database
+				$query = "DELETE FROM security WHERE filename='".$filename."'";
+				mysqli_query($conn, $query) or
+					die (gettext("error deleting file") . '<br />' .
+						gettext ("Debugging errno") . ': ' . mysqli_connect_errno() . '<br />' .
+						gettext ("Debugging error") . ': ' . mysqli_connect_error() . '<br />' .
+						__FILE__. "<br /> " .
+						gettext("line").": ".__LINE__ . '<br />' .
+						gettext("query: ") . $query . '<br />' .
+						gettext("result: "). $result);
+			}
+			else {
+				// Running development machine/version--take no irreversible actions
+				$nFiles++ ;
+				$filenames .= '"' . $filename . '"' . ', ' ;
+			}
+		}
+
+		if ($testing){
+			// trim trailing comma
+			$filenames = rtrim ($filenames, ', ') ;
+
+		  $query = 'select count(*) from `security` where `filename` in (' . $filenames . ')' ;
+		  $result = mysqli_query ($conn, $query) or
+			die (gettext("select query failed") . '<br />' .
+				gettext ("Debugging errno") . ': ' . mysqli_connect_errno() . '<br />' .
+				gettext ("Debugging error") . ': ' . mysqli_connect_error() . '<br />' .
+				__FILE__. "<br /> " .
+				gettext("line").": ".__LINE__ . '<br />' .
+				gettext("query: ") . $query . '<br />' .
+				gettext("result: "). $result);
+
+		  $row = mysqli_fetch_row($result) ;
+		  echo '<h3>Delete</h3><p>Query returned '. $row[0] .' items to be deleted out of ' . $nFiles . ' items selected to delete</p>' ;
+		  $filenames = str_replace(',', '<br />', $filenames) ;
+		  echo "<pre>$filenames</pre>" ;
+		  die ;
+		}
+
+		mysqli_free_result($result);
+	 }
+
+    function getDBConnection(){
+		// connect to database
+		global $sql_host, $sql_user, $sql_pass, $sql_db ;
+
+		$conn = mysqli_connect($sql_host, $sql_user, $sql_pass) or
+			die(gettext("error establishing database connection") . '<br />'  .
+				gettext ("Debugging errno") . ': ' . mysqli_connect_errno() . '<br />' .
+				gettext ("Debugging error") . ': ' . mysqli_connect_error() . '<br />' .
+				__FILE__. "<br /> " .
+				gettext("line").": ".__LINE__
+				);
+		mysqli_select_db($conn, $sql_db) or
+			die(gettext("error selecting database")) . '<br />'  .
+				gettext ("Debugging errno") . ': ' . mysqli_connect_errno() . '<br />' .
+				gettext ("Debugging error") . ': ' . mysqli_connect_error() . '<br />' .
+				__FILE__. "<br /> " .
+				gettext("line").": ".__LINE__ ;
+
+		return ($conn) ;
+	}
+
+	if (!isset($conn)){
+		$conn = getDBConnection() ;
+	}
 
     // Récupération du chemin des fichiers de données (Get path of the data files)
     if (!isset($datadisque))
 	{
 		$query = "SELECT filename FROM security order by time_stamp desc limit 0,1";
-		$result = mysqli_query($conn, $query) or die ($err_req_quota);
+		$result = mysqli_query($conn, $query) or die (gettext("err_req_quota"));
 		$mquota = mysqli_fetch_row($result);
 		// Recherche du path des fichiers de données (Search for Data Files Path)
 		$path_parts = pathinfo($mquota[0]);
 		$datadisque=$path_parts['dirname'].'/' ;
 		mysqli_free_result($result);
-	}    
+	}
 
-    //
-    // check if the delete form has been submited
-    //
-    if (isset($_GET['what'])) {
-       if ($_GET['what'] == "delete") {
-
-	  // get the list of filenames we are going to delete
-	  $query = "SELECT filename FROM security WHERE event_time_stamp IN (".$_GET['todelete'].")";
-	  $result = mysqli_query($conn, $query) or die ($err_sel_file);
-
-	  // loop for each one
-	  for ($i = 0; $i < mysqli_num_rows($result); $i++) {
-	      $row = mysqli_fetch_array($result);
-	      $filename = $row['filename'];
-
-	      // delete the file first
-	      if (!unlink($filename)) {
-	         die($err_del_file.$filename); 
-	      }
-
-	      // if no problem, delete the record from the database
-	      $query = "DELETE FROM security WHERE filename='".$filename."'";
-	      mysqli_query($conn, $query) or die ($err_del_req);
-	  }
-
-	  mysqli_free_result($result);
+    // Act on POST form.
+    if (isset($_POST['what'])) {
+		// check if the delete form has been submited
+       if ($_POST['what'] == gettext("delete")) {
+		   deleteItems($_POST['todelete']) ;
        }
     }
 ?>
@@ -120,113 +213,23 @@ require_once("stream.php") ;
 
 <html>
 <head>
-<title><?php echo "$config_title $config_version"; ?></title>
-<link rel="stylesheet" href="motionbrowser.css" type="text/css" media="all">
-<script>
-<!--
+	<title><?php echo gettext("config_title")." ".gettext("config_version"); ?></title>
+	<link rel="stylesheet" href="motionbrowser.css" type="text/css" media="all">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="./calendar.js" ></script>
+	<script src="./motionbrowser.js" ></script>
 
-//
-// Validate the delete form submit
-//
-function validateForm(frm) 
-{
-	var event_count = frm.event_count.value;	// load number of events
-	var todelete = '';				// string with the events to delete
-
-	// loop trough all checkbox and check if they are checked
-	for (i=1; i<=event_count; i++) {
-		// if they are checked, add the event to the list to be deleted
-		if (eval("frm.img"+i+".checked") == true) {
-			if (todelete) todelete +=',';
-			todelete += eval("frm.img"+i+".value");
-		}
-	}
-
-	// if there are one or more events to delete ...
-	if (todelete) {
-		if (confirm("<?php echo $java_confirm_delete;?>")) {
-			frm.todelete.value = todelete;
-			return true;
-		}
-		else return false;
-	}
-	else {
-		alert("<?php echo "$java_select_delete";?>");
-		return false;
-	}
-}
-
-function select_all() 
-{
-	var event_count = document.iform.event_count.value;	// load number of events
-	
-	// loop trough all checkbox and check them
-	for (i=1; i<=event_count; i++) {
-		// if they are checked, add the event to the list to be deleted
-		eval("document.iform.img"+i+".checked = true;");
-	}
-}
-
-function select_none() 
-{
-	var event_count = document.iform.event_count.value;	// load number of events
-	
-	// loop trough all checkbox and uncheck them
-	for (i=1; i<=event_count; i++) {
-		// if they are checked, add the event to the list to be deleted
-		eval("document.iform.img"+i+".checked = false;");
-	}
-}
-
-function openwindow(url, title, xx, yy)
-{
-	var wh = open(url, title, 'scrollbars=no,status=no,menubar=no,resizable=no,toolbar=yes,width=' + xx + ',height=' + yy);
-	wh.location.href = url;
-	if (wh.opener == null) wh.opener = self;
-	wh.focus();
-}
-
-function ToggleRowVisibility(intRowIndex)
-{
-	/* Mozilla 1.8alpha; see bug 77019 and bug 242368; must be higher than 1.7.x
-	Mozilla 1.8a2 supports accordingly dynamic collapsing of rows in both border-collapse models
-	but not 1.7.x versions */
-	if(navigator.product == "Gecko" && navigator.productSub && navigator.productSub > "20041010" && (navigator.userAgent.indexOf("rv:1.8") != -1 || navigator.userAgent.indexOf("rv:1.9") != -1)) {
-		document.getElementById("idtable").rows[intRowIndex].style.visibility = 
-			(document.getElementById("idtable").rows[intRowIndex].style.visibility == "visible") ? "collapse" : "visible";
-	}
-	else {
-		if(document.all && document.compatMode && document.compatMode == "CSS1Compat" && !window.opera) {
-			document.getElementById("idtable").rows[intRowIndex].style.display = 
-				(document.getElementById("idtable").rows[intRowIndex].style.display == "block") ? "none" : "block";
-		}
-		// Mozilla prior to 1.8a2, Opera 7.x and MSIE 5+
-		else if(document.getElementById && document.getElementById("idtable").rows) {
-			document.getElementById("idtable").rows[intRowIndex].style.display = 
-				(document.getElementById("idtable").rows[intRowIndex].style.display == "") ? "none" : "";
-		}
-	}
-}
-
-function plusclick(image)
-{
-	if (image.src.indexOf('mais.gif') != -1) image.src = "./menos.gif";
-	else image.src = "./mais.gif";
-}
-
-//-->
-</script>
 </head>
 
 <?php
 	// if no day has been selected in the calendar, use current time
-	if (isset($_GET['view_date'])) $view_date = $_GET['view_date'];
+	if (isset($_POST['view_date'])) $view_date = $_POST['view_date'];
 	else $view_date = time();
-	
+
 	// get all events for the selected day in a order that allow us to
 	// show the result in a nice way!
 	$date = date('Ymd', $view_date);
-	$query = 
+	$query =
 		'SELECT *, TIME(event_time_stamp) as timefield, HOUR(event_time_stamp) as hourfield, '.
 		'event_time_stamp+0 as time_stamp, file_size '.
 		'FROM security '.
@@ -234,18 +237,18 @@ function plusclick(image)
 		'AND event_time_stamp <= '.$date.'235959 '.
 		//'AND file_type=8 '. // list only movies
 		'ORDER BY hourfield, camera, timefield, file_type';
-	$result = mysqli_query($conn, $query) or die ($err_sel_que1.$query);
+	$result = mysqli_query($conn, $query) or die (gettext("err_sel_events").$query); // was err_sel_que1
 	$numofrows = mysqli_num_rows($result);
-	
+
 	// get also a list of all cameras that has events for the selected day
 	// fill the $camera_list with the result
-	$query = 
+	$query =
 		'SELECT distinct camera '.
 		'FROM security '.
 		'WHERE event_time_stamp >= '.$date.'000000 '.
 		'AND event_time_stamp <= '.$date.'235959 '.
 		'ORDER BY camera';
-	$camera_list = mysqli_query($conn, $query) or die ($err_sel_que2.$query);
+	$camera_list = mysqli_query($conn, $query) or die (gettext("err_sel_cameras").$query); // was err_sel_que2
 	$cameras = array();
 	$num_cameras = 0;
 	for (; $num_cameras < mysqli_num_rows($camera_list); $num_cameras++) {
@@ -253,41 +256,38 @@ function plusclick(image)
 		$cameras[$num_cameras] = $row['camera'];
 	}
 	mysqli_free_result($camera_list);
-?> 
+?>
 
 <body>
 
 <?php
+	// TODO: Could some of this be done in javascript?
 	// count the number of events (images) on screen
 	$event_count = 0;
 	$row_count = 2;
 
-	// prepare the form that will allow us to delete events
-	echo "<form name=iform action=".$_SERVER['PHP_SELF']." method=get onSubmit=\"javascript:return validateForm(this);\">";
-	echo "<input type=hidden name=view_date value=".$view_date.">";
-	echo "<input type=hidden name=what value=delete>\n";
-	echo "<input type=hidden name=todelete value=>\n";
 	echo '<table border=0> <tr><td valign=top>';
 
-	echo "<span class=title><b>$config_title $config_version</b></class>\n";
+	echo "<span class=title><b>".gettext("config_title")." * ".gettext("config_version")."</b></span>\n";
 	echo "<br><br>\n";
 
 	// draw calendar
 	echo calendar($view_date);
 
 	echo "<center><br>\n";
-	echo "<a href=\"javascript:select_all();\">".$all."</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"javascript:select_none();\">".$nothing."</a><br>\n";
-	echo "<input type=submit value=\"$erase_selection\">\n";
+	echo '<p><input type=button onclick="javascript:select_all();" value="'.gettext("all").'"></p>';
+	echo '<p><input type=button onclick="javascript:select_none();" value="'.gettext("nothing").'"></p>'."\n" ;
+	echo '<p><input type=button onclick="javascript:deleteSelection();" value="'.gettext("erase_selection").'"></p>'."\n";
 
-	echo "<br><br>\n";
-	echo "<p><a href=\"http://$server_addr:$setup_port\" target=_blank>$config_motion</a></p>\n";
 	echo "<p>&nbsp;</p>\n";
-	echo "<span class=credits>$config_credits<br>";
-	echo "<a href=\"$config_mailto\">$config_mailname</a></class>\n";
+	echo "<p><a href=\"http://$server_addr:$setup_port\" target=_blank>".gettext("config_motion")."</a></p>\n";
+	echo "<p>&nbsp;</p>\n";
+	echo "<span class=credits>".gettext("config_credits")."<br>";
+	echo "<a href=\"mailto:".gettext("config_mailname")."\">".gettext("config_mailname")."</a></class>\n";
 	echo "<br><br><br>\n";
 
 	echo '</td><td>&nbsp;&nbsp;</td><td valign=top>';
-	
+
 	// if there are any events on the present day
 	if ($numofrows != 0) {
 
@@ -298,18 +298,18 @@ function plusclick(image)
 //		echo "<pre>".print_r($cameras)."</pre>" ;
 		foreach ($cameras as $cam) {
 			$webcam = "http://$server_addr:".$webcam_port[($cam)]."/";
-			$title = "$camera_name $cam";
-			echo "<Th>&nbsp;$title<a href=\"javascript:openwindow('$webcam', '$title', $webcam_x, $webcam_y);\">&nbsp;&nbsp;<img src=icon_video.gif border=0 alt=\"$see_camera\"></a>&nbsp;</Th>";
+			$title = gettext("camera_name")." $cam";
+			echo "<Th>&nbsp;$title<a href=\"javascript:openwindow('$webcam', '$title', $webcam_x, $webcam_y);\">&nbsp;&nbsp;<img src=icon_video.gif border=0 alt=\"".gettext("see_camera")."\"></a>&nbsp;</Th>";
 		}
 		echo "</tr>\n";
-		
+
 		$image = '';
 		$timestamp = 0;
 		$hour = -1;
 		$camera_index = 0;
 		$temp_td = '';
 		$hour_event_count = 0;
-		
+
 		//
 		// The $result recordset is expected with two record for each event
 		// the first with the jpeg image (image_type = 1) and
@@ -329,7 +329,7 @@ function plusclick(image)
 
 					$timestamp = $ev_ts;
 					$image = $row['filename'];
-	
+
 					// jump to next loop to get correspondent movie file
 					continue 2;
 
@@ -346,7 +346,7 @@ function plusclick(image)
 			// get hour and camera for this event
 			$hourev = $row['hourfield'];
 			$cameraev = $row['camera'];
-		
+
 			// has the hour changed?
 			if ($hour != $hourev) {
 				// if not first row (hour)
@@ -371,13 +371,13 @@ function plusclick(image)
 				}
 
 				// start a new row
-				echo '<tr><td valign=top class=timeline-hour>'.substr($hourev+100,1).$hours.'</td>';
+				echo '<tr><td valign=top class=timeline-hour>'.substr($hourev+100,1).gettext("hours").'</td>';
 				echo "<td colspan=".$num_cameras." class=timeline-row-header>";
 				echo "&nbsp;<a href=\"javascript:ToggleRowVisibility(".$row_count.");\">";
 				echo "<img src=mais.gif border=0 onclick=\"plusclick(this);\">";
 				echo "</a>&nbsp;&nbsp;";
-				echo "<span id=countevents".$hourev."></span> $events";
-				echo "</td></tr>";
+				echo "<span id=countevents".$hourev."></span> ".gettext("events");
+				echo '</td></tr>';
 				echo '<tr><td class=timeline-hour>&nbsp;</td>';
 				$row_count += 2;
 
@@ -408,7 +408,7 @@ function plusclick(image)
 			if ($temp_td) $temp_td .= "<hr size=1 width=95% color=gray>";
 
 			// add to the $temp_td the html for this event
-			$temp_td .= 
+			$temp_td .=
 				"<a href=\"stream.php?file=".$row['filename']."\">".
 //				"<a href=\"download.php?file=".$row['filename']."\">".
 				"<img src=\"thumbnail.php?image=$image&width=$thumb_width&height=$thumb_height\" border=0>".
@@ -439,28 +439,28 @@ function plusclick(image)
 		// end this row
 		echo "</tr>\n";
 		echo "<script>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$hour_event_count."';\n//-->\n</script>\n";
-		
+
 		// now let's close the table and be done with it
 		echo "</TABLE>\n";
 	}
-	else echo '<p><br>'.$no_events.'</p>';
-	
+	else echo '<p><br>'.gettext("no_events").'</p>';
+
 	// close the main table
 	echo '</td></tr></table>';
 
-	// free $result variable	
+	// free $result variable
 	mysqli_free_result($result);
-	
+
 	// set the number of event on this page and close the form
 	echo "<input type=hidden name=event_count value=".$event_count.">\n";
-	echo "</form>\n";
+	//echo "</form>\n";
 
 	// Affichage du quota disque
 	if (isset($datadisque))
 	{
 		$ratio= 1 - (disk_free_space($datadisque)/disk_total_space($datadisque) ) ;
 		echo "<div class=\"quota\">\n";
-		echo $vol1_quota.$datadisque.$vol2_quota.number_format($ratio*100,2,","," ")." %\n";
+		echo '<p>'.gettext("volume").$datadisque.gettext("filled").number_format($ratio*100,2,","," ")." %\n</p>" ;
 		echo "<img src=\"affquota.php?ratio=".$ratio."\">\n";
 		echo "</div>\n";
 	}
@@ -472,11 +472,11 @@ function plusclick(image)
 // collapse the timeline table
 for (i = 2; i < <?php echo $row_count; ?>; i += 2){
 	ToggleRowVisibility(i);
-} 
+}
 
 <?php
 if ($ratio > .9)
-    echo 'alert("'.$space1.$datadisque.$low_space.' ")';
+    echo 'alert("'.gettext("disk_space").' '.$datadisque.gettext("low_space").'. ")';
 ?>
 //-->
 </script>
