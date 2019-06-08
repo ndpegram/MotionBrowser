@@ -1,0 +1,46 @@
+/*
+	MotionBrowser 1.0.0
+	11/03/2006
+
+	motionbrowser.css
+
+	User interface for the result of Motion application
+	Developed by Carlos Ladeira (caladeira@gmail.com)
+	This software is distributed under the GNU public license
+
+	Tested with Motion 3.2.5.1
+	For more details, please visit:
+	http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
+
+	*********************************************************
+
+	Style Sheet for the MotionBrowser web pages.
+
+*/
+BODY  {
+    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    margin : 4px auto;
+    border: outset 8px #8CADF7 ;
+    width:960px;
+}
+
+.minicalendar { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color:navy; text-align:center; border-width:1px 1px; border-style:solid; border-color:#bbbbbb; margin-left: 4px;}
+.normal-day { background-color:#ddffdd; }
+.weekend-day { background-color:#fbfbd4; }
+.selected-day { background-color:#ffb0b0; color:black; font-weight:bold}
+.calendar-month { font-weight:bold}
+.calendar-header { background-color:#e0e0ff; color:black; font-weight:bold; text-align:center; }
+.calendar-footer { background-color:#eeeeee; font-weight:bold; text-align:center; }
+
+.timeline { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; background: #eeeeee; font-weight:normal; text-align: left; color:navy; }
+.timeline-header { background-color:lightyellow; color:black;font-weight: bold; text-align:center; }
+.timeline-hour { background-color:lightyellow; color:red; font-weight: bold; text-align:right; }
+.timeline-row-header { background-color:lightyellow; color:black; }
+
+.title { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; color:navy; text-align:center; }
+.credits { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color:black; text-align:left; }
+.quota { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color:blue; text-align:center; margin: 4px auto;}
+
+a:visited { text-decoration: none; color:navy; }
+a:link { text-decoration: none; color:navy; }
+a:hover { text-decoration: none; color:navy; }
