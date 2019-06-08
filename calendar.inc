@@ -1,15 +1,15 @@
 <?php
 /*
-	MotionBrowser 1.0.0
-	11/03/2006
+	MotionBrowser
 
-	calendar.inc
+	config.inc
 
 	User interface for the result of Motion application
 	Developed by Carlos Ladeira (caladeira@gmail.com)
+	Updated by Nigel D. Pegram (ndpegram@gmail.com)
 	This software is distributed under the GNU public license
 
-	Tested with Motion 3.2.5.1
+	Tested with Motion 4.0
 	For more details, please visit:
 	http://www.lavrsen.dk/twiki/bin/view/Motion/WebHome
 
@@ -19,9 +19,10 @@
 
 */
 
-
 function calendar($date)
 {
+	global $today ;
+	
 	$year = date('Y', $date);
 	$month = date('m', $date);
 	$day = date('j', $date);
@@ -33,7 +34,8 @@ function calendar($date)
 
 	// Create first day of week based on locales...
         $day0=mktime(0,0,0,1,3,0);
-
+	
+	$listdays = '' ;
 	for($ij=0;$ij<=6;$ij++)
 	   {
            $listdays.="<th>".strtoupper(substr(strftime("%a",$day0),0,1))."</th>";
