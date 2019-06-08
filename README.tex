@@ -154,10 +154,18 @@
 
 	\subsection{Version 1.2}
 		\begin{description}
-			\item [20190523] Largely internal reorganisation
+			\item [20190602] Largely internal reorganisation
 			\begin{itemize}
-				\item Converted from GET to POST, to allow deletion of selection of large number of videos on one day. This includes removal of overarching form in HTML code and using javascript to post instead.
-				\item Converted from PHP include files to gettext for internationalisation.
+				\item Converted from GET to POST, to allow deletion of
+						selection of large number of videos on one day.
+						This includes removal of overarching form in HTML
+						code and using javascript to post and AJAX instead.
+				\item Converted from PHP include files to gettext for
+						internationalisation.
+				\item Use AJAX for integration of internationalisation
+						of javascript messages (alert/confirm) with PHP gettext calls.
+						Thus only one set of internationalisation files are required.
+				\item Miscellaneous bug fixes and enhancements.
 			\end{itemize}
 		\end{description}
 
@@ -183,7 +191,7 @@
 	\begin{itemize}
 		\item Update the code to object-oriented format
 
-		\item Extract javascript into separate file.
+		\item Extract javascript into separate file. (Largely done. Files need reviewing for any not completed.)
 
 		\item Add link to video preview \enquote{box} to allow downloading of file, rather
 		than streaming.

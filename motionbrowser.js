@@ -58,7 +58,7 @@ function deleteSelection() {
 					post (document.location, params) ;
 				})
 				.fail(function(){
-					alert ('Error deleting.') ;
+					alert ('Error deleting'+'.') ;
 				});
 
 			}

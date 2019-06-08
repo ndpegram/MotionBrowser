@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MotionBrowser\n"
-"POT-Creation-Date: 2019-06-02 07:55+0800\n"
-"PO-Revision-Date: 2019-06-02 07:59+0800\n"
+"POT-Creation-Date: 2019-06-08 08:39+0800\n"
+"PO-Revision-Date: 2019-06-08 08:48+0800\n"
 "Last-Translator: Nigel Pegram <nigel@pegram.homelinux.net>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -29,141 +29,133 @@ msgstr "Error while updating file size…"
 
 #: index.php:81
 msgid "file"
-msgstr ""
+msgstr "file"
 
 #: index.php:81
 msgid "size"
-msgstr ""
+msgstr "size"
 
-#: index.php:101 index.php:145
+#: index.php:105 index.php:149
 msgid "select query failed"
 msgstr "Select query failed"
 
-#: index.php:102 index.php:125 index.php:146 index.php:169 index.php:176
+#: index.php:106 index.php:129 index.php:150 index.php:173 index.php:180
 msgid "Debugging errno"
-msgstr ""
+msgstr "Error number"
 
-#: index.php:103 index.php:126 index.php:147 index.php:170 index.php:177
+#: index.php:107 index.php:130 index.php:151 index.php:174 index.php:181
 msgid "Debugging error"
-msgstr ""
+msgstr "Error message"
 
-#: index.php:105 index.php:128 index.php:149 index.php:172 index.php:179
+#: index.php:109 index.php:132 index.php:153 index.php:176 index.php:183
 msgid "line"
 msgstr "line"
 
-#: index.php:106 index.php:129 index.php:150
+#: index.php:110 index.php:133 index.php:154
 msgid "query: "
 msgstr "query:"
 
-#: index.php:107 index.php:130 index.php:151
+#: index.php:111 index.php:134 index.php:155
 msgid "result: "
 msgstr "result:"
 
-#: index.php:118
+#: index.php:122
 msgid "err_del_file"
 msgstr "ERROR deleting file:"
 
-#: index.php:124
-#, fuzzy
-#| msgid "err_del_file"
+#: index.php:128
 msgid "error deleting file"
-msgstr "ERROR deleting file:"
+msgstr "ERROR deleting file"
 
-#: index.php:168
+#: index.php:172
 msgid "error establishing database connection"
 msgstr "error establishing database connection"
 
-#: index.php:175
+#: index.php:179
 msgid "error selecting database"
 msgstr "error selecting database"
 
-#: index.php:192
+#: index.php:196
 msgid "err_req_quota"
 msgstr "Error while selecting quotas…"
 
-#: index.php:203
+#: index.php:207
 msgid "delete"
 msgstr "delete"
 
-#: index.php:212 index.php:267
+#: index.php:216 index.php:271
 msgid "config_title"
 msgstr "MotionBrowser"
 
-#: index.php:212 index.php:267
+#: index.php:216 index.php:271
 msgid "config_version"
 msgstr "1.2"
 
-#: index.php:236
-#, fuzzy
-#| msgid "err_sel_data"
+#: index.php:240
 msgid "err_sel_events"
-msgstr "Problem establishing initial database connection"
+msgstr "Error selecting motion events"
 
-#: index.php:247
-#, fuzzy
-#| msgid "err_sel_data"
+#: index.php:251
 msgid "err_sel_cameras"
-msgstr "Problem establishing initial database connection"
+msgstr "Error selecting cameras with events"
 
-#: index.php:274
+#: index.php:278
 msgid "all"
 msgstr "Select All"
 
-#: index.php:275
+#: index.php:279
 msgid "nothing"
 msgstr "Select Nothing"
 
-#: index.php:276
+#: index.php:280
 msgid "erase_selection"
 msgstr "Delete Selection"
 
-#: index.php:279
+#: index.php:283
 msgid "config_motion"
 msgstr "Configure Motion"
 
-#: index.php:281
+#: index.php:285
 msgid "config_credits"
 msgstr "© 2006 Carlos Ladeira <br />Nigel Pegram © 2019"
 
-#: index.php:282
+#: index.php:286
 msgid "config_mailname"
 msgstr "ndpegram@gmail.com"
 
-#: index.php:297
+#: index.php:301
 msgid "camera_name"
 msgstr "Camera"
 
-#: index.php:298
+#: index.php:302
 msgid "see_camera"
 msgstr "View as webcam"
 
-#: index.php:370
+#: index.php:374
 msgid "hours"
 msgstr "h"
 
-#: index.php:375
+#: index.php:379
 msgid "events"
 msgstr "events"
 
-#: index.php:442
+#: index.php:446
 msgid "no_events"
 msgstr "No events on the selected day !"
 
-#: index.php:459
+#: index.php:463
 msgid "volume"
-msgstr ""
+msgstr "volume"
 
-#: index.php:459
+#: index.php:463
 msgid "filled"
-msgstr ""
+msgstr "filled"
 
-#: index.php:475
-#, fuzzy
-#| msgid "low_space"
+#: index.php:479
 msgid "disk_space"
 msgstr " is very low"
 
-#: index.php:475
+#: index.php:479
 msgid "low_space"
 msgstr " is very low"
 
@@ -178,6 +170,10 @@ msgstr "Please select something to delete first"
 #: js_gettext.php:27
 msgid "Delete selected items"
 msgstr "Delete the selected items"
+
+#: js_gettext.php:28
+msgid "Error deleting"
+msgstr "Error deleting file"
 
 #~ msgid "err_sel_data"
 #~ msgstr "Problem establishing initial database connection"

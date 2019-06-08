@@ -286,7 +286,9 @@ require_once("stream.php") ;
 	echo "<a href=\"mailto:".gettext("config_mailname")."\">".gettext("config_mailname")."</a></class>\n";
 	echo "<br><br><br>\n";
 
-	echo '</td><td>&nbsp;&nbsp;</td><td valign=top>';
+	echo '</td>';
+	echo '<td style="width:2em;"></td>';
+	echo '<td valign=top>';
 
 	// if there are any events on the present day
 	if ($numofrows != 0) {
@@ -455,10 +457,10 @@ require_once("stream.php") ;
 	echo "<input type=hidden name=event_count value=".$event_count.">\n";
 	//echo "</form>\n";
 
-	// Affichage du quota disque
+	// Disk quota display
 	if (isset($datadisque))
 	{
-		$ratio= 1 - (disk_free_space($datadisque)/disk_total_space($datadisque) ) ;
+		$ratio = 1 - (disk_free_space($datadisque)/disk_total_space($datadisque) ) ;
 		echo "<div class=\"quota\">\n";
 		echo '<p>'.gettext("volume").$datadisque.gettext("filled").number_format($ratio*100,2,","," ")." %\n</p>" ;
 		echo "<img src=\"affquota.php?ratio=".$ratio."\">\n";

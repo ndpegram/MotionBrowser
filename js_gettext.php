@@ -25,3 +25,4 @@ return ;
  */
 $message = gettext("No items selected for deletion") ;
 $message = gettext("Delete selected items") ;
+$message = gettext("Error deleting") ;

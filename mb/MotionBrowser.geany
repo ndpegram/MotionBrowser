@@ -28,11 +28,8 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=3
-FILE_NAME_0=2491;PHP;0;EISO-8859-1;1;1;1;%2Fvar%2Fwww%2Fhtml%2Fmotion%2Findex.php;0;4
-FILE_NAME_1=3156;PHP;0;EUTF-8;1;1;1;%2Fvar%2Fwww%2Fhtml%2Fmotion%2Fcalendar.inc;0;4
-FILE_NAME_2=626;PHP;0;EUTF-8;1;1;1;%2Fvar%2Fwww%2Fhtml%2Fmotion%2Fconfig.inc;0;4
-FILE_NAME_3=1048;Javascript;0;EUTF-8;1;1;1;%2Fvar%2Fwww%2Fhtml%2Fmotion%2Fmotionbrowser.js;0;4
+current_page=0
+FILE_NAME_0=14841;PHP;0;EISO-8859-1;1;1;1;%2Fvar%2Fwww%2Fhtml%2Fmotion%2Findex.php;0;4
 
 [VTE]
 last_dir=/home/nigel

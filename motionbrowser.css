@@ -62,5 +62,7 @@ div.quota{
 	margin: 4px auto;
 	position: fixed ;
 	bottom: 0px ;
-	width: 100%
+	text-align:center;
+	left:50%;
+	transform: translateX(-50%);
 }
