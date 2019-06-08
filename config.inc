@@ -27,9 +27,9 @@
 
 	// mysql related data
 	$sql_host = "localhost";
-	$sql_user = "security";
-	$sql_pass = "S3cur1ty";
-	$sql_db = "security";
+	$sql_user = "motion";
+	$sql_pass = "motion";
+	$sql_db = "motion";
 
 	// info for the webcam popups
 	$server_addr = $_SERVER['SERVER_ADDR'];
