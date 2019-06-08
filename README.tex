@@ -59,7 +59,7 @@
 \title{Motion Browser}
 \author{Nigel D. Pegram}
 %\date{} % Activate to display a given date or no date (if empty),
-         % otherwise the current date is printed 
+         % otherwise the current date is printed
 
 \begin{document}
 \maketitle
@@ -67,13 +67,13 @@
 
 \section{Readme}
 	Browser-based user interface for the Motion application.
-	Developed by Carlos Ladeira (\href{mailto:caladeira@gmail.com}{caladeira@gmail.com}), 
+	Developed by Carlos Ladeira (\href{mailto:caladeira@gmail.com}{caladeira@gmail.com}),
 	Updated by Nigel D. Pegram (\href{mailto:ndpegram@gmail.com}{ndpegram@gmail.com}).
 	This software is distributed under the GNU public license.
 
 	Tested with Motion 4.0
 
-	This web page reads the mysql database filled by Motion and 
+	This web page reads the mysql database filled by Motion and
 	output events by day 	It creates small thumbnail were you can click to watch the movie
 	file for the same event. You can also delete the events you select.
 
@@ -105,12 +105,11 @@
 
 \section{Installation}
 
+	\subsection{File system}
 	Install the files into the appropriate location in your web software's file tree.
-	
-	Use the following to create your mySQL table.
-	
-	The directory where you store your motion files must be writeable by the user under which 
-	the web software is running. In Ubuntu, for example, this is the \texttt{www-data} user. 
+
+	The directory where you store your motion files must be writeable by the user under which
+	the web software is running. In Ubuntu, for example, this is the \texttt{www-data} user.
 	For example, if the directory to which motion is saving the video and image files is \texttt{/var/lib/motion},
 	then you should issue the following (assuming the web user is \texttt{www-data}).
 	You will likely need to issue this commands as a superuser.
@@ -118,19 +117,53 @@
 		sudo chgrp -R www-data /var/lib/motion
 		sudo chmod -R g+rw /var/lib/motion
 	\end{verbatim}
-	
-	
+
+	\subsection{mySQL}
+	Use the following to create your mySQL table.
+
+	\begin{verbatim}
+		CREATE TABLE `security` (
+		  `camera` int(11) DEFAULT NULL,
+		  `filename` varchar(80) NOT NULL DEFAULT '',
+		  `frame` int(11) DEFAULT NULL,
+		  `file_type` int(11) DEFAULT NULL,
+		  `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		  `text_event` varchar(40) NOT NULL DEFAULT '0000-00-00 00:00:00',
+		  `event_time_stamp` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
+		  `file_size` varchar(36) NOT NULL DEFAULT '0',
+		  KEY `time_stamp` (`time_stamp`),
+		  KEY `event_time_stamp` (`event_time_stamp`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8
+	\end{verbatim}
+
+	\subsection {Apache}
+	You need to set the appropriate values in the security.conf apache settings file.
+	\begin{description}
+		\item [ServerName] should be set to the name under which you will serve the site.
+		%TODO: May not need the proxy to \live, as the camera icon and settings links provide this.
+		\item [ProxyPass and ProxyPassReverse] URLs should be set to the address where motion is running. This address should use dotted quad notation and include the port.
+
+			For example: \texttt{http://192.168.2.42:9080/}, where 192.168.2.42 is the server where the motion service is running and 9080 is the port where motion is running (see \texttt{webcontrol\_port} in the \texttt{motion.conf} file.).
+		\item[DocumentRoot] should be set to the fully-qualified path of where you intalled the MotionBrowser files
+		\item[Other] Log names and locations can be set as required.
+	\end{description}
+
+
 
 \section{History}
 
-	\subsection{Version 1.0}
+	\subsection{Version 1.2}
 		\begin{description}
-			\item [20060000] 	Original Carlos Ladeira version.
+			\item [20190523] Largely internal reorganisation
+			\begin{itemize}
+				\item Converted from GET to POST, to allow deletion of selection of large number of videos on one day. This includes removal of overarching form in HTML code and using javascript to post instead.
+				\item Converted from PHP include files to gettext for internationalisation.
+			\end{itemize}
 		\end{description}
-	
+
 	\subsection{Version 1.1}
 		\begin{description}
-			\item [20060422] 	Adapted by Nigel Pegram.
+			\item [20190422] 	Adapted by Nigel Pegram.
 			\begin{itemize}
 				\item	Updated to PHP 7 and mySQL 14
 				\item	Adjusted to stream video files rather than download
@@ -138,33 +171,40 @@
 			\end{itemize}
 		\end{description}
 
+	\subsection{Version 1.0}
+		\begin{description}
+			\item [20060000] 	Original Carlos Ladeira version.
+		\end{description}
+
 
 
 \section{To Do/Planned features}
 
 	\begin{itemize}
-		\item Update the code to object-oriented format, including separating javascript into separate file.
-		
+		\item Update the code to object-oriented format
+
+		\item Extract javascript into separate file.
+
 		\item Add link to video preview \enquote{box} to allow downloading of file, rather
 		than streaming.
-		
+
 		\item Add button to delete data and files based on user-selected date.
-		
-		\item Building on the above, add settings and code to respond to disk free space falling below a preset level. 
-		This should trigger a warning/dialog, which the user can then set a date up to which 
+
+		\item Building on the above, add settings and code to respond to disk free space falling below a preset level.
+		This should trigger a warning/dialog, which the user can then set a date up to which
 		all files and database rows are deleted. There are a number of possible ways to implement this:
 		\begin{enumerate}
-			\item Insert a date into a file which a cron script reads 
+			\item Insert a date into a file which a cron script reads
 			and acts on during low load periods.
-			\item Delete from within the web browser 
-			(problematic as it will tie up the browser when, presumably, 
+			\item Delete from within the web browser
+			(problematic as it will tie up the browser when, presumably,
 			the user will want to interact with it).
 			\item Use a hybrid approach. Delete the database rows immediately, but write out the files to delete for later crontab processing. The advantage of this approach is that the items will no longer display in the browser and the interface should remain responsive.
 			\begin{description}
 				\item [Question:] where to save the list of text files? Possible locations are /etc/motion or the files directory. The latter seems preferable. It seems wise to set this as a variable in the config file which defaults to the files directory.
 			\end{description}
 		\end{enumerate}
-		
+
 	\end{itemize}
-	
+
 \end{document}

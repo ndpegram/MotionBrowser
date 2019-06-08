@@ -19,10 +19,25 @@
 
 */
 
+/**
+ * Create post request to display selected date
+ *
+ * @param $date integer date to go to
+ * @return String javascript code to
+ *
+ **/
+function gotoDateURL($date){
+	$szCode = 'javascript:post(' ;
+	$szCode .= "'" ;
+	$szCode .= $_SERVER['PHP_SELF'] ;
+	$szCode .= "'" ;
+	$szCode .= ', {view_date: ' . $date . '}' ;
+	$szCode .= ') ;' ;
+	return ($szCode) ;
+}
+
 function calendar($date)
 {
-	global $today ;
-	
 	$year = date('Y', $date);
 	$month = date('m', $date);
 	$day = date('j', $date);
@@ -33,8 +48,8 @@ function calendar($date)
 	$weekday = ($weekday + 6) % 7;
 
 	// Create first day of week based on locales...
-        $day0=mktime(0,0,0,1,3,0);
-	
+    $day0=mktime(0,0,0,1,3,0);
+
 	$listdays = '' ;
 	for($ij=0;$ij<=6;$ij++)
 	   {
@@ -43,13 +58,17 @@ function calendar($date)
 	   }
         //istdays='<th>L</th><th>M</th><th>M</th><th>J</th><th>V</th><th>S</th><th>D</th>';
 
-	$calendar = 
+	$calendar =
 		'<table class="minicalendar">'."\n".
 		'<caption class="calendar-month">'.
-		'<a href="'.$_SERVER['PHP_SELF'].'?view_date='.mktime(0, 0, 0, $month-1, $day, $year).'"><img src=lefts1.gif border=0></a>&nbsp;&nbsp;'.
-		htmlentities(ucfirst($month_name)).'&nbsp;'.$year.
-		'&nbsp;&nbsp;<a href="'.$_SERVER['PHP_SELF'].'?view_date='.mktime(0, 0, 0, $month+1, $day, $year).'"><img src=rights1.gif border=0></a>'.
-		'</span></caption>'."\n".'<tr class="calendar-header">'.
+		'<div><a href="'.gotoDateURL(mktime(0, 0, 0, $month-1, $day, $year)).'">'.
+		'<img src=lefts1.gif border=0></a></div>'.
+		'<div ID="month">'.htmlentities(ucfirst($month_name)).'</div>'.
+		'<div ID=year>'.$year.'</div>'.
+		'<div><a href="'.gotoDateURL(mktime(0, 0, 0, $month+1, $day, $year)).'">'.
+		'<img src=rights1.gif border=0></a></div>'.
+		'</span></caption>'."\n".
+		'<tr class="calendar-header">'.
 		$listdays.
 		//'<th>L</th><th>M</th><th>M</th><th>J</th><th>V</th><th>S</th><th>D</th>'.
 		"</tr>\n<tr>";
@@ -66,18 +85,30 @@ function calendar($date)
 		if ($weekday > 4) $day_class ='weekend-day';
 		else $day_class = 'normal-day';
 
-		if ($dd == $day) $calendar .= '<td class="selected-day">'.$dd.'</td>';
-		else $calendar .= 
+		if ($dd == $day) {
+			// Highlight selected date (no link)
+			$calendar .= '<td class="selected-day">'.$dd ;
+			// Provide hidden div for reference.
+			$calendar .= '<div class="today">'.mktime(0, 0, 0, $month, $dd, $year).'</div>' ;
+			$calendar .= '</td>';
+		}
+		else {
+			// Create link to change date if clicked.
+			$calendar .=
 			  '<td class="'.$day_class.'">'.
-			  '<a href="'.$_SERVER['PHP_SELF'].'?view_date='.mktime(0, 0, 0, $month, $dd, $year).'">'.$dd.'</a>'.
+			  '<a href="'. gotoDateURL(mktime(0, 0, 0, $month, $dd, $year)) . '">'.$dd.'</a>'.
 			  '</td>';
 
+		}
 	}
 
 	if ($weekday != 7) $calendar .= '<td colspan="'.(7-$weekday).'">&nbsp;</td>';
 
 	$calendar .= '</tr>';
-	$calendar .= '<tr><td colspan=7 align=center class=calendar-footer><a href="'.$_SERVER['PHP_SELF'].'?view_date='.time().'"'.">$today</a></td></tr>";
+	$calendar .= '<tr><td colspan=7 align=center class=calendar-footer>';
+	// Today button
+	$calendar .= '<input type=button value="'.gettext("today").'" onclick="post(\''.$_SERVER['PHP_SELF'].'\', {view_date: \''.time().'\'}); " >' ;
+	$calendar .= '</td></tr>';
 	$calendar .= "</table>\n";
 
 	return $calendar;

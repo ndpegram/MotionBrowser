@@ -1,0 +1,219 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MotionBrowser\n"
+"POT-Creation-Date: 2019-06-02 07:55+0800\n"
+"PO-Revision-Date: 2019-06-02 07:59+0800\n"
+"Last-Translator: Nigel Pegram <nigel@pegram.homelinux.net>\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ../../../..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: index.php:75
+msgid "megabytes"
+msgstr "Mb"
+
+#: index.php:78
+msgid "bytes"
+msgstr "kb"
+
+#: index.php:81
+msgid "err_upd_size"
+msgstr "Error while updating file size…"
+
+#: index.php:81
+msgid "file"
+msgstr ""
+
+#: index.php:81
+msgid "size"
+msgstr ""
+
+#: index.php:101 index.php:145
+msgid "select query failed"
+msgstr "Select query failed"
+
+#: index.php:102 index.php:125 index.php:146 index.php:169 index.php:176
+msgid "Debugging errno"
+msgstr ""
+
+#: index.php:103 index.php:126 index.php:147 index.php:170 index.php:177
+msgid "Debugging error"
+msgstr ""
+
+#: index.php:105 index.php:128 index.php:149 index.php:172 index.php:179
+msgid "line"
+msgstr "line"
+
+#: index.php:106 index.php:129 index.php:150
+msgid "query: "
+msgstr "query:"
+
+#: index.php:107 index.php:130 index.php:151
+msgid "result: "
+msgstr "result:"
+
+#: index.php:118
+msgid "err_del_file"
+msgstr "ERROR deleting file:"
+
+#: index.php:124
+#, fuzzy
+#| msgid "err_del_file"
+msgid "error deleting file"
+msgstr "ERROR deleting file:"
+
+#: index.php:168
+msgid "error establishing database connection"
+msgstr "error establishing database connection"
+
+#: index.php:175
+msgid "error selecting database"
+msgstr "error selecting database"
+
+#: index.php:192
+msgid "err_req_quota"
+msgstr "Error while selecting quotas…"
+
+#: index.php:203
+msgid "delete"
+msgstr "delete"
+
+#: index.php:212 index.php:267
+msgid "config_title"
+msgstr "MotionBrowser"
+
+#: index.php:212 index.php:267
+msgid "config_version"
+msgstr "1.2"
+
+#: index.php:236
+#, fuzzy
+#| msgid "err_sel_data"
+msgid "err_sel_events"
+msgstr "Problem establishing initial database connection"
+
+#: index.php:247
+#, fuzzy
+#| msgid "err_sel_data"
+msgid "err_sel_cameras"
+msgstr "Problem establishing initial database connection"
+
+#: index.php:274
+msgid "all"
+msgstr "Select All"
+
+#: index.php:275
+msgid "nothing"
+msgstr "Select Nothing"
+
+#: index.php:276
+msgid "erase_selection"
+msgstr "Delete Selection"
+
+#: index.php:279
+msgid "config_motion"
+msgstr "Configure Motion"
+
+#: index.php:281
+msgid "config_credits"
+msgstr "© 2006 Carlos Ladeira <br />Nigel Pegram © 2019"
+
+#: index.php:282
+msgid "config_mailname"
+msgstr "ndpegram@gmail.com"
+
+#: index.php:297
+msgid "camera_name"
+msgstr "Camera"
+
+#: index.php:298
+msgid "see_camera"
+msgstr "View as webcam"
+
+#: index.php:370
+msgid "hours"
+msgstr "h"
+
+#: index.php:375
+msgid "events"
+msgstr "events"
+
+#: index.php:442
+msgid "no_events"
+msgstr "No events on the selected day !"
+
+#: index.php:459
+msgid "volume"
+msgstr ""
+
+#: index.php:459
+msgid "filled"
+msgstr ""
+
+#: index.php:475
+#, fuzzy
+#| msgid "low_space"
+msgid "disk_space"
+msgstr " is very low"
+
+#: index.php:475
+msgid "low_space"
+msgstr " is very low"
+
+#: js_gettext.php:14
+msgid "js gettext no message"
+msgstr "A call has been made to js_gettext.php with no value in the 'message' field."
+
+#: js_gettext.php:26
+msgid "No items selected for deletion"
+msgstr "Please select something to delete first"
+
+#: js_gettext.php:27
+msgid "Delete selected items"
+msgstr "Delete the selected items"
+
+#~ msgid "err_sel_data"
+#~ msgstr "Problem establishing initial database connection"
+
+#~ msgid "err_sel_size"
+#~ msgstr "Problem selecting database…"
+
+#~ msgid "err_sel_file"
+#~ msgstr "Query 0 failed :"
+
+#~ msgid "err_del_req"
+#~ msgstr "DELETE Query failed"
+
+#~ msgid "java_confirm_delete"
+#~ msgstr "Are you sure to delete the selected events?"
+
+#~ msgid "java_select_delete"
+#~ msgstr "Select at least one event to delete!"
+
+#~ msgid "err_req_dele"
+#~ msgstr "Problem while connecting to database…"
+
+#~ msgid "err_sel_que1"
+#~ msgstr "Query 1 failed :"
+
+#~ msgid "err_sel_que2"
+#~ msgstr "Query 2 failed :"
+
+#~ msgid "vol1_quota"
+#~ msgstr "Volume"
+
+#~ msgid "vol2_quota"
+#~ msgstr " filled at"
+
+#~ msgid "space1"
+#~ msgstr "Disk space on volume"
+
+#~ msgid "today"
+#~ msgstr "today"

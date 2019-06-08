@@ -1,6 +1,10 @@
 \BOOKMARK [1][-]{section.1}{Readme}{}% 1
 \BOOKMARK [1][-]{section.2}{Installation}{}% 2
-\BOOKMARK [1][-]{section.3}{History}{}% 3
-\BOOKMARK [2][-]{subsection.3.1}{Version 1.0}{section.3}% 4
-\BOOKMARK [2][-]{subsection.3.2}{Version 1.1}{section.3}% 5
-\BOOKMARK [1][-]{section.4}{To Do/Planned features}{}% 6
+\BOOKMARK [2][-]{subsection.2.1}{File system}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{mySQL}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Apache}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{History}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Version 1.2}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Version 1.1}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.3}{Version 1.0}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{To Do/Planned features}{}% 10
