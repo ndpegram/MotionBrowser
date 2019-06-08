@@ -29,7 +29,16 @@ BODY  {
 .normal-day { background-color:#ddffdd; }
 .weekend-day { background-color:#fbfbd4; }
 .selected-day { background-color:#ffb0b0; color:black; font-weight:bold}
-.calendar-month { font-weight:bold}
+.today {visibility: hidden; width: 0 ; height: 0 ; }
+
+.calendar-month { font-weight:bold; text-align:center}
+.calendar-month:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+.calendar-month > div {display: inline-block; padding:0.5ex}
+
 .calendar-header { background-color:#e0e0ff; color:black; font-weight:bold; text-align:center; }
 .calendar-footer { background-color:#eeeeee; font-weight:bold; text-align:center; }
 
@@ -40,8 +49,18 @@ BODY  {
 
 .title { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; color:navy; text-align:center; }
 .credits { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color:black; text-align:left; }
-.quota { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color:blue; text-align:center; margin: 4px auto;}
+.quota {}
 
 a:visited { text-decoration: none; color:navy; }
 a:link { text-decoration: none; color:navy; }
 a:hover { text-decoration: none; color:navy; }
+
+div.quota{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color:blue;
+	margin: 4px auto;
+	position: fixed ;
+	bottom: 0px ;
+	width: 100%
+}
