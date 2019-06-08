@@ -18,7 +18,7 @@
 	General constants and configuration values.
 
 */
-	$config_version="1.1" ;
+	$config_version="1.2" ;
 
 	//$lang="fr";
 	//$locales='fr_FR@euro';
