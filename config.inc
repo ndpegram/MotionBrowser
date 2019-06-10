@@ -16,6 +16,8 @@
 	*********************************************************
 
 	General constants and configuration values.
+	
+	** REVIEW ALL LINES BELOW AND CHANGE TO SUIT YOUR CONFIGURATION **
 
 */
 	$config_version="1.2" ;
