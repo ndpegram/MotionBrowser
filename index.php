@@ -189,13 +189,13 @@ require_once("stream.php") ;
 		$conn = getDBConnection() ;
 	}
 
-    // Récupération du chemin des fichiers de données (Get path of the data files)
+    // Rï¿½cupï¿½ration du chemin des fichiers de donnï¿½es (Get path of the data files)
     if (!isset($datadisque))
 	{
 		$query = "SELECT filename FROM security order by time_stamp desc limit 0,1";
 		$result = mysqli_query($conn, $query) or die (gettext("err_req_quota"));
 		$mquota = mysqli_fetch_row($result);
-		// Recherche du path des fichiers de données (Search for Data Files Path)
+		// Recherche du path des fichiers de donnï¿½es (Search for Data Files Path)
 		$path_parts = pathinfo($mquota[0]);
 		$datadisque=$path_parts['dirname'].'/' ;
 		mysqli_free_result($result);
@@ -262,6 +262,7 @@ require_once("stream.php") ;
 
 <?php
 	// TODO: Could some of this be done in javascript?
+        // TODO: Do we need the two variables below?
 	// count the number of events (images) on screen
 	$event_count = 0;
 	$row_count = 2;
