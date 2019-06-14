@@ -261,8 +261,6 @@ require_once("stream.php") ;
 <body>
 
 <?php
-	// TODO: Could some of this be done in javascript?
-
 	echo '<table border=0> <tr><td valign=top>';
 
 	echo "<span class=title><b>".gettext("config_title")." * ".gettext("config_version")."</b></span>\n";
@@ -455,6 +453,7 @@ require_once("stream.php") ;
 	{
 		$ratio = 1 - (disk_free_space($datadisque)/disk_total_space($datadisque) ) ;
 		echo "<div class=\"quota\">\n";
+                // TODO adjust the line below to use gettext with numbers.
 		echo '<p>'.gettext("volume ").$datadisque.gettext(" filled ").number_format($ratio*100,2,","," ")." %</p>" ;
 		echo "<img src=\"affquota.php?ratio=".$ratio."\">\n";
 		echo "</div>\n";
@@ -463,10 +462,7 @@ require_once("stream.php") ;
 
 <script>
 <!--
-
-// collapse the timeline table
-    timelineDetailsHide() ;
-
+    // TODO: can this be moved to the document ready javascript function? Perhaps use jquery to get percentage from DOM and work on that.
 <?php
 if ($ratio > .9)
     echo 'alert("'.gettext("disk_space").' '.$datadisque.gettext("low_space").'. ")';
