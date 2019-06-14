@@ -1,6 +1,6 @@
 <?php
 /*
-	MotionBrowser 
+	MotionBrowser
 
 	config.inc
 
@@ -20,24 +20,29 @@
 	** REVIEW ALL LINES BELOW AND CHANGE TO SUIT YOUR CONFIGURATION **
 
 */
-	$config_version="1.2" ;
+	$config_version="1.1" ;
 
-	//$lang="fr";
-	//$locales='fr_FR@euro';
-	$lang="en";
-	$locales='en_US.UTF-8';
+	/**
+	 * Set the below if running on a development machine.
+	 * Should be FALSE if on a deployment machine
+	 **/
+	 $testing=false ;
+
+	//$locale='fr_FR@euro';
+	$locale='en_US.UTF-8';
 
 	// mysql related data
-	$sql_host = "localhost";
-	$sql_user = "motion";
-	$sql_pass = "motion";
-	$sql_db = "motion";
+	$sql_host = "192.168.2.42";
+	$sql_user = "security";
+	$sql_pass = "S3cur1ty";
+	$sql_db = "security";
 
 	// info for the webcam popups
-	$server_addr = $_SERVER['SERVER_ADDR'];
+	$server_addr = $_SERVER['SERVER_NAME'];
 	$webcam_x = 380;
 	$webcam_y = 310;
-	$webcam_port = array(8081, 8082, 8083, 8084);
+	// TODO fix problem with camera index starting at 1.
+	$webcam_port = array(0, 8081, 8082, 8083, 8084);
 
 	// setup port
 	$setup_port = 9080;
@@ -49,5 +54,5 @@
 	// info pour l'affichage de l'espace disque disponible (Info to display the available disk space)
 	$hauteurquota=800;
 	$largeurquota=20;
-	
+
 ?>
