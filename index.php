@@ -373,14 +373,14 @@ require_once("stream.php") ;
 				}
 
 				// start a new row
-				echo '<tr><td valign=top class=timeline-hour>'.substr($hourev+100,1).gettext("hours").'</td>';
+				echo '<tr class="hour-summary"><td valign=top class=timeline-hour>'.substr($hourev+100,1).gettext("hours").'</td>';
 				echo "<td colspan=".$num_cameras." class=timeline-row-header>";
 				echo "&nbsp;<a href=\"javascript:ToggleRowVisibility(".$row_count.");\">";
 				echo "<img src=mais.gif border=0 onclick=\"plusclick(this);\">";
 				echo "</a>&nbsp;&nbsp;";
 				echo "<span id=countevents".$hourev."></span> ".gettext("events");
 				echo '</td></tr>';
-				echo '<tr><td class=timeline-hour>&nbsp;</td>';
+				echo '<tr class="hour-events"><td class=timeline-hour>&nbsp;</td>';
 				$row_count += 2;
 
 				$camera_index = 0;
@@ -466,9 +466,7 @@ require_once("stream.php") ;
 <!--
 
 // collapse the timeline table
-for (i = 2; i < <?php echo $row_count; ?>; i += 2){
-	ToggleRowVisibility(i);
-}
+    timelineDetailsHide() ;
 
 <?php
 if ($ratio > .9)
