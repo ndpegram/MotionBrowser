@@ -262,9 +262,8 @@ require_once("stream.php") ;
 
 <?php
 	// TODO: Could some of this be done in javascript?
-        // TODO: Do we need the two variables below?
+        // TODO: Do we need the variable below?
 	// count the number of events (images) on screen
-	$event_count = 0;
 	$row_count = 2;
 
 	echo '<table border=0> <tr><td valign=top>';
@@ -404,9 +403,6 @@ require_once("stream.php") ;
 				}
 			}
 
-			// new event
-			$event_count++;
-
 			// if not the first event on this camera and hour, put a separation
 			if ($temp_td) $temp_td .= "<hr size=1 width=95% color=gray>";
 
@@ -416,7 +412,7 @@ require_once("stream.php") ;
 //				"<a href=\"download.php?file=".$row['filename']."\">".
 				"<img src=\"thumbnail.php?image=$image&width=$thumb_width&height=$thumb_height\" border=0>".
 				"</a><br>".
-				"<input type=checkbox name=img$event_count value=$ev_ts>".
+				"<input type=checkbox name=$ev_ts value=$ev_ts>".
 				"&nbsp;&nbsp;&nbsp;".$row['timefield']." (".(empty($row['file_size']) ? afftaille($row['filename']) : $row['file_size']) .")<br>";
 
 			$hour_event_count++;
@@ -454,9 +450,6 @@ require_once("stream.php") ;
 	// free $result variable
 	mysqli_free_result($result);
 
-	// set the number of event on this page and close the form
-	echo "<input type=hidden name=event_count value=".$event_count.">\n";
-	//echo "</form>\n";
 
 	// Disk quota display
 	if (isset($datadisque))
