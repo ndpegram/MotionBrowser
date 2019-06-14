@@ -22,10 +22,7 @@
 */
 	$config_version="1.2" ;
 
-	//$lang="fr";
-	//$locales='fr_FR@euro';
-	$lang="en";
-	$locales='en_US.UTF-8';
+	$locale='en_US.UTF-8';
 
 	// mysql related data
 	$sql_host = "localhost";
