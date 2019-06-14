@@ -455,7 +455,7 @@ require_once("stream.php") ;
 	{
 		$ratio = 1 - (disk_free_space($datadisque)/disk_total_space($datadisque) ) ;
 		echo "<div class=\"quota\">\n";
-		echo '<p>'.gettext("volume").$datadisque.gettext("filled").number_format($ratio*100,2,","," ")." %\n</p>" ;
+		echo '<p>'.gettext("volume ").$datadisque.gettext(" filled ").number_format($ratio*100,2,","," ")." %</p>" ;
 		echo "<img src=\"affquota.php?ratio=".$ratio."\">\n";
 		echo "</div>\n";
 	}
