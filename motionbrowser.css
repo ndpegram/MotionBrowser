@@ -51,3 +51,8 @@ div.quota{
 	left:50%;
 	transform: translateX(-50%);
 }
+
+img.plus{
+    padding-left:  1ex;
+    padding-right: 1ex ;
+}

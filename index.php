@@ -262,9 +262,6 @@ require_once("stream.php") ;
 
 <?php
 	// TODO: Could some of this be done in javascript?
-        // TODO: Do we need the variable below?
-	// count the number of events (images) on screen
-	$row_count = 2;
 
 	echo '<table border=0> <tr><td valign=top>';
 
@@ -372,16 +369,18 @@ require_once("stream.php") ;
 					$hour_event_count = 0;
 				}
 
-				// start a new row
-				echo '<tr class="hour-summary"><td valign=top class=timeline-hour>'.substr($hourev+100,1).gettext("hours").'</td>';
+				// Start a new set of hourly events
+                                // Summary header row
+				echo '<tr class="hour-summary" id="'.$hourev.'">';
+                                echo '<td valign=top class=timeline-hour>'.substr($hourev+100,1).gettext("hours").'</td>';
 				echo "<td colspan=".$num_cameras." class=timeline-row-header>";
-				echo "&nbsp;<a href=\"javascript:ToggleRowVisibility(".$row_count.");\">";
-				echo "<img src=mais.gif border=0 onclick=\"plusclick(this);\">";
-				echo "</a>&nbsp;&nbsp;";
+				echo '<img class="plus" id="'.$hourev.'" src=mais.gif border=0 onclick="plusclick(this);">';
 				echo "<span id=countevents".$hourev."></span> ".gettext("events");
-				echo '</td></tr>';
-				echo '<tr class="hour-events"><td class=timeline-hour>&nbsp;</td>';
-				$row_count += 2;
+				echo '</td>' ;
+                                echo '</tr>';
+                                // Details--images and videos
+				echo '<tr class="hour-events" id="'.$hourev.'">' ;
+                                echo '<td class=timeline-hour>&nbsp;</td>';
 
 				$camera_index = 0;
 				$hour = $hourev;

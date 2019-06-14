@@ -93,32 +93,28 @@ function openwindow(url, title, xx, yy)
 	wh.focus();
 }
 
-function ToggleRowVisibility(intRowIndex)
-{
-	/* Mozilla 1.8alpha; see bug 77019 and bug 242368; must be higher than 1.7.x
-	Mozilla 1.8a2 supports accordingly dynamic collapsing of rows in both border-collapse models
-	but not 1.7.x versions */
-	if(navigator.product == "Gecko" && navigator.productSub && navigator.productSub > "20041010" && (navigator.userAgent.indexOf("rv:1.8") != -1 || navigator.userAgent.indexOf("rv:1.9") != -1)) {
-		document.getElementById("idtable").rows[intRowIndex].style.visibility =
-			(document.getElementById("idtable").rows[intRowIndex].style.visibility == "visible") ? "collapse" : "visible";
-	}
-	else {
-		if(document.all && document.compatMode && document.compatMode == "CSS1Compat" && !window.opera) {
-			document.getElementById("idtable").rows[intRowIndex].style.display =
-				(document.getElementById("idtable").rows[intRowIndex].style.display == "block") ? "none" : "block";
-		}
-		// Mozilla prior to 1.8a2, Opera 7.x and MSIE 5+
-		else if(document.getElementById && document.getElementById("idtable").rows) {
-			document.getElementById("idtable").rows[intRowIndex].style.display =
-				(document.getElementById("idtable").rows[intRowIndex].style.display == "") ? "none" : "";
-		}
-	}
-}
 
+/**
+ * plusClick Respond to the plus image being clicked.
+ * @param {object} image
+ * @returns {void}
+ */
 function plusclick(image)
 {
-	if (image.src.indexOf('mais.gif') != -1) image.src = "./menos.gif";
-	else image.src = "./mais.gif";
+    // row ID is same as image, but with 'hour-events' class
+    var ID = image.id ;
+    var selector = "#"  + ID + '.hour-events' ;
+    var row = $(selector) ;
+
+    // Toggle image and row
+    if (image.src.indexOf('mais.gif') !== -1) {
+        image.src = "./menos.gif";
+        row.show() ;
+    }
+    else {
+        image.src = "./mais.gif";
+        row.hide() ;
+    }
 }
 
 // See https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit
@@ -151,4 +147,13 @@ function post(path, params, method='post') {
 
   document.body.appendChild(form);
   form.submit();
+}
+
+/**
+ * Hide all timeline detail rows (rows showing the videos).
+ * @returns {void} 
+ */
+function timelineDetailsHide(){
+    // Hide all table rows of class 'hour-events'
+    $(".hour-events").hide();
 }
