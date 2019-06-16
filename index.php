@@ -63,7 +63,18 @@ require_once("stream.php") ;
 	 *
 	 */
 
-
+    /**
+     * @param String $divID ID of element whose content will be set to the 
+     *                      number of elements in that hour for that camera.
+     * @param int $numEvents The number of events.
+     * @return void Nothing.
+     * 
+     * FIXME: does not yet work.
+     */
+    function setEventCount($divID, $numEvents){
+        $events = $numEvents . ' ' . ngettext("event", "events", $numEvents) ; 
+        echo "<script>\n<!--\ndocument.getElementById('#$divID').innerHTML = '".$events."';\n//-->\n</script>\n";       
+    }
 
     // Taille d'un fichier (File size)
     function afftaille($fic)
@@ -305,6 +316,7 @@ require_once("stream.php") ;
 		$hour = -1;
 		$camera_index = 0;
 		$temp_td = '';
+                // TODO: could this be replaced with information from mySQL? (redesign query)
 		$hour_event_count = 0;
 
 		//
@@ -363,7 +375,10 @@ require_once("stream.php") ;
 
 					// end this row
 					echo "</tr>\n";
-					echo "<script>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$hour_event_count."';\n//-->\n</script>\n";
+                                        // Go back and set the hourly event count.
+                                        //setEventCount('countevents'.$hour) ;
+                                        $events = $hour_event_count . ' ' . ngettext("event", "events", $hour_event_count) ; 
+					echo "<script>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$events."';\n//-->\n</script>\n";
 					$hour_event_count = 0;
 				}
 
@@ -373,7 +388,7 @@ require_once("stream.php") ;
                                 echo '<td valign=top class=timeline-hour>'.substr($hourev+100,1).gettext("hours").'</td>';
 				echo "<td colspan=".$num_cameras." class=timeline-row-header>";
 				echo '<img class="plus" id="'.$hourev.'" src=mais.gif border=0 onclick="plusclick(this);">';
-				echo "<span id=countevents".$hourev."></span> ".gettext("events");
+				echo '<span id=countevents'.$hourev.'></span>' ;
 				echo '</td>' ;
                                 echo '</tr>';
                                 // Details--images and videos
@@ -434,7 +449,8 @@ require_once("stream.php") ;
 
 		// end this row
 		echo "</tr>\n";
-		echo "<script>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$hour_event_count."';\n//-->\n</script>\n";
+                $events = $hour_event_count . ' ' . ngettext("event", "events", $hour_event_count) ; 
+                echo "<script>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$events."';\n//-->\n</script>\n";
 
 		// now let's close the table and be done with it
 		echo "</TABLE>\n";
