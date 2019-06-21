@@ -72,7 +72,7 @@ require_once("stream.php") ;
      * FIXME: does not yet work.
      */
     function setEventCount($divID, $numEvents){
-        $events = $numEvents . ' ' . ngettext("event", "events", $numEvents) ; 
+        $events = sprintf(ngettext("%d event", "%d events", $numEvents), $numEvents) ; 
         echo "<script>\n<!--\ndocument.getElementById('#$divID').innerHTML = '".$events."';\n//-->\n</script>\n";       
     }
 
@@ -112,6 +112,7 @@ require_once("stream.php") ;
 
 		// get the list of filenames we are going to delete
 		$query = "SELECT `filename` FROM `security` WHERE `event_time_stamp` IN ($IDs)" ;
+                // TODO: convert die to use one generic gettext call with sprintf and multiple string replacements.
 		$result = mysqli_query($conn, $query) or
 			die (gettext("select query failed") . '<br />' .
 				gettext ("Debugging errno") . ': ' . mysqli_connect_errno() . '<br />' .
@@ -130,7 +131,7 @@ require_once("stream.php") ;
 			if (!$testing){
 				// delete the file first
 				if (!unlink($filename)) {
-					die(gettext("err_del_file").": ".$filename);
+					die(sprintf(gettext("Error deleting %s"), $filename)) ;
 				}
 
 				// if no problem, delete the record from the database
@@ -306,7 +307,7 @@ require_once("stream.php") ;
 //		echo "<pre>".print_r($cameras)."</pre>" ;
 		foreach ($cameras as $cam) {
 			$webcam = "http://$server_addr:".$webcam_port[($cam)]."/";
-			$title = gettext("camera_name")." $cam";
+			$title = sprintf(gettext("camera name %d"), $cam) ;
 			echo "<Th>&nbsp;$title<a href=\"javascript:openwindow('$webcam', '$title', $webcam_x, $webcam_y);\">&nbsp;&nbsp;<img src=icon_video.gif border=0 alt=\"".gettext("see_camera")."\"></a>&nbsp;</Th>";
 		}
 		echo "</tr>\n";
@@ -377,7 +378,7 @@ require_once("stream.php") ;
 					echo "</tr>\n";
                                         // Go back and set the hourly event count.
                                         //setEventCount('countevents'.$hour) ;
-                                        $events = $hour_event_count . ' ' . ngettext("event", "events", $hour_event_count) ; 
+                                        $events = sprintf(ngettext("%d event", "%d events", $hour_event_count), $hour_event_count) ; 
 					echo "<script>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$events."';\n//-->\n</script>\n";
 					$hour_event_count = 0;
 				}
@@ -449,14 +450,16 @@ require_once("stream.php") ;
 
 		// end this row
 		echo "</tr>\n";
-                $events = $hour_event_count . ' ' . ngettext("event", "events", $hour_event_count) ; 
+                $events = sprintf(ngettext("%d event", "%d events", $hour_event_count), $hour_event_count) ; 
                 echo "<script>\n<!--\ndocument.getElementById('countevents".$hour."').innerHTML = '".$events."';\n//-->\n</script>\n";
 
 		// now let's close the table and be done with it
 		echo "</TABLE>\n";
 	}
-	else echo '<p><br>'.gettext("no_events").'</p>';
-
+	else {
+            echo '<p><br>'.gettext("no_events").'</p>';
+        }
+        
 	// close the main table
 	echo '</td></tr></table>';
 
@@ -469,8 +472,7 @@ require_once("stream.php") ;
 	{
 		$ratio = 1 - (disk_free_space($datadisque)/disk_total_space($datadisque) ) ;
 		echo "<div class=\"quota\">\n";
-                // TODO adjust the line below to use gettext with numbers.
-		echo '<p>'.gettext("volume ").$datadisque.gettext(" filled ").number_format($ratio*100,2,","," ")." %</p>" ;
+		printf (gettext("disk space used %s %f"), $datadisque, number_format($ratio*100,2)) ;
 		echo "<img src=\"affquota.php?ratio=".$ratio."\">\n";
 		echo "</div>\n";
 	}
@@ -480,8 +482,9 @@ require_once("stream.php") ;
 <!--
     // TODO: can this be moved to the document ready javascript function? Perhaps use jquery to get percentage from DOM and work on that.
 <?php
-if ($ratio > .9)
-    echo 'alert("'.gettext("disk_space").' '.$datadisque.gettext("low_space").'. ")';
+    if ($ratio > .9){
+        echo 'alert("'.gettext("disk_space").' '.$datadisque.gettext("low_space").'. ")';
+    }   
 ?>
 //-->
 </script>

@@ -1,4 +1,11 @@
 
+// Events to execut once document loaded.
+$( document ).ready(function() {
+    // collapse the timeline table
+    timelineDetailsHide() ;
+});
+
+
 /**
  * Delete selected items (with confirmation).
  * @return	{void}		nothing
