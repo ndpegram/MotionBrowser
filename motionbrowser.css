@@ -46,7 +46,7 @@ div.quota{
 	color:blue;
 	margin: 4px auto;
 	position: fixed ;
-	bottom: 0px ;
+	bottom: 10px ;
 	text-align:center;
 	left:50%;
 	transform: translateX(-50%);
