@@ -91,11 +91,18 @@ require_once("stream.php") ;
 
         $fSize = filesize($szFileName) ;
         switch ($fSize) {
+            case ($fSize >= 1024 *1024 * 1024):
+                $fSize = $fSize / (1024 *1024 * 1024) ;
+                $szUnits = "GB" ;
+                break;
+
             case ($fSize >= 1024 *1024):
+                $fSize = $fSize / (1024 *1024) ;
                 $szUnits = "MB" ;
                 break;
 
             case ($fSize >= 1024):
+                $fSize = $fSize / (1024) ;
                 $szUnits = "KB" ;
                 break;
 
