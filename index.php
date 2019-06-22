@@ -76,23 +76,44 @@ require_once("stream.php") ;
         echo "<script>\n<!--\ndocument.getElementById('#$divID').innerHTML = '".$events."';\n//-->\n</script>\n";       
     }
 
-    // Taille d'un fichier (File size)
-    function afftaille($fic)
+    /**
+     * Calculate the size of the specified file. The database is updated to 
+     * match. Sizes are scaled to bytes, kilobytes or megabytes as required.
+     * 
+     * @global object $conn Connection to SQL database
+     * @param type $szFileName Name of file whose size is calculated
+     * @return String Size of file.
+     * TODO: check on production site
+     */
+    function setFileSize($szFileName)
     {
-		global $conn ;
+        global $conn;
 
-		$tfic=filesize($fic)/1024;
-		if ($tfic > 1024) {
-		   $tfic=(int)($tfic / 1024). gettext("megabytes") ;
-	   }
-		else {
-		   $tfic=(int)($tfic). gettext("bytes");
-	   }
-	   $query = "update security set file_size='$tfic' where filename ='$fic';" ;
-		$majsize = mysqli_query($conn, $query) or die(gettext("err_upd_size")." ".gettext("file").": ".$fic." ".gettext("size").": ".$tfic );
-		//mysql_free_result($majsize);
-		return $tfic;
-    }
+        $fSize = filesize($szFileName) ;
+        switch ($fSize) {
+            case ($fSize >= 1024 *1024):
+                $szUnits = "MB" ;
+                break;
+
+            case ($fSize >= 1024):
+                $szUnits = "KB" ;
+                break;
+
+            case ($fSize > 0):
+                $szUnits = "B" ;
+                break;
+            
+            default:
+                return ("");
+        }
+        
+        $szSize = sprintf("%d %s", $fSize, $szUnits) ;
+        $query = "update security set file_size='$fSize' where filename ='$szFileName';";
+        mysqli_query($conn, $query) or 
+                die(printf(gettext("error updating file size %s %s"), $szFileName, $szSize)) ;
+
+        return $szSize;
+}
 
     /**
      * Delete files and database entries. Called in response to POST
@@ -426,7 +447,7 @@ require_once("stream.php") ;
 				"<img src=\"thumbnail.php?image=$image&width=$thumb_width&height=$thumb_height\" border=0>".
 				"</a><br>".
 				"<input type=checkbox name=$ev_ts value=$ev_ts>".
-				"&nbsp;&nbsp;&nbsp;".$row['timefield']." (".(empty($row['file_size']) ? afftaille($row['filename']) : $row['file_size']) .")<br>";
+				"&nbsp;&nbsp;&nbsp;".$row['timefield']." (".(empty($row['file_size']) ? setFileSize($row['filename']) : $row['file_size']) .")<br>";
 
 			$hour_event_count++;
 

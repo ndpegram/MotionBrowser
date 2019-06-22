@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MotionBrowser\n"
-"POT-Creation-Date: 2019-06-22 02:21+0800\n"
-"PO-Revision-Date: 2019-06-22 02:23+0800\n"
+"POT-Creation-Date: 2019-06-22 09:13+0800\n"
+"PO-Revision-Date: 2019-06-22 09:13+0800\n"
 "Last-Translator: Nigel Pegram <nigel@pegram.homelinux.net>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -15,149 +15,137 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: index.php:75 index.php:381 index.php:453
+#: index.php:75 index.php:399 index.php:471
 #, php-format
 msgid "%d event"
 msgid_plural "%d events"
 msgstr[0] "%3d event"
 msgstr[1] "%3d events"
 
-#: index.php:86
-msgid "megabytes"
-msgstr "Mb"
+#: index.php:110
+#, php-format
+msgid "error updating file size %s %s"
+msgstr ""
+"ERROR updating file size. \n"
+"File: '%s'.\n"
+"Size: '%s'."
 
-#: index.php:89
-msgid "bytes"
-msgstr "kb"
-
-#: index.php:92
-msgid "err_upd_size"
-msgstr "Error while updating file size…"
-
-#: index.php:92
-msgid "file"
-msgstr "file"
-
-#: index.php:92
-msgid "size"
-msgstr "size"
-
-#: index.php:117 index.php:161
+#: index.php:135 index.php:179
 msgid "select query failed"
 msgstr "Select query failed"
 
-#: index.php:118 index.php:141 index.php:162 index.php:185 index.php:192
+#: index.php:136 index.php:159 index.php:180 index.php:203 index.php:210
 msgid "Debugging errno"
 msgstr "Error number"
 
-#: index.php:119 index.php:142 index.php:163 index.php:186 index.php:193
+#: index.php:137 index.php:160 index.php:181 index.php:204 index.php:211
 msgid "Debugging error"
 msgstr "Error message"
 
-#: index.php:121 index.php:144 index.php:165 index.php:188 index.php:195
+#: index.php:139 index.php:162 index.php:183 index.php:206 index.php:213
 msgid "line"
 msgstr "line"
 
-#: index.php:122 index.php:145 index.php:166
+#: index.php:140 index.php:163 index.php:184
 msgid "query: "
 msgstr "query:"
 
-#: index.php:123 index.php:146 index.php:167
+#: index.php:141 index.php:164 index.php:185
 msgid "result: "
 msgstr "result:"
 
-#: index.php:134
+#: index.php:152
 #, php-format
 msgid "Error deleting %s"
 msgstr "Error unlinking file %s."
 
-#: index.php:140
+#: index.php:158
 msgid "error deleting file"
 msgstr "ERROR deleting file"
 
-#: index.php:184
+#: index.php:202
 msgid "error establishing database connection"
 msgstr "error establishing database connection"
 
-#: index.php:191
+#: index.php:209
 msgid "error selecting database"
 msgstr "error selecting database"
 
-#: index.php:208
+#: index.php:226
 msgid "err_req_quota"
 msgstr "Error while selecting quotas…"
 
-#: index.php:219
+#: index.php:237
 msgid "delete"
 msgstr "delete"
 
-#: index.php:228 index.php:278
+#: index.php:246 index.php:296
 msgid "config_title"
 msgstr "MotionBrowser"
 
-#: index.php:228 index.php:278
+#: index.php:246 index.php:296
 msgid "config_version"
 msgstr "1.2.1"
 
-#: index.php:252
+#: index.php:270
 msgid "err_sel_events"
 msgstr "Error selecting motion events"
 
-#: index.php:263
+#: index.php:281
 msgid "err_sel_cameras"
 msgstr "Error selecting cameras with events"
 
-#: index.php:285
+#: index.php:303
 msgid "all"
 msgstr "Select All"
 
-#: index.php:286
+#: index.php:304
 msgid "nothing"
 msgstr "Select Nothing"
 
-#: index.php:287
+#: index.php:305
 msgid "erase_selection"
 msgstr "Delete Selection"
 
-#: index.php:290
+#: index.php:308
 msgid "config_motion"
 msgstr "Configure Motion"
 
-#: index.php:292
+#: index.php:310
 msgid "config_credits"
 msgstr "© 2006 Carlos Ladeira <br />© 2019 Nigel Pegram"
 
-#: index.php:293
+#: index.php:311
 msgid "config_mailname"
 msgstr "ndpegram@gmail.com"
 
-#: index.php:310
+#: index.php:328
 #, php-format
 msgid "camera name %d"
 msgstr "Camera %d"
 
-#: index.php:311
+#: index.php:329
 msgid "see_camera"
 msgstr "View as webcam"
 
-#: index.php:389
+#: index.php:407
 msgid "hours"
 msgstr "h"
 
-#: index.php:460
+#: index.php:478
 msgid "no_events"
 msgstr "No events on the selected day !"
 
-#: index.php:475
+#: index.php:493
 #, php-format
 msgid "disk space used %s %f"
 msgstr "Volume containing %s is %.2f percent full."
 
-#: index.php:486
+#: index.php:504
 msgid "disk_space"
 msgstr " is very low"
 
-#: index.php:486
+#: index.php:504
 msgid "low_space"
 msgstr " is very low"
 
@@ -176,6 +164,21 @@ msgstr "Delete the selected items"
 #: js_gettext.php:28
 msgid "Error deleting"
 msgstr "Error deleting file"
+
+#~ msgid "megabytes"
+#~ msgstr "Mb"
+
+#~ msgid "bytes"
+#~ msgstr "kb"
+
+#~ msgid "err_upd_size"
+#~ msgstr "Error while updating file size…"
+
+#~ msgid "file"
+#~ msgstr "file"
+
+#~ msgid "size"
+#~ msgstr "size"
 
 #~ msgid "err_del_file %s"
 #~ msgstr "ERROR deleting file: %s."
