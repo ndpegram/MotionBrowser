@@ -50,18 +50,18 @@ require_once("lang.inc"); // brings in config.inc
 require_once("calendar.inc");
 require_once("stream.php") ;
 
-	/**
-	 * Dynamically generated forms are used to create POST vars for actions.
-	 *
-	 * POST VARS used
-	 *
-	 * Variable  : value
-	 *
-	 * view_date	:	date to display (e.g. on calendar click)
-	 * what			:	action to take. Options = {delete}
-	 * todelete		:	files to delete from database and disk
-	 *
-	 */
+    /**
+     * Dynamically generated forms are used to create POST vars for actions.
+     *
+     * POST VARS used
+     *
+     * Variable         :       value
+     *
+     * view_date	:	date to display (e.g. on calendar click)
+     * what		:	action to take. Options = {delete}
+     * todelete		:	files to delete from database and disk
+     *
+     */
 
     /**
      * @param String $divID ID of element whose content will be set to the 
@@ -83,7 +83,6 @@ require_once("stream.php") ;
      * @global object $conn Connection to SQL database
      * @param type $szFileName Name of file whose size is calculated
      * @return String Size of file.
-     * TODO: check on production site
      */
     function setFileSize($szFileName)
     {
@@ -117,14 +116,73 @@ require_once("stream.php") ;
         $szSize = sprintf("%d %s", $fSize, $szUnits) ;
         $query = "update security set file_size='$fSize' where filename ='$szFileName';";
         mysqli_query($conn, $query) or 
-                die(printf(gettext("error updating file size %s %s"), $szFileName, $szSize)) ;
+            die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                mysqli_connect_errno(),
+                mysqli_connect_error(), 
+                __FILE__,
+                __LINE__,
+                $query,
+                ""    
+                ));
 
         return $szSize;
 }
 
     /**
+     * Delete all files and SQL records for the oldest day on record.
+     * Called recursively to free disk space if storage is too full
+     * 
+     * Calling procedure should check return code and exit if false
+     * as there is nothing to delete. Failure to do this could result in an
+     * endless loop.
+     * 
+     * @return bool True if day deleted. False if nothing to delete.
+     */
+//TODO: **** test function. ****
+    function deleteOldestDay(){
+        /** 
+         * @var String Query to select all event time stamps for oldest day. 
+         * 
+         *              The sub-query selects the day part of the date of the 
+         *              oldest event to get the oldest day.
+         *              This is then used to select all events on that day.
+         *              These are then concatenated into a comma-separated string.
+         */
+        $query =   'SELECT group_concat(DISTINCT `event_time_stamp` SEPARATOR ", ")
+                    FROM security.security
+                    WHERE `event_time_stamp` LIKE
+                            (SELECT concat(SUBSTRING(`event_time_stamp`, 1, 10), "%")
+                            FROM security.security
+                            ORDER BY `event_time_stamp`
+                            LIMIT 1)
+                    ORDER BY `event_time_stamp`' ;
+
+	$conn = getDBConnection() ;
+        $result = mysqli_query($conn, $query) or
+                die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                            mysqli_connect_errno(),
+                            mysqli_connect_error(), 
+                            __FILE__,
+                            __LINE__,
+                            $query,
+                            $result    
+                            ));
+        
+        // No items found, so exit advising the calling procedure.
+        if (mysqli_num_rows($result) === 0) {
+            return (false);
+        }
+        
+        $row = mysqli_fetch_array($result, MYSQLI_NUM) ;
+        deleteItems($row[0]) ;
+        mysqli_free_result($result) ;
+        return (true) ;
+    }
+    
+    /**
      * Delete files and database entries. Called in response to POST
-     * @param	{}		IDs of items to delete.
+     * @param	{MIXED}	IDs of items to delete. (
+     *                  Can be an array or comma-separated list.
      * @return	{void}	nothing
      */
      function deleteItems($IDs){
@@ -140,15 +198,15 @@ require_once("stream.php") ;
 
 		// get the list of filenames we are going to delete
 		$query = "SELECT `filename` FROM `security` WHERE `event_time_stamp` IN ($IDs)" ;
-                // TODO: convert die to use one generic gettext call with sprintf and multiple string replacements.
 		$result = mysqli_query($conn, $query) or
-			die (gettext("select query failed") . '<br />' .
-				gettext ("Debugging errno") . ': ' . mysqli_connect_errno() . '<br />' .
-				gettext ("Debugging error") . ': ' . mysqli_connect_error() . '<br />' .
-				__FILE__. "<br /> " .
-				gettext("line").": ".__LINE__ . '<br />' .
-				gettext("query: ") . $query . '<br />' .
-				gettext("result: "). $result);
+			die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                                    mysqli_connect_errno(),
+                                    mysqli_connect_error(), 
+                                    __FILE__,
+                                    __LINE__,
+                                    $query,
+                                    $result    
+                                    ));
 
 		// loop for each one
 		for ($i = 0; $i < mysqli_num_rows($result); $i++) {
@@ -165,13 +223,14 @@ require_once("stream.php") ;
 				// if no problem, delete the record from the database
 				$query = "DELETE FROM security WHERE filename='".$filename."'";
 				mysqli_query($conn, $query) or
-					die (gettext("error deleting file") . '<br />' .
-						gettext ("Debugging errno") . ': ' . mysqli_connect_errno() . '<br />' .
-						gettext ("Debugging error") . ': ' . mysqli_connect_error() . '<br />' .
-						__FILE__. "<br /> " .
-						gettext("line").": ".__LINE__ . '<br />' .
-						gettext("query: ") . $query . '<br />' .
-						gettext("result: "). $result);
+                                    die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                                                mysqli_connect_errno(),
+                                                mysqli_connect_error(), 
+                                                __FILE__,
+                                                __LINE__,
+                                                $query,
+                                                ""    
+                                                ));
 			}
 			else {
 				// Running development machine/version--take no irreversible actions
@@ -186,13 +245,14 @@ require_once("stream.php") ;
 
 		  $query = 'select count(*) from `security` where `filename` in (' . $filenames . ')' ;
 		  $result = mysqli_query ($conn, $query) or
-			die (gettext("select query failed") . '<br />' .
-				gettext ("Debugging errno") . ': ' . mysqli_connect_errno() . '<br />' .
-				gettext ("Debugging error") . ': ' . mysqli_connect_error() . '<br />' .
-				__FILE__. "<br /> " .
-				gettext("line").": ".__LINE__ . '<br />' .
-				gettext("query: ") . $query . '<br />' .
-				gettext("result: "). $result);
+			die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                                    mysqli_connect_errno(),
+                                    mysqli_connect_error(), 
+                                    __FILE__,
+                                    __LINE__,
+                                    $query,
+                                    $result    
+                                    ));
 
 		  $row = mysqli_fetch_row($result) ;
 		  echo '<h3>Delete</h3><p>Query returned '. $row[0] .' items to be deleted out of ' . $nFiles . ' items selected to delete</p>' ;
@@ -233,7 +293,16 @@ require_once("stream.php") ;
     if (!isset($datadisque))
 	{
 		$query = "SELECT filename FROM security order by time_stamp desc limit 0,1";
-		$result = mysqli_query($conn, $query) or die (gettext("err_req_quota"));
+		$result = mysqli_query($conn, $query) or 
+                                die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                                    mysqli_connect_errno(),
+                                    mysqli_connect_error(), 
+                                    __FILE__,
+                                    __LINE__,
+                                    $query,
+                                    $result    
+                                    ));
+
 		$mquota = mysqli_fetch_row($result);
 		// Recherche du path des fichiers de donn�es (Search for Data Files Path)
 		$path_parts = pathinfo($mquota[0]);
@@ -277,7 +346,15 @@ require_once("stream.php") ;
 		'AND event_time_stamp <= '.$date.'235959 '.
 		//'AND file_type=8 '. // list only movies
 		'ORDER BY hourfield, camera, timefield, file_type';
-	$result = mysqli_query($conn, $query) or die (gettext("err_sel_events").$query); // was err_sel_que1
+	$result = mysqli_query($conn, $query) or 
+                                die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                                    mysqli_connect_errno(),
+                                    mysqli_connect_error(), 
+                                    __FILE__,
+                                    __LINE__,
+                                    $query,
+                                    $result    
+                                    ));
 	$numofrows = mysqli_num_rows($result);
 
 	// get also a list of all cameras that has events for the selected day
@@ -288,7 +365,16 @@ require_once("stream.php") ;
 		'WHERE event_time_stamp >= '.$date.'000000 '.
 		'AND event_time_stamp <= '.$date.'235959 '.
 		'ORDER BY camera';
-	$camera_list = mysqli_query($conn, $query) or die (gettext("err_sel_cameras").$query); // was err_sel_que2
+	$camera_list = mysqli_query($conn, $query) or 
+                            die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                                    mysqli_connect_errno(),
+                                    mysqli_connect_error(), 
+                                    __FILE__,
+                                    __LINE__,
+                                    $query,
+                                    $camera_list    
+                                    ));
+
 	$cameras = array();
 	$num_cameras = 0;
 	for (; $num_cameras < mysqli_num_rows($camera_list); $num_cameras++) {
@@ -510,8 +596,16 @@ require_once("stream.php") ;
 <!--
     // TODO: can this be moved to the document ready javascript function? Perhaps use jquery to get percentage from DOM and work on that.
 <?php
-    if ($ratio > .9){
-        echo 'alert("'.gettext("disk_space").' '.$datadisque.gettext("low_space").'. ")';
+//    while ($ratio > .9){
+// TODO: **** fix line below to show disk ration for debugging ****
+    echo 'alert("'.gettext("disk space low oldest items deleted").'. ")';
+    while ($ratio > .17){
+        if (deleteOldestDay()){
+            echo 'alert("'.gettext("disk space low oldest items deleted").'. ")';
+        } else {
+            echo 'alert("'.gettext("disk space low nothing to delete").'. ")';
+            break ;
+        }
     }   
 ?>
 //-->
