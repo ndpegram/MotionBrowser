@@ -602,28 +602,23 @@ require_once("stream.php") ;
 	// free $result variable
 	mysqli_free_result($result);
 
-
-	// Disk quota display
+	// Free space if required.
+    // TODO: can this be moved to the document ready javascript function? Perhaps use jquery to get percentage from DOM and work on that.
+    while (diskPercentFree() < $freeSpaceMin){
+        if (!deleteOldestDay()){
+			// TODO: need a more elegant error handling process.
+            die (gettext("disk space low nothing to delete")) ;
+            break ;
+        }
+    }   
+    
+	// Disk quota display after freeing space to ensure it is correct.
         echo "<div class=\"quota\">\n";
         printf (gettext("disk space used %s %f"), getDataDisk(), number_format(diskPercentFree(), 2)) ;
         echo "<img src=\"affquota.php?ratio=".diskPercentFree()."\">\n";
         echo "</div>\n";
 	
 ?>
-
-<script>
-<!--
-    // TODO: can this be moved to the document ready javascript function? Perhaps use jquery to get percentage from DOM and work on that.
-<?php
-    while (diskPercentFree() < $freeSpaceMin){
-        if (!deleteOldestDay()){
-            echo 'alert("'.gettext("disk space low nothing to delete").'. ");'. "\n";
-            break ;
-        }
-    }   
-?>
-//-->
-</script>
 
 </body>
 </html>
