@@ -63,6 +63,18 @@ require_once("stream.php") ;
      *
      */
 
+     /**
+      * 
+      * @return float   Percentage of disk space which is unused.
+      */
+     function diskPercentFree(){
+        $free = disk_free_space(getDataDisk()) ;
+        $total = disk_total_space(getDataDisk()) ;
+        $ratio = $free / $total * 100 ;
+
+         return($ratio) ;
+     }
+
     /**
      * @param String $divID ID of element whose content will be set to the 
      *                      number of elements in that hour for that camera.
@@ -74,6 +86,32 @@ require_once("stream.php") ;
     function setEventCount($divID, $numEvents){
         $events = sprintf(ngettext("%d event", "%d events", $numEvents), $numEvents) ; 
         echo "<script>\n<!--\ndocument.getElementById('#$divID').innerHTML = '".$events."';\n//-->\n</script>\n";       
+    }
+
+    function getDataDisk () {
+        global $conn;
+        static $datadisque = null ;
+
+        // Get path of the data files
+        if (is_null($datadisque)) {
+            $query = "SELECT filename FROM security order by time_stamp desc limit 0,1";
+            $result = mysqli_query($conn, $query) or 
+                            die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                                mysqli_connect_errno(),
+                                mysqli_connect_error(), 
+                                __FILE__,
+                                __LINE__,
+                                $query,
+                                $result    
+                                ));
+
+            $mquota = mysqli_fetch_row($result);
+            // Recherche du path des fichiers de donn�es (Search for Data Files Path)
+            $path_parts = pathinfo($mquota[0]);
+            $datadisque=$path_parts['dirname'].'/' ;
+            mysqli_free_result($result);
+        }
+        return ($datadisque) ;
     }
 
     /**
@@ -140,6 +178,7 @@ require_once("stream.php") ;
      */
 //TODO: **** test function. ****
     function deleteOldestDay(){
+        global $testing ;
         /** 
          * @var String Query to select all event time stamps for oldest day. 
          * 
@@ -148,7 +187,7 @@ require_once("stream.php") ;
          *              This is then used to select all events on that day.
          *              These are then concatenated into a comma-separated string.
          */
-        $query =   'SELECT group_concat(DISTINCT `event_time_stamp` SEPARATOR ", ")
+        $query =   'select group_concat(DISTINCT `event_time_stamp`+0 SEPARATOR \', \')
                     FROM security.security
                     WHERE `event_time_stamp` LIKE
                             (SELECT concat(SUBSTRING(`event_time_stamp`, 1, 10), "%")
@@ -195,6 +234,9 @@ require_once("stream.php") ;
 		if (is_array($IDs)){
 			$IDs = implode(", ", $IDs) ;
 		}
+                
+                // trim any trailing comma
+                $IDs = rtrim ($IDs, ', ') ;
 
 		// get the list of filenames we are going to delete
 		$query = "SELECT `filename` FROM `security` WHERE `event_time_stamp` IN ($IDs)" ;
@@ -238,10 +280,11 @@ require_once("stream.php") ;
 				$filenames .= '"' . $filename . '"' . ', ' ;
 			}
 		}
+                
+                // trim trailing comma
+                $filenames = rtrim ($filenames, ', ') ;
 
 		if ($testing){
-			// trim trailing comma
-			$filenames = rtrim ($filenames, ', ') ;
 
 		  $query = 'select count(*) from `security` where `filename` in (' . $filenames . ')' ;
 		  $result = mysqli_query ($conn, $query) or
@@ -254,11 +297,11 @@ require_once("stream.php") ;
                                     $result    
                                     ));
 
-		  $row = mysqli_fetch_row($result) ;
-		  echo '<h3>Delete</h3><p>Query returned '. $row[0] .' items to be deleted out of ' . $nFiles . ' items selected to delete</p>' ;
-		  $filenames = str_replace(',', '<br />', $filenames) ;
-		  echo "<pre>$filenames</pre>" ;
-		  die ;
+                    $row = mysqli_fetch_row($result) ;
+                    echo '<h3>Delete</h3><p>Query returned '. $row[0] .' items to be deleted out of ' . $nFiles . ' items selected to delete</p>' ;
+                    $filenames = str_replace(',', '<br />', $filenames) ;
+                    echo "<pre>$filenames</pre>" ;
+                    die ;
 		}
 
 		mysqli_free_result($result);
@@ -287,27 +330,6 @@ require_once("stream.php") ;
 
 	if (!isset($conn)){
 		$conn = getDBConnection() ;
-	}
-
-    // R�cup�ration du chemin des fichiers de donn�es (Get path of the data files)
-    if (!isset($datadisque))
-	{
-		$query = "SELECT filename FROM security order by time_stamp desc limit 0,1";
-		$result = mysqli_query($conn, $query) or 
-                                die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
-                                    mysqli_connect_errno(),
-                                    mysqli_connect_error(), 
-                                    __FILE__,
-                                    __LINE__,
-                                    $query,
-                                    $result    
-                                    ));
-
-		$mquota = mysqli_fetch_row($result);
-		// Recherche du path des fichiers de donn�es (Search for Data Files Path)
-		$path_parts = pathinfo($mquota[0]);
-		$datadisque=$path_parts['dirname'].'/' ;
-		mysqli_free_result($result);
 	}
 
     // Act on POST form.
@@ -362,8 +384,6 @@ require_once("stream.php") ;
 	$query =
 		'SELECT distinct camera '.
 		'FROM security '.
-		'WHERE event_time_stamp >= '.$date.'000000 '.
-		'AND event_time_stamp <= '.$date.'235959 '.
 		'ORDER BY camera';
 	$camera_list = mysqli_query($conn, $query) or 
                             die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
@@ -375,9 +395,9 @@ require_once("stream.php") ;
                                     $camera_list    
                                     ));
 
-	$cameras = array();
-	$num_cameras = 0;
-	for (; $num_cameras < mysqli_num_rows($camera_list); $num_cameras++) {
+	$cameras = [];
+	
+	for ($num_cameras = 0 ; $num_cameras < mysqli_num_rows($camera_list); $num_cameras++) {
 		$row = mysqli_fetch_array($camera_list);
 		$cameras[$num_cameras] = $row['camera'];
 	}
@@ -389,23 +409,25 @@ require_once("stream.php") ;
 <?php
 	echo '<table border=0> <tr><td valign=top>';
 
-	echo "<span class=title><b>".gettext("config_title")." * ".gettext("config_version")."</b></span>\n";
-	echo "<br><br>\n";
+	echo "<p class=title>".gettext("config_title")."<br />version ".gettext("config_version")."</p>\n";
 
 	// draw calendar
 	echo calendar($view_date);
 
 	echo "<center><br>\n";
+	echo "<p><hr></p>\n";
 	echo '<p><input type=button onclick="javascript:select_all();" value="'.gettext("all").'"></p>';
 	echo '<p><input type=button onclick="javascript:select_none();" value="'.gettext("nothing").'"></p>'."\n" ;
 	echo '<p><input type=button onclick="javascript:deleteSelection();" value="'.gettext("erase_selection").'"></p>'."\n";
 
-	echo "<p>&nbsp;</p>\n";
+	echo "<p><hr></p>\n";
 	echo "<p><a href=\"http://$server_addr:$setup_port\" target=_blank>".gettext("config_motion")."</a></p>\n";
-	echo "<p>&nbsp;</p>\n";
+
+        echo "<p><hr></p>\n";
+	echo "<p class=credits><a href='https://motion-project.github.io/'>motion-project.github.io/</a></p>\n";
 	echo "<span class=credits>".gettext("config_credits")."<br>";
 	echo "<a href=\"mailto:".gettext("config_mailname")."\">".gettext("config_mailname")."</a></class>\n";
-	echo "<br><br><br>\n";
+	echo "<p class=credits><a href='https://github.com/ndpegram/MotionBrowser/'>github.com/ndpegram<br />/MotionBrowser/</a></p>\n";
 
 	echo '</td>';
 	echo '<td style="width:2em;"></td>';
@@ -582,28 +604,20 @@ require_once("stream.php") ;
 
 
 	// Disk quota display
-	if (isset($datadisque))
-	{
-		$ratio = 1 - (disk_free_space($datadisque)/disk_total_space($datadisque) ) ;
-		echo "<div class=\"quota\">\n";
-		printf (gettext("disk space used %s %f"), $datadisque, number_format($ratio*100,2)) ;
-		echo "<img src=\"affquota.php?ratio=".$ratio."\">\n";
-		echo "</div>\n";
-	}
+        echo "<div class=\"quota\">\n";
+        printf (gettext("disk space used %s %f"), getDataDisk(), number_format(diskPercentFree(), 2)) ;
+        echo "<img src=\"affquota.php?ratio=".diskPercentFree()."\">\n";
+        echo "</div>\n";
+	
 ?>
 
 <script>
 <!--
     // TODO: can this be moved to the document ready javascript function? Perhaps use jquery to get percentage from DOM and work on that.
 <?php
-//    while ($ratio > .9){
-// TODO: **** fix line below to show disk ration for debugging ****
-    echo 'alert("'.gettext("disk space low oldest items deleted").'. ")';
-    while ($ratio > .17){
-        if (deleteOldestDay()){
-            echo 'alert("'.gettext("disk space low oldest items deleted").'. ")';
-        } else {
-            echo 'alert("'.gettext("disk space low nothing to delete").'. ")';
+    while (diskPercentFree() < $freeSpaceMin){
+        if (!deleteOldestDay()){
+            echo 'alert("'.gettext("disk space low nothing to delete").'. ");'. "\n";
             break ;
         }
     }   

@@ -56,7 +56,7 @@ function deleteSelection() {
 				$.post (document.location.href,  params,
 					function(data){
 						// Enable the line below if debugging.
-						//alert (data) ;
+						alert (data) ;
 					}
 				)
 				.done(function(){

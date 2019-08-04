@@ -1,6 +1,6 @@
 /*
 
-	Style Sheet for the MotionBrowser web pages.
+        Style Sheet for the MotionBrowser web pages.
 
 */
 BODY  {
@@ -10,46 +10,120 @@ BODY  {
     width:960px;
 }
 
-.minicalendar { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color:navy; text-align:center; border-width:1px 1px; border-style:solid; border-color:#bbbbbb; margin-left: 4px;}
-.normal-day { background-color:#ddffdd; }
-.weekend-day { background-color:#fbfbd4; }
-.selected-day { background-color:#ffb0b0; color:black; font-weight:bold}
-.today {visibility: hidden; width: 0 ; height: 0 ; }
+.minicalendar { 
+    font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 12px; color:navy; 
+    text-align:center; 
+    border-width:1px 1px; 
+    border-style:solid; 
+    border-color:#bbbbbb; 
+    margin-left: 4px;
+}
+.normal-day { 
+    background-color:#ddffdd; 
+}
+.weekend-day { 
+    background-color:#fbfbd4; 
+}
+.selected-day { 
+    background-color:#ffb0b0; 
+    color:black; 
+    font-weight:bold
+}
+.today {
+    visibility: hidden; 
+    width: 0 ; 
+    height: 0 ; 
+}
 
-.calendar-month { font-weight:bold; text-align:center}
+.calendar-month { 
+    font-weight:bold; 
+    text-align:center
+}
 .calendar-month:after {
     content: '';
     display: inline-block;
     width: 100%;
 }
-.calendar-month > div {display: inline-block; padding:0.5ex}
+.calendar-month > div {
+    display: inline-block; 
+    padding:0.5ex
+}
 
-.calendar-header { background-color:#e0e0ff; color:black; font-weight:bold; text-align:center; }
-.calendar-footer { background-color:#eeeeee; font-weight:bold; text-align:center; }
+.calendar-header { 
+    background-color:#e0e0ff; 
+    color:black; 
+    font-weight:bold; 
+    text-align:center; 
+}
+.calendar-footer { 
+    background-color:#eeeeee; 
+    font-weight:bold; 
+    text-align:center; 
+}
 
-.timeline { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; background: #eeeeee; font-weight:normal; text-align: left; color:navy; }
-.timeline-header { background-color:lightyellow; color:black;font-weight: bold; text-align:center; }
-.timeline-hour { background-color:lightyellow; color:red; font-weight: bold; text-align:right; }
-.timeline-row-header { background-color:lightyellow; color:black; }
+.timeline { 
+    font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 14px; 
+    background: #eeeeee; 
+    font-weight:normal; 
+    text-align: left; 
+    color:navy; 
+}
+.timeline-header { 
+    background-color:lightyellow; 
+    color:black;
+    font-weight: bold; 
+    text-align:center; 
+}
+.timeline-hour { 
+    background-color:lightyellow; 
+    color:red; 
+    font-weight: bold; 
+    text-align:right; 
+}
+.timeline-row-header { 
+    background-color:lightyellow; 
+    color:black; 
+}
 
-.title { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; color:navy; text-align:center; }
-.credits { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color:black; text-align:left; }
-.quota {}
+.title { 
+    font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 14px; 
+    font-weight: bolder;
+    color:navy; 
+    text-align:center; 
+}
+.credits { 
+    font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 12px; 
+    color:black; 
+    text-align:center; 
+}
 
-a:visited { text-decoration: none; color:navy; }
-a:link { text-decoration: none; color:navy; }
-a:hover { text-decoration: none; color:navy; }
+a:visited { 
+    text-decoration: none; 
+    color:navy; 
+}
+a:link { 
+    text-decoration: none; 
+    color:navy; 
+}
+a:hover { 
+    text-decoration: none; 
+    color:navy; 
+}
 
 div.quota{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color:blue;
-	margin: 4px auto;
-	position: fixed ;
-	bottom: 10px ;
-	text-align:center;
-	left:50%;
-	transform: translateX(-50%);
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color:blue;
+    margin: 4px auto;
+    position: fixed ;
+    bottom: 10px ;
+    text-align:center;
+    left:50%;
+    transform: translateX(-50%);
 }
 
 img.plus{

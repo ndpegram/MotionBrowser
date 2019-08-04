@@ -57,7 +57,7 @@
 %%% The "real" document content comes below...
 
 \title{Motion Browser}
-\author{Nigel D. Pegram}
+\author{Nigel D.\,Pegram}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed
 
@@ -152,6 +152,27 @@
 
 \section{History}
 
+	\subsection{Version 1.2.1}
+            \begin{description}
+            		\item [20190729] Add new feature to autoclean disk.
+			\begin{itemize}
+                		\item Automatically delete oldest files and SQL records when disk free space falls below a set percentage value.
+                		
+                		Currently this runs on page load. If this causes too great a delay, it may need to be implemented differently, such as via a cron script. The key question is does it noticeably impact on user experience?\footnote
+	{Another possiblity is to use a hybrid approach. Delete the database rows immediately, but write out the files to delete for later crontab processing. The advantage of this approach is that the items will no longer display in the browser and the interface should remain responsive.
+			\begin{description}
+				\item [Question:] where to save the list of text files? Possible locations are /etc/motion or the files directory. The latter seems preferable. It seems wise to set this as a variable in the config file which defaults to the files directory. Another possibility is to save into the SQL database, either by marking records for deletion or creating records in a new table. The former seems to be preferable as it will be quick and not require files to be created in any new location.
+            \end{description}
+	}
+            
+               		 \item Moved some procedural code to functions to simplify and to prepare for move to OO coding.
+               		 
+               		 \item Miscellaneous minor code optimisations.
+               		 
+                   \end{itemize}
+            \end{description}
+            
+
 	\subsection{Version 1.2}
 		\begin{description}
 			\item [20190602] Largely internal reorganisation
@@ -190,26 +211,34 @@
 
 	\begin{itemize}
 		\item Update the code to object-oriented format
+		
+		\item Convert layout from tables to DIV and CSS format, to allow for better display on mobiles, etc., and to allow for more useful degrading.
+		
+		\item As part of the above, perhaps move to AJAX interface. For example, responding to date clicks via AJAX to fill content DIV, rather than submitting a form and redrawing the whole page (as it currently does).
 
 		\item Add link to video preview \enquote{box} to allow downloading of file, rather
 		than streaming. (Is this necessary since we can do this from the stream?)
 
 		\item Add button to delete data and files based on user-selected date.
 
-		\item Building on the above, add settings and code to respond to disk free space falling below a preset level.
+		\item Add settings and code to respond to disk free space falling below a preset level.
 		This should trigger a warning/dialog, which the user can then set a date up to which
 		all files and database rows are deleted. There are a number of possible ways to implement this:
 		\begin{enumerate}
 			\item Insert a date into a file which a cron script reads
 			and acts on during low load periods.
 			\item Delete from within the web browser
-			(problematic as it will tie up the browser when, presumably,
+			(could be problematic as it may tie up the browser when, presumably,
 			the user will want to interact with it).
 			\item Use a hybrid approach. Delete the database rows immediately, but write out the files to delete for later crontab processing. The advantage of this approach is that the items will no longer display in the browser and the interface should remain responsive.
 			\begin{description}
 				\item [Question:] where to save the list of text files? Possible locations are /etc/motion or the files directory. The latter seems preferable. It seems wise to set this as a variable in the config file which defaults to the files directory.
 			\end{description}
 		\end{enumerate}
+
+		\item 	Fix problem with camera index starting at 1 in {\texttt config.inc}. The problem seems to be that the cameras in the motion settings file are not necessarily sequential nor zero-based. Yet this seems to be assumed to be a zero-based numeric array.
+		
+         One possible solution is to recode so that camera IDs are an associative array of ID and port. Correctly creating this array would be the responsibility of the user. Another solution is to extract this information from the motion settings files. The extraction might be possible automatically (if we can extract the settings directory) or by manually running a utility in the settings directory.
 
 	\end{itemize}
 
