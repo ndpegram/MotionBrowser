@@ -1,5 +1,3 @@
-@path<span><span>/var/www/html/MotionBrowser/</span></span>
-
 Readme
 ======
 
