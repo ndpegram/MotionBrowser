@@ -1,0 +1,811 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass scrartcl
+\begin_preamble
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+% use larger type; default would be 10pt
+
+% set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+% to change the page dimensions
+ % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx}% support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs}% for much better looking tables
+\usepackage{array}% for better arrays (eg matrices) in maths
+\usepackage{paralist}% very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim}% adds environment for commenting out blocks of text & for better verbatim
+% make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr}% This should be set AFTER setting up the page geometry
+ % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind}% Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft}% Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+\usepackage{csquotes}
+
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{Motion Browser}
+\author{Nigel D.\,Pegram}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding utf8
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks true
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 0
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Readme
+\end_layout
+
+\begin_layout Standard
+Browser-based user interface for the Motion application (see 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/Motion-Project/motion
+\end_layout
+
+\end_inset
+
+).
+ The original version of MotionBrowser was developed by Carlos Ladeira (
+\begin_inset CommandInset href
+LatexCommand href
+target "caladeira@gmail.com"
+type "mailto:"
+literal "true"
+
+\end_inset
+
+).
+ This version (
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/ndpegram/MotionBrowser
+\end_layout
+
+\end_inset
+
+) updated by Nigel D.
+ Pegram (
+\begin_inset CommandInset href
+LatexCommand href
+target "ndpegram@gmail.com"
+type "mailto:"
+literal "true"
+
+\end_inset
+
+).
+ This software is distributed under the GNU public license.
+\end_layout
+
+\begin_layout Standard
+Tested with Motion 4.0, PHP 7.2, MySQL 5.7.
+\end_layout
+
+\begin_layout Standard
+This web page reads the mysql database filled by Motion and output events
+ by day It creates small thumbnail were you can click to watch the movie
+ file for the same event.
+ You can also delete the events you select.
+\end_layout
+
+\begin_layout Standard
+It's a good interface in case you are running Motion on a computer without
+ monitor/keyboad/mouse, only network!
+\end_layout
+
+\begin_layout Standard
+It is supposed to work with the following motion.conf options set as shown
+ (for better results):
+\end_layout
+
+\begin_layout Verbatim
+
+		pre_capture 8		(works for me with a framerate of 6)
+\end_layout
+
+\begin_layout Verbatim
+
+		post_capture 8		(ie)
+\end_layout
+
+\begin_layout Verbatim
+
+		output_all off
+\end_layout
+
+\begin_layout Verbatim
+
+		output_normal best (or) first
+\end_layout
+
+\begin_layout Verbatim
+
+		output_motion off
+\end_layout
+
+\begin_layout Verbatim
+
+		text_event %Y%m%d%H%M%S
+\end_layout
+
+\begin_layout Verbatim
+
+		ffmpeg_cap_new on
+\end_layout
+
+\begin_layout Verbatim
+
+		ffmpeg_video_codec msmpeg4
+\end_layout
+
+\begin_layout Verbatim
+
+		sql_log_image on
+\end_layout
+
+\begin_layout Verbatim
+
+		sql_log_snapshot off
+\end_layout
+
+\begin_layout Verbatim
+
+		sql_log_mpeg on
+\end_layout
+
+\begin_layout Verbatim
+
+		sql_log_timelapse off
+\end_layout
+
+\begin_layout Verbatim
+
+		sql_query INSERT ...	(I use the default)
+\end_layout
+
+\begin_layout Verbatim
+
+		mysql_db motion		(my database name)
+\end_layout
+
+\begin_layout Verbatim
+
+		mysql_host localhost
+\end_layout
+
+\begin_layout Verbatim
+
+		mysql_user ...		(the user name i created in MySQL)
+\end_layout
+
+\begin_layout Verbatim
+
+		mysql_password ...	(the password associated with user)
+\end_layout
+
+\begin_layout Verbatim
+
+	
+\end_layout
+
+\begin_layout Section
+Installation
+\end_layout
+
+\begin_layout Subsection
+File system
+\end_layout
+
+\begin_layout Standard
+Install the files into the appropriate location in your web software's file
+ tree.
+\end_layout
+
+\begin_layout Standard
+The directory where you store your motion files must be writeable by the
+ user under which the web software is running.
+ In Ubuntu, for example, this is the 
+\family typewriter
+www-data
+\family default
+ user.
+ For example, if the directory to which motion is saving the video and image
+ files is 
+\family typewriter
+/var/lib/motion
+\family default
+, then you should issue the following (assuming the web user is 
+\family typewriter
+www-data
+\family default
+).
+ You will likely need to issue this commands as a superuser.
+ 
+\end_layout
+
+\begin_layout Verbatim
+
+		sudo chgrp -R www-data /var/lib/motion
+\end_layout
+
+\begin_layout Verbatim
+
+		sudo chmod -R g+rw /var/lib/motion
+\end_layout
+
+\begin_layout Verbatim
+
+	
+\end_layout
+
+\begin_layout Subsection
+mySQL
+\end_layout
+
+\begin_layout Standard
+Use the following to create your mySQL table.
+\end_layout
+
+\begin_layout Verbatim
+
+		CREATE TABLE `security` (
+\end_layout
+
+\begin_layout Verbatim
+
+		  `camera` int(11) DEFAULT NULL,
+\end_layout
+
+\begin_layout Verbatim
+
+		  `filename` varchar(80) NOT NULL DEFAULT '',
+\end_layout
+
+\begin_layout Verbatim
+
+		  `frame` int(11) DEFAULT NULL,
+\end_layout
+
+\begin_layout Verbatim
+
+		  `file_type` int(11) DEFAULT NULL,
+\end_layout
+
+\begin_layout Verbatim
+
+		  `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE
+ CURRENT_TIMESTAMP,
+\end_layout
+
+\begin_layout Verbatim
+
+		  `text_event` varchar(40) NOT NULL DEFAULT '0000-00-00 00:00:00',
+\end_layout
+
+\begin_layout Verbatim
+
+		  `event_time_stamp` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
+\end_layout
+
+\begin_layout Verbatim
+
+		  `file_size` varchar(36) NOT NULL DEFAULT '0',
+\end_layout
+
+\begin_layout Verbatim
+
+		  KEY `time_stamp` (`time_stamp`),
+\end_layout
+
+\begin_layout Verbatim
+
+		  KEY `event_time_stamp` (`event_time_stamp`)
+\end_layout
+
+\begin_layout Verbatim
+
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8
+\end_layout
+
+\begin_layout Verbatim
+
+	
+\end_layout
+
+\begin_layout Subsection
+Apache
+\end_layout
+
+\begin_layout Standard
+You need to set the appropriate values in the security.conf apache settings
+ file.
+ 
+\end_layout
+
+\begin_layout Description
+ServerName should be set to the name under which you will serve the site.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+%TODO: May not need the proxy to 
+\backslash
+live, as the camera icon and settings links provide this.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Description
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+ProxyPass and ProxyPassReverse
+\end_layout
+
+\end_inset
+
+ URLs should be set to the address where motion is running.
+ This address should use dotted quad notation and include the port.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+For example: 
+\family typewriter
+http://192.168.2.42:9080/
+\family default
+, where 192.168.2.42 is the server where the motion service is running and
+ 9080 is the port where motion is running (see 
+\family typewriter
+webcontrol_port
+\family default
+ in the 
+\family typewriter
+motion.conf
+\family default
+ file.).
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+DocumentRoot should be set to the fully-qualified path of where you intalled
+ the MotionBrowser files 
+\end_layout
+
+\begin_layout Description
+Other Log names and locations can be set as required.
+ 
+\end_layout
+
+\begin_layout Section
+History
+\end_layout
+
+\begin_layout Subsection
+Version 1.2.1
+\end_layout
+
+\begin_layout Description
+20190729 Add new feature to autoclean disk.
+ 
+\end_layout
+
+\begin_layout Itemize
+Automatically delete oldest files and SQL records when disk free space falls
+ below a set percentage value.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Currently this runs on page load.
+ If this causes too great a delay, it may need to be implemented differently,
+ such as via a cron script.
+ The key question is does it noticeably impact on user experience?
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Another possiblity is to use a hybrid approach.
+ Delete the database rows immediately, but write out the files to delete
+ for later crontab processing.
+ The advantage of this approach is that the items will no longer display
+ in the browser and the interface should remain responsive.
+ 
+\end_layout
+
+\begin_layout Description
+Question: where to save the list of text files? Possible locations are /etc/moti
+on or the files directory.
+ The latter seems preferable.
+ It seems wise to set this as a variable in the config file which defaults
+ to the files directory.
+ Another possibility is to save into the SQL database, either by marking
+ records for deletion or creating records in a new table.
+ The former seems to be preferable as it will be quick and not require files
+ to be created in any new location.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Moved some procedural code to functions to simplify and to prepare for move
+ to OO coding.
+\end_layout
+
+\begin_layout Itemize
+Miscellaneous minor code optimisations.
+\end_layout
+
+\begin_layout Subsection
+Version 1.2
+\end_layout
+
+\begin_layout Description
+20190602 Largely internal reorganisation 
+\end_layout
+
+\begin_layout Itemize
+Converted from GET to POST, to allow deletion of selection of large number
+ of videos on one day.
+ This includes removal of overarching form in HTML code and using javascript
+ to post and AJAX instead.
+ 
+\end_layout
+
+\begin_layout Itemize
+Converted from PHP include files to gettext for internationalisation.
+ 
+\end_layout
+
+\begin_layout Itemize
+Use AJAX for integration of internationalisation of javascript messages
+ (alert/confirm) with PHP gettext calls.
+ Thus only one set of internationalisation files are required.
+ 
+\end_layout
+
+\begin_layout Itemize
+Miscellaneous bug fixes and enhancements.
+ 
+\end_layout
+
+\begin_layout Subsection
+Version 1.1
+\end_layout
+
+\begin_layout Description
+20190422 Adapted by Nigel Pegram.
+ 
+\end_layout
+
+\begin_layout Itemize
+Updated to PHP 7 and mySQL 14 
+\end_layout
+
+\begin_layout Itemize
+Adjusted to stream video files rather than download 
+\end_layout
+
+\begin_layout Itemize
+Miscellaneous bug fixes.
+ 
+\end_layout
+
+\begin_layout Subsection
+Version 1.0
+\end_layout
+
+\begin_layout Description
+20060000 Original Carlos Ladeira version.
+ 
+\end_layout
+
+\begin_layout Section
+To Do/Planned features
+\end_layout
+
+\begin_layout Itemize
+Update the code to object-oriented format
+\end_layout
+
+\begin_layout Itemize
+Convert layout from tables to DIV and CSS format, to allow for better display
+ on mobiles, etc., and to allow for more useful degrading.
+\end_layout
+
+\begin_layout Itemize
+As part of the above, perhaps move to AJAX interface.
+ For example, responding to date clicks via AJAX to fill content DIV, rather
+ than submitting a form and redrawing the whole page (as it currently does).
+\end_layout
+
+\begin_layout Itemize
+Add link to video preview 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+enquote
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+box
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ to allow downloading of file, rather than streaming.
+ (Is this necessary since we can do this from the stream?)
+\end_layout
+
+\begin_layout Itemize
+Add button to delete data and files based on user-selected date.
+\end_layout
+
+\begin_layout Itemize
+Review code to respond to disk free space falling below a preset level.
+ There are a number of possible ways to implement this: 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Insert a date into a file which a cron script reads and acts on during low
+ load periods.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Delete from within the web browser (could be problematic as it may tie up
+ the browser when, presumably, the user will want to interact with it).
+ 
+\end_layout
+
+\begin_layout Enumerate
+Use a hybrid approach.
+ Delete the database rows immediately, but write out the files to delete
+ for later crontab processing.
+ The advantage of this approach is that the items will no longer display
+ in the browser and the interface should remain responsive.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Question: where to save the list of text files? Possible locations are /etc/moti
+on or the files directory.
+ The latter seems preferable.
+ It seems wise to set this as a variable in the config file which defaults
+ to the files directory.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Currently option 2 has been implemented.
+ Responsiveness 
+\emph on
+is
+\emph default
+ an issue.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Fix problem with camera index starting at 1 in 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\family typewriter
+c
+\family default
+onfig.inc
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+.
+ The problem seems to be that the cameras in the motion settings file are
+ not necessarily sequential nor zero-based.
+ Yet this seems to be assumed to be a zero-based numeric array.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+One possible solution is to recode so that camera IDs are an associative
+ array of ID and port.
+ Correctly creating this array would be the responsibility of the user.
+ Another solution is to extract this information from the motion settings
+ files.
+ The extraction might be possible automatically (if we can extract the settings
+ directory) or by manually running a utility in the settings directory.
+\end_layout
+
+\end_deeper
+\end_body
+\end_document

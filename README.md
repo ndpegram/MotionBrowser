@@ -1,11 +1,11 @@
-@path[[/var/www/html/MotionBrowser/]{}]{}
+@path<span><span>/var/www/html/MotionBrowser/</span></span>
 
 Readme
 ======
 
-Browser-based user interface for the Motion application. Developed by Carlos Ladeira (<caladeira@gmail.com>), Updated by Nigel D. Pegram (<ndpegram@gmail.com>). This software is distributed under the GNU public license.
+Browser-based user interface for the Motion application (see <https://github.com/Motion-Project/motion>). The original version of MotionBrowser was developed by Carlos Ladeira (<caladeira@gmail.com>). This version (<https://github.com/ndpegram/MotionBrowser>) updated by Nigel D. Pegram (<ndpegram@gmail.com>). This software is distributed under the GNU public license.
 
-Tested with Motion 4.0
+Tested with Motion 4.0, PHP 7.2, MySQL 5.7.
 
 This web page reads the mysql database filled by Motion and output events by day It creates small thumbnail were you can click to watch the movie file for the same event. You can also delete the events you select.
 
@@ -70,23 +70,19 @@ Apache
 
 You need to set the appropriate values in the security.conf apache settings file.
 
-[ServerName]{}
+<span>ServerName</span>  
+should be set to the name under which you will serve the site.
 
-:   should be set to the name under which you will serve the site.
+<span>ProxyPass and ProxyPassReverse</span>  
+URLs should be set to the address where motion is running. This address should use dotted quad notation and include the port.
 
-[ProxyPass and ProxyPassReverse]{}
+For example: `http://192.168.2.42:9080/`, where 192.168.2.42 is the server where the motion service is running and 9080 is the port where motion is running (see `webcontrol_port` in the `motion.conf` file.).
 
-:   URLs should be set to the address where motion is running. This address should use dotted quad notation and include the port.
+<span>DocumentRoot</span>  
+should be set to the fully-qualified path of where you intalled the MotionBrowser files
 
-    For example: `http://192.168.2.42:9080/`, where 192.168.2.42 is the server where the motion service is running and 9080 is the port where motion is running (see `webcontrol_port` in the `motion.conf` file.).
-
-[DocumentRoot]{}
-
-:   should be set to the fully-qualified path of where you intalled the MotionBrowser files
-
-[Other]{}
-
-:   Log names and locations can be set as required.
+<span>Other</span>  
+Log names and locations can be set as required.
 
 History
 =======
@@ -94,13 +90,12 @@ History
 Version 1.2.1
 -------------
 
-[20190729]{}
-
-:   Add new feature to autoclean disk.
+<span>20190729</span>  
+Add new feature to autoclean disk.
 
 -   Automatically delete oldest files and SQL records when disk free space falls below a set percentage value.
 
-    Currently this runs on page load. If this causes too great a delay, it may need to be implemented differently, such as via a cron script. The key question is does it noticeably impact on user experience?[^1]
+    Currently this runs on page load. If this causes too great a delay, it may need to be implemented differently, such as via a cron script. The key question is does it noticeably impact on user experience?[1]
 
 -   Moved some procedural code to functions to simplify and to prepare for move to OO coding.
 
@@ -109,9 +104,8 @@ Version 1.2.1
 Version 1.2
 -----------
 
-[20190602]{}
-
-:   Largely internal reorganisation
+<span>20190602</span>  
+Largely internal reorganisation
 
 -   Converted from GET to POST, to allow deletion of selection of large number of videos on one day. This includes removal of overarching form in HTML code and using javascript to post and AJAX instead.
 
@@ -124,9 +118,8 @@ Version 1.2
 Version 1.1
 -----------
 
-[20190422]{}
-
-:   Adapted by Nigel Pegram.
+<span>20190422</span>  
+Adapted by Nigel Pegram.
 
 -   Updated to PHP 7 and mySQL 14
 
@@ -137,9 +130,8 @@ Version 1.1
 Version 1.0
 -----------
 
-[20060000]{}
-
-:   Original Carlos Ladeira version.
+<span>20060000</span>  
+Original Carlos Ladeira version.
 
 To Do/Planned features
 ======================
@@ -154,7 +146,7 @@ To Do/Planned features
 
 -   Add button to delete data and files based on user-selected date.
 
--   Add settings and code to respond to disk free space falling below a preset level. This should trigger a warning/dialog, which the user can then set a date up to which all files and database rows are deleted. There are a number of possible ways to implement this:
+-   Review code to respond to disk free space falling below a preset level. There are a number of possible ways to implement this:
 
     1.  Insert a date into a file which a cron script reads and acts on during low load periods.
 
@@ -162,18 +154,17 @@ To Do/Planned features
 
     3.  Use a hybrid approach. Delete the database rows immediately, but write out the files to delete for later crontab processing. The advantage of this approach is that the items will no longer display in the browser and the interface should remain responsive.
 
-        [Question:]{}
+        <span>Question:</span>  
+        where to save the list of text files? Possible locations are /etc/motion or the files directory. The latter seems preferable. It seems wise to set this as a variable in the config file which defaults to the files directory.
 
-        :   where to save the list of text files? Possible locations are /etc/motion or the files directory. The latter seems preferable. It seems wise to set this as a variable in the config file which defaults to the files directory.
+    <span>Currently</span>  
+    option 2 has been implemented. Responsiveness *is* an issue.
 
--   Fix problem with camera index starting at 1 in [`c`onfig.inc]{}. The problem seems to be that the cameras in the motion settings file are not necessarily sequential nor zero-based. Yet this seems to be assumed to be a zero-based numeric array.
+-   Fix problem with camera index starting at 1 in <span>`c`onfig.inc</span>. The problem seems to be that the cameras in the motion settings file are not necessarily sequential nor zero-based. Yet this seems to be assumed to be a zero-based numeric array.
 
     One possible solution is to recode so that camera IDs are an associative array of ID and port. Correctly creating this array would be the responsibility of the user. Another solution is to extract this information from the motion settings files. The extraction might be possible automatically (if we can extract the settings directory) or by manually running a utility in the settings directory.
 
-[^1]: Another possiblity is to use a hybrid approach. Delete the database rows immediately, but write out the files to delete for later crontab processing. The advantage of this approach is that the items will no longer display in the browser and the interface should remain responsive.
+[1] Another possiblity is to use a hybrid approach. Delete the database rows immediately, but write out the files to delete for later crontab processing. The advantage of this approach is that the items will no longer display in the browser and the interface should remain responsive.
 
-    [Question:]{}
-
-    :   where to save the list of text files? Possible locations are /etc/motion or the files directory. The latter seems preferable. It seems wise to set this as a variable in the config file which defaults to the files directory. Another possibility is to save into the SQL database, either by marking records for deletion or creating records in a new table. The former seems to be preferable as it will be quick and not require files to be created in any new location.
-
-
+<span>Question:</span>  
+where to save the list of text files? Possible locations are /etc/motion or the files directory. The latter seems preferable. It seems wise to set this as a variable in the config file which defaults to the files directory. Another possibility is to save into the SQL database, either by marking records for deletion or creating records in a new table. The former seems to be preferable as it will be quick and not require files to be created in any new location.
