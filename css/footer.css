@@ -5,7 +5,7 @@
 
 .footer{
     background-color: greenyellow ;
-    float: bottom ;
+    text-align: center ;
     width: 90% ;   
     margin: 1ex;
     position: fixed;
