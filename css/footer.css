@@ -1,0 +1,15 @@
+/* 
+    Created on : 18 Aug. 2019, 5:31:20 am
+    Author     : nigel
+*/
+
+.footer{
+    background-color: greenyellow ;
+    float: bottom ;
+    width: 90% ;   
+    margin: 1ex;
+    position: fixed;
+    bottom: 1ex;
+    left: 50%;
+    transform: translateX(-50%);
+}

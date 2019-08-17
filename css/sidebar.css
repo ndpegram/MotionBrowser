@@ -1,0 +1,67 @@
+
+/* 
+    Created on : 17 Aug. 2019, 8:21:08 pm
+    Author     : nigel
+*/
+
+/* MAIN SIDEBAR BOX */
+.sidebar{
+    background-color : lightblue ;
+    float : left ;
+    width: 20ex ;
+    height: 100% ;
+    padding: 1ex ;
+}
+
+/* CALENDAR */
+.minicalendar { 
+    font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 12px; color:navy; 
+    text-align:center; 
+    border-width:1px 1px; 
+    border-style:solid; 
+    border-color:#bbbbbb; 
+    margin-left: 4px;
+}
+.normal-day { 
+    background-color:#ddffdd; 
+}
+.weekend-day { 
+    background-color:#fbfbd4; 
+}
+.selected-day { 
+    background-color:#ffb0b0; 
+    color:black; 
+    font-weight:bold
+}
+.today {
+    visibility: hidden; 
+    width: 0 ; 
+    height: 0 ; 
+}
+
+.calendar-month { 
+    font-weight:bold; 
+    text-align:center
+}
+.calendar-month:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+.calendar-month > div {
+    display: inline-block; 
+    padding:0.5ex
+}
+
+.calendar-header { 
+    background-color:#e0e0ff; 
+    color:black; 
+    font-weight:bold; 
+    text-align:center; 
+}
+.calendar-footer { 
+    background-color:#eeeeee; 
+    font-weight:bold; 
+    text-align:center; 
+}

@@ -1,0 +1,3 @@
+[submodule "libs/mysql"]
+	path = libs/mysql
+	url = git@github.com:ndpegram/mysql.git
