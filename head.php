@@ -9,7 +9,7 @@
 <head>
     <script type="text/javascript" src="./libs/java/jquery-3.4.1.min.js"></script>
 
-    <title><?php echo gettext("config_title")." ".gettext("config_version"); ?></title>
+    <title><?php echo gettext("config_title")." ".gettext("config_version"); ?>&nbsp;</title>
 
     <link rel="stylesheet" media="all" href="./css/motionbrowser.css" />
     <link rel="stylesheet" media="all" href="./css/sidebar.css" />

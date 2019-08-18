@@ -4,7 +4,7 @@
  * Error handling code.
  */
 
-require_once("../lang.inc"); 
+require_once $root_dir . "/lang.inc" ; 
 
 class errors {
     /**

@@ -13,6 +13,24 @@
     padding: 1ex ;
 }
 
+.title { 
+    font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 14px; 
+    font-weight: bolder;
+    color:navy; 
+    text-align:center; 
+}
+.credits { 
+    font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 12px; 
+    color:black; 
+    text-align:center; 
+}
+
+.separator{
+    border-bottom: 2px groove ;
+}
+
 /* CALENDAR */
 .minicalendar { 
     font-family: Verdana, Arial, Helvetica, sans-serif; 

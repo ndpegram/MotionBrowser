@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MotionBrowser\n"
-"POT-Creation-Date: 2019-07-27 15:12+0800\n"
-"PO-Revision-Date: 2019-07-27 15:13+0800\n"
+"POT-Creation-Date: 2019-08-18 08:58+0800\n"
+"PO-Revision-Date: 2019-08-18 09:07+0800\n"
 "Last-Translator: Nigel Pegram <nigel@pegram.homelinux.net>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -14,115 +14,16 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: libs\n"
+"X-Poedit-SearchPath-2: util\n"
 
-#: index.php:87 index.php:517 index.php:589
-#, php-format
-msgid "%d event"
-msgid_plural "%d events"
-msgstr[0] "%3d event"
-msgstr[1] "%3d events"
-
-#: index.php:99 index.php:157 index.php:201 index.php:244 index.php:268
-#: index.php:291 index.php:372 index.php:391
-#, php-format
-msgid ""
-"query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s "
-"<br /> line: %d <br /> query: %s <br /> result: %s"
-msgstr ""
-"Query failed <br />\n"
-"Debugging errno: %d <br />\n"
-"Debugging error: %s <br />\n"
-"%s <br /> \n"
-"Line: %d <br />\n"
-"Query: %s <br />\n"
-"Result: %s <br />"
-
-#: index.php:262
-#, php-format
-msgid "Error deleting %s"
-msgstr "Error unlinking file %s."
-
-#: index.php:315
-msgid "error establishing database connection"
-msgstr "error establishing database connection"
-
-#: index.php:316 index.php:323
-msgid "Debugging errno"
-msgstr "Error number"
-
-#: index.php:317 index.php:324
-msgid "Debugging error"
-msgstr "Error message"
-
-#: index.php:319 index.php:326
-msgid "line"
-msgstr "line"
-
-#: index.php:322
-msgid "error selecting database"
-msgstr "error selecting database"
-
-#: index.php:338
-msgid "delete"
-msgstr "delete"
-
-#: index.php:347 index.php:414
+#: head.php:12 old_index.php:347 old_index.php:412
 msgid "config_title"
 msgstr "MotionBrowser"
 
-#: index.php:347 index.php:414
+#: head.php:12 old_index.php:347 old_index.php:412
 msgid "config_version"
 msgstr "1.2.1"
-
-#: index.php:421
-msgid "all"
-msgstr "Select All"
-
-#: index.php:422
-msgid "nothing"
-msgstr "Select Nothing"
-
-#: index.php:423
-msgid "erase_selection"
-msgstr "Delete Selection"
-
-#: index.php:426
-msgid "config_motion"
-msgstr "Configure Motion"
-
-#: index.php:428
-msgid "config_credits"
-msgstr "© 2006 Carlos Ladeira <br />© 2019 Nigel Pegram"
-
-#: index.php:429
-msgid "config_mailname"
-msgstr "ndpegram@gmail.com"
-
-#: index.php:446
-#, php-format
-msgid "camera name %d"
-msgstr "Camera %d"
-
-#: index.php:447
-msgid "see_camera"
-msgstr "View as webcam"
-
-#: index.php:525
-msgid "hours"
-msgstr "h"
-
-#: index.php:596
-msgid "no_events"
-msgstr "No events on the selected day !"
-
-#: index.php:608
-#, php-format
-msgid "disk space used %s %f"
-msgstr "Volume containing %s is %.2f percent free."
-
-#: index.php:620
-msgid "disk space low nothing to delete"
-msgstr " Disk space is very low, but there are no items available to delete."
 
 #: js_gettext.php:14
 msgid "js gettext no message"
@@ -140,6 +41,130 @@ msgstr "Delete the selected items"
 #: js_gettext.php:28
 msgid "Error deleting"
 msgstr "Error deleting file"
+
+#: old_index.php:87 old_index.php:517 old_index.php:589
+#, php-format
+msgid "%d event"
+msgid_plural "%d events"
+msgstr[0] "%3d event"
+msgstr[1] "%3d events"
+
+#: old_index.php:99 old_index.php:157 old_index.php:201 old_index.php:244
+#: old_index.php:268 old_index.php:291 old_index.php:372 old_index.php:389
+#, php-format
+msgid ""
+"query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s "
+"<br /> line: %d <br /> query: %s <br /> result: %s"
+msgstr ""
+"Query failed <br />\n"
+"Debugging errno: %d <br />\n"
+"Debugging error: %s <br />\n"
+"%s <br /> \n"
+"Line: %d <br />\n"
+"Query: %s <br />\n"
+"Result: %s <br />"
+
+#: old_index.php:262
+#, php-format
+msgid "Error deleting %s"
+msgstr "Error unlinking file %s."
+
+#: old_index.php:315
+msgid "error establishing database connection"
+msgstr "error establishing database connection"
+
+#: old_index.php:316 old_index.php:323
+msgid "Debugging errno"
+msgstr "Error number"
+
+#: old_index.php:317 old_index.php:324
+msgid "Debugging error"
+msgstr "Error message"
+
+#: old_index.php:319 old_index.php:326
+msgid "line"
+msgstr "line"
+
+#: old_index.php:322
+msgid "error selecting database"
+msgstr "error selecting database"
+
+#: old_index.php:338
+msgid "delete"
+msgstr "delete"
+
+#: old_index.php:419
+msgid "all"
+msgstr "Select All"
+
+#: old_index.php:420
+msgid "nothing"
+msgstr "Select Nothing"
+
+#: old_index.php:421
+msgid "erase_selection"
+msgstr "Delete Selection"
+
+#: old_index.php:424
+msgid "config_motion"
+msgstr "Configure Motion"
+
+#: old_index.php:428
+msgid "config_credits"
+msgstr "© 2006 Carlos Ladeira <br />© 2019 Nigel Pegram"
+
+#: old_index.php:429
+msgid "config_mailname"
+msgstr "ndpegram@gmail.com"
+
+#: old_index.php:446
+#, php-format
+msgid "camera name %d"
+msgstr "Camera %d"
+
+#: old_index.php:447
+msgid "see_camera"
+msgstr "View as webcam"
+
+#: old_index.php:525
+msgid "hours"
+msgstr "h"
+
+#: old_index.php:596
+msgid "no_events"
+msgstr "No events on the selected day !"
+
+#: old_index.php:610
+msgid "disk space low nothing to delete"
+msgstr " Disk space is very low, but there are no items available to delete."
+
+#: old_index.php:617
+#, php-format
+msgid "disk space used %s %f"
+msgstr "Volume containing %s is %.2f percent free."
+
+#: util/errors.php:70
+#, php-format
+msgid "Error warning %u %s\n"
+msgstr "<p><b>WARNING:</b> [%u] %s.</p>\n"
+
+#: util/errors.php:74
+#, php-format
+msgid "Error notice %u %s\n"
+msgstr "<p><b>NOTICE:</b> [%u] %s.</p>\n"
+
+#: util/errors.php:78
+#, php-format
+msgid "Error unknown %u %s\n"
+msgstr "<p><b>Unknown error type:</b> [%u] %s.</p>\n"
+
+#: util/errors.php:93
+#, php-format
+msgid "Error (user error) %u %s %u %s %s %s\n"
+msgstr ""
+"<p><b>USER ERROR</b> [%u] %s</p>\n"
+"<p>Fatal error on line %u in file %s. Aborting&hellip;</p> \n"
+" <p><i>PHP %s (%s).</i></p>\n"
 
 #~ msgid "error updating file size %s %s"
 #~ msgstr ""
@@ -189,14 +214,8 @@ msgstr "Error deleting file"
 #~ msgid "err_del_file %s"
 #~ msgstr "ERROR deleting file: %s."
 
-#, fuzzy
 #~ msgid "volume "
 #~ msgstr "Volume"
-
-#, fuzzy
-#~| msgid "filled"
-#~ msgid " filled "
-#~ msgstr "useage"
 
 #~ msgid "err_sel_data"
 #~ msgstr "Problem establishing initial database connection"

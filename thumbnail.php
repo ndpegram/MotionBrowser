@@ -44,5 +44,3 @@
 	// Remove temps
 	imagedestroy($thumb);
 	imagedestroy($source);
-?> 
-

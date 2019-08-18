@@ -33,20 +33,6 @@ BODY  {
     color:black; 
 }
 
-.title { 
-    font-family: Verdana, Arial, Helvetica, sans-serif; 
-    font-size: 14px; 
-    font-weight: bolder;
-    color:navy; 
-    text-align:center; 
-}
-.credits { 
-    font-family: Verdana, Arial, Helvetica, sans-serif; 
-    font-size: 12px; 
-    color:black; 
-    text-align:center; 
-}
-
 a:visited { 
     text-decoration: none; 
     color:navy; 
