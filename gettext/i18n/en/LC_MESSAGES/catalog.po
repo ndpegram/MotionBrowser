@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MotionBrowser\n"
-"POT-Creation-Date: 2019-08-18 08:58+0800\n"
-"PO-Revision-Date: 2019-08-18 15:32+0800\n"
+"POT-Creation-Date: 2019-08-18 17:26+0800\n"
+"PO-Revision-Date: 2019-08-18 17:28+0800\n"
 "Last-Translator: Nigel Pegram <nigel@pegram.homelinux.net>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -15,13 +15,42 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: libs\n"
-"X-Poedit-SearchPath-2: util\n"
+"X-Poedit-SearchPath-2: classes\n"
 
-#: head.php:12 old_index.php:347 old_index.php:412
+#: classes/errors.php:71
+#, php-format
+msgid "Error warning %u %s %u %s\n"
+msgstr ""
+"<p><b>WARNING:</b> [%u] %s.</p>\n"
+"<p>Error on line %u in file %s.</p>\n"
+
+#: classes/errors.php:80
+#, php-format
+msgid "Error notice %u %s %u %s\n"
+msgstr ""
+"<p><b>NOTICE:</b> [%u] %s.</p>\n"
+"<p>Error on line %u in file %s.</p>\n"
+
+#: classes/errors.php:89
+#, php-format
+msgid "Error %u %s %u %s\n"
+msgstr ""
+"<p><b>Unknown error type:</b> [%u] %s.</p> \n"
+"<p>Error on line %u in file %s.</p>\n"
+
+#: classes/errors.php:109
+#, php-format
+msgid "Error (user error) %u %s %u %s %s %s\n"
+msgstr ""
+"<p><b>USER ERROR</b> [%u] %s</p>\n"
+"<p>Fatal error on line %u in file %s. Aborting&hellip;</p> \n"
+" <p><i>PHP %s (%s).</i></p>\n"
+
+#: head.php:12 old_index.php:347 old_index.php:412 sidebar.php:12
 msgid "config_title"
 msgstr "MotionBrowser"
 
-#: head.php:12 old_index.php:347 old_index.php:412
+#: head.php:12 old_index.php:347 old_index.php:412 sidebar.php:12
 msgid "config_version"
 msgstr "2.0.alpha.1"
 
@@ -93,27 +122,27 @@ msgstr "error selecting database"
 msgid "delete"
 msgstr "delete"
 
-#: old_index.php:419
+#: old_index.php:419 sidebar.php:19
 msgid "all"
 msgstr "Select All"
 
-#: old_index.php:420
+#: old_index.php:420 sidebar.php:22
 msgid "nothing"
 msgstr "Select Nothing"
 
-#: old_index.php:421
+#: old_index.php:421 sidebar.php:25
 msgid "erase_selection"
 msgstr "Delete Selection"
 
-#: old_index.php:424
+#: old_index.php:424 sidebar.php:31
 msgid "config_motion"
 msgstr "Configure Motion"
 
-#: old_index.php:428
+#: old_index.php:428 sidebar.php:40
 msgid "config_credits"
 msgstr "© 2006 Carlos Ladeira <br />© 2019 Nigel Pegram"
 
-#: old_index.php:429
+#: old_index.php:429 sidebar.php:41 sidebar.php:42
 msgid "config_mailname"
 msgstr "ndpegram@gmail.com"
 
@@ -142,29 +171,6 @@ msgstr " Disk space is very low, but there are no items available to delete."
 #, php-format
 msgid "disk space used %s %f"
 msgstr "Volume containing %s is %.2f percent free."
-
-#: util/errors.php:70
-#, php-format
-msgid "Error warning %u %s\n"
-msgstr "<p><b>WARNING:</b> [%u] %s.</p>\n"
-
-#: util/errors.php:74
-#, php-format
-msgid "Error notice %u %s\n"
-msgstr "<p><b>NOTICE:</b> [%u] %s.</p>\n"
-
-#: util/errors.php:78
-#, php-format
-msgid "Error unknown %u %s\n"
-msgstr "<p><b>Unknown error type:</b> [%u] %s.</p>\n"
-
-#: util/errors.php:93
-#, php-format
-msgid "Error (user error) %u %s %u %s %s %s\n"
-msgstr ""
-"<p><b>USER ERROR</b> [%u] %s</p>\n"
-"<p>Fatal error on line %u in file %s. Aborting&hellip;</p> \n"
-" <p><i>PHP %s (%s).</i></p>\n"
 
 #~ msgid "error updating file size %s %s"
 #~ msgstr ""

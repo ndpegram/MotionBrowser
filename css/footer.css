@@ -4,7 +4,7 @@
 */
 
 .footer{
-    background-color: greenyellow ;
+    background-color: white ;
     text-align: center ;
     width: 90% ;   
     margin: 1ex;
@@ -12,4 +12,13 @@
     bottom: 1ex;
     left: 50%;
     transform: translateX(-50%);
+    border: 1px solid black ;
+    padding: 0.5em ;
+}
+
+.diskGraph{
+    padding-top: 0.5ex ;
+    padding-bottom: 0.5ex;
+    /*background-color: lightgrey ;*/
+    background: linear-gradient(to right, green, yellow, orange);
 }

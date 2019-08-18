@@ -13,11 +13,16 @@ $ini = parse_ini_file('config.ini', true, INI_SCANNER_TYPED) ;
 $ini['root_dir'] = dirname(__FILE__) ;
 
 // Set language.
-require_once $ini['root_dir'] . "lang.inc" ; 
+require_once $ini['root_dir'] . "/lang.inc" ; 
 
 // Setup error handler.
-require_once $ini['root_dir'] . '/util/errors.php';
+require_once $ini['root_dir'] . '/classes/errors.php';
 $errors = new errors() ;
+
+// Setup database access
+require_once $ini['root_dir'] . '/libs/mysql/mysql.php' ;
+$db = new database($ini['mysql']['db'], $ini['mysql']['host'], $ini['mysql']['user'], $ini['mysql']['password']) ;
+$ini['db'] = $db ;
 
 // HTML <head>
  require_once $ini['root_dir'] . '/head.php';

@@ -68,15 +68,30 @@ class errors {
                 break;
 
             case E_USER_WARNING:
-                printf(gettext("Error warning %u %s\n"), $this->getErrno(), $this->getErrstr()) ;
+                printf(gettext("Error warning %u %s %u %s\n"), 
+                        $this->getErrno(), 
+                        $this->getErrstr(),
+                        $this->getErrLine(),
+                        $this->getErrfile()
+                        ) ;
                 break;
 
             case E_USER_NOTICE:
-                printf(gettext("Error notice %u %s\n"), $this->getErrno(), $this->getErrstr()) ;
+                printf(gettext("Error notice %u %s %u %s\n"), 
+                        $this->getErrno(), 
+                        $this->getErrstr(),
+                        $this->getErrLine(),
+                        $this->getErrfile()
+                        ) ;
                 break;
 
             default:
-                printf(gettext("Error unknown %u %s\n"), $this->getErrno(), $this->getErrstr()) ;
+                printf(gettext("Error %u %s %u %s\n"), 
+                        $this->getErrno(), 
+                        $this->getErrstr(),
+                        $this->getErrLine(),
+                        $this->getErrfile()
+                        ) ;
                 break;
         }
 
