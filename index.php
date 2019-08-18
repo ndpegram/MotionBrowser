@@ -7,8 +7,8 @@
 
 // Global variable for the path where index.php resides so can run under a sub director or as a named host.
 global $root_dir ;
-$path_parts = pathinfo($_SERVER['PHP_SELF'] );
-$root_dir = $_SERVER['DOCUMENT_ROOT'] . $path_parts['dirname'] ;
+$path_parts = pathinfo(filter_input(INPUT_SERVER, 'PHP_SELF') );
+$root_dir = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . $path_parts['dirname'] ;
 
 // Setup error handler.
 require_once $root_dir . '/util/errors.php';
