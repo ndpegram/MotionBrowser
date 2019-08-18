@@ -3,7 +3,8 @@
 /*
  * Error handling code.
  */
-// TODO: internationalise strings.
+
+require_once("../lang.inc"); 
 
 class errors {
     /**
@@ -67,15 +68,15 @@ class errors {
                 break;
 
             case E_USER_WARNING:
-                printf("<p><b>My WARNING:</b> [%u] %s.</p>\n", $this->getErrno(), $this->getErrstr()) ;
+                printf(gettext("Error warning %u %s\n"), $this->getErrno(), $this->getErrstr()) ;
                 break;
 
             case E_USER_NOTICE:
-                printf("<p><b>My NOTICE:</b> [%u] %s.</p>\n", $this->getErrno(), $this->getErrstr()) ;
+                printf(gettext("Error notice %u %s\n"), $this->getErrno(), $this->getErrstr()) ;
                 break;
 
             default:
-                printf("<p><b>Unknown error type:</b> [%u] %s.</p>\n", $this->getErrno(), $this->getErrstr()) ;
+                printf(gettext("Error unknown %u %s\n"), $this->getErrno(), $this->getErrstr()) ;
                 break;
         }
 
@@ -90,7 +91,7 @@ class errors {
      *              line error checking.
      */
     private function userError(): int {
-        printf("<p><b>MY ERROR</b> [%u] %s</p>\n<p>Fatal error on line %u in file %s. Aborting&hellip;</p> <p><i>PHP %s (%s).</i></p>\n",
+        printf(gettext("Error (user error) %u %s %u %s %s %s\n"),
                 $this->getErrno(),
                 $this->getErrstr(),
                 $this->getErrLine(),
