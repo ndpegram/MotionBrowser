@@ -60,21 +60,22 @@ class errors {
      *              PHP error handler. If true, then will stop with this handler.
      */
     function processError(): bool {
-        switch ($errno) {
+        switch ($this->getErrno()) {
             case E_USER_ERROR:
-                exit ($this->userError()) ;
+                $nRc = $this->userError() ;
+                exit($nRc) ;
                 break;
 
             case E_USER_WARNING:
-                echo "<b>My WARNING</b> [$$this->errno] $$this->errstr<br />\n";
+                printf("<p><b>My WARNING:</b> [%u] %s.</p>\n", $this->getErrno(), $this->getErrstr()) ;
                 break;
 
             case E_USER_NOTICE:
-                echo "<b>My NOTICE</b> [$$this->errno] $$this->errstr<br />\n";
+                printf("<p><b>My NOTICE:</b> [%u] %s.</p>\n", $this->getErrno(), $this->getErrstr()) ;
                 break;
 
             default:
-                echo "Unknown error type: [$$this->errno] $$this->errstr<br />\n";
+                printf("<p><b>Unknown error type:</b> [%u] %s.</p>\n", $this->getErrno(), $this->getErrstr()) ;
                 break;
         }
 
@@ -89,7 +90,7 @@ class errors {
      *              line error checking.
      */
     private function userError(): int {
-        sprintf("<p><b>My ERROR</b> [%i] %s</p>\n<p>Fatal error on line %i in file %s, PHP %s (%s)</p><Aborting&hellip;</p>\n",
+        printf("<p><b>MY ERROR</b> [%u] %s</p>\n<p>Fatal error on line %u in file %s. Aborting&hellip;</p> <p><i>PHP %s (%s).</i></p>\n",
                 $this->getErrno(),
                 $this->getErrstr(),
                 $this->getErrLine(),
@@ -135,5 +136,6 @@ class errors {
 
 }
 
-$errors = new errors() ;
-$trigger_error = trigger_error("my bad", E_USER_ERROR) ;
+//echo "<h1>Error test</h1>" ;
+//$errors = new errors() ;
+//$trigger_error = trigger_error("my bad", E_USER_ERROR) ;
