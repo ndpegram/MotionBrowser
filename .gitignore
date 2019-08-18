@@ -14,8 +14,7 @@ nbdist/
 
 # End of https://www.gitignore.io/api/netbeans
 
-#config.inc
-#config.ini
+config.ini
 README.aux
 README.log
 README.out
