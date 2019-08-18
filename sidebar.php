@@ -13,8 +13,8 @@
         ?>
     </p>
 
-    <center>
-        <p class='separator' />
+    <div style='text-align: center;'>
+        <p class='separator'></p>
         <p>
             <input type=button onclick="javascript:select_all();" value="<?php echo gettext("all") ?>" >
         </p>
@@ -25,20 +25,20 @@
             <input type=button onclick="javascript:deleteSelection();" value="<?php echo gettext("erase_selection") ?>">
         </p>
 
-        <p class='separator' />
+        <p class='separator'></p>
         <p>
-            <a href=\"http://$server_addr:$setup_port\" target=_blank>
+            <a href="http://$server_addr:$setup_port" target=_blank>
                 <?php echo gettext("config_motion") ?>
             </a>
         </p>
-    </center>
+    </div>
 
     <div class=credits>
-        <p class='separator' />
+        <p class='separator'></p>
         
         <p>
             <?php echo gettext("config_credits") ?>
-            <a href=\"mailto:<?php echo gettext("config_mailname") ?> \">
+            <a href="mailto:<?php echo gettext("config_mailname") ?> ">
                 <?php echo gettext("config_mailname") ?>
             </a>
         </p>

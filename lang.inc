@@ -5,15 +5,12 @@
  *
  **/
 
-require_once ("config.inc") ;
-
 if (!function_exists("gettext")){
     die ("gettext is not installed\n") ;
 }
 else{
-	putenv("LC_ALL=$locale");
-	setlocale(LC_ALL, $locale);
-	bindtextdomain('catalog', dirname(__FILE__).'/gettext/i18n');
+	putenv("LC_ALL=".$ini['locale']);
+	setlocale(LC_ALL, $ini['locale']);
+	bindtextdomain('catalog', $ini['root_dir'] . '/gettext/i18n');
 	textdomain('catalog');
 }
-

@@ -344,11 +344,11 @@ require_once("stream.php") ;
 
 <html>
 <head>
-	<title><?php echo gettext("config_title")." ".gettext("config_version"); ?></title>
-	<link rel="stylesheet" href="motionbrowser.css" type="text/css" media="all">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="./calendar.js" ></script>
-	<script src="./motionbrowser.js" ></script>
+    <title>&nbsp;<?php echo gettext("config_title")." ".gettext("config_version"); ?></title>
+    <link rel="stylesheet" href="motionbrowser.css" type="text/css" media="all">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./calendar.js" ></script>
+    <script src="./motionbrowser.js" ></script>
 
 </head>
 

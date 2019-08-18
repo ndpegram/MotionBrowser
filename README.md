@@ -1,3 +1,5 @@
+@path<span><span>/var/www/html/MotionBrowser/</span></span>
+
 Readme
 ======
 
@@ -82,8 +84,53 @@ should be set to the fully-qualified path of where you intalled the MotionBrowse
 <span>Other</span>  
 Log names and locations can be set as required.
 
+config.ini
+----------
+
+The following settings need to be customised.
+
+<span><span>\[</span>webcam<span>\]</span></span>  
+ 
+
+<span>“server”</span>  
+The location where motion is running. By default this is set to “localhost”.
+
+<span>webcam\_port<span>\[</span>&lt;id&gt;<span>\]</span></span>  
+Map the camera IDs as recorded in the database to the port used to access them.
+
+<span>setup\_port</span>  
+The port used to access motion’s settings.
+
+<span><span>\[</span>mysql<span>\]</span></span>  
+ 
+
+Set the below values to point to the location where motion is storing its records, including the appropriate username and password for read and write access to the table.
+
+<span>host</span>  
+the server where the MySQL database is running.
+
+<span>user</span>  
+the user name to use to login.
+
+<span>password</span>  
+the user’s password.
+
+<span>db</span>  
+the database containing the table.
+
+<span><span>\[</span>disk<span>\]</span></span>  
+ 
+
+<span>freeSpaceMin</span>  
+The minimum free space to reserve on the storage disk. This is expressed as a percentage of the total disk space. If you wish to use a maximum of 70% of the disk, then this value should be set to 30.
+
 History
 =======
+
+Version 2.0
+-----------
+
+Totally rewritten to use CSS div elements rather than tables, so as to degrade better and to display better on a wider range of devices. Also rewritten to use object-based coding, rather than procedural coding (as in the original), to ease maintenance. Code also separated into more discrete units to ease maintenance.
 
 Version 1.2.1
 -------------

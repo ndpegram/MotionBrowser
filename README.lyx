@@ -70,6 +70,9 @@
          % otherwise the current date is printed
 \end_preamble
 \use_default_options false
+\begin_modules
+csquotes
+\end_modules
 \maintain_unincluded_children false
 \language english
 \language_package none
@@ -233,92 +236,74 @@ It is supposed to work with the following motion.conf options set as shown
 \end_layout
 
 \begin_layout Verbatim
-
 		pre_capture 8		(works for me with a framerate of 6)
 \end_layout
 
 \begin_layout Verbatim
-
 		post_capture 8		(ie)
 \end_layout
 
 \begin_layout Verbatim
-
 		output_all off
 \end_layout
 
 \begin_layout Verbatim
-
 		output_normal best (or) first
 \end_layout
 
 \begin_layout Verbatim
-
 		output_motion off
 \end_layout
 
 \begin_layout Verbatim
-
 		text_event %Y%m%d%H%M%S
 \end_layout
 
 \begin_layout Verbatim
-
 		ffmpeg_cap_new on
 \end_layout
 
 \begin_layout Verbatim
-
 		ffmpeg_video_codec msmpeg4
 \end_layout
 
 \begin_layout Verbatim
-
 		sql_log_image on
 \end_layout
 
 \begin_layout Verbatim
-
 		sql_log_snapshot off
 \end_layout
 
 \begin_layout Verbatim
-
 		sql_log_mpeg on
 \end_layout
 
 \begin_layout Verbatim
-
 		sql_log_timelapse off
 \end_layout
 
 \begin_layout Verbatim
-
 		sql_query INSERT ...	(I use the default)
 \end_layout
 
 \begin_layout Verbatim
-
 		mysql_db motion		(my database name)
 \end_layout
 
 \begin_layout Verbatim
-
 		mysql_host localhost
 \end_layout
 
 \begin_layout Verbatim
-
 		mysql_user ...		(the user name i created in MySQL)
 \end_layout
 
 \begin_layout Verbatim
-
 		mysql_password ...	(the password associated with user)
 \end_layout
 
 \begin_layout Verbatim
-
 	
 \end_layout
 
@@ -358,17 +343,14 @@ www-data
 \end_layout
 
 \begin_layout Verbatim
-
 		sudo chgrp -R www-data /var/lib/motion
 \end_layout
 
 \begin_layout Verbatim
-
 		sudo chmod -R g+rw /var/lib/motion
 \end_layout
 
 \begin_layout Verbatim
-
 	
 \end_layout
 
@@ -381,68 +363,55 @@ Use the following to create your mySQL table.
 \end_layout
 
 \begin_layout Verbatim
-
 		CREATE TABLE `security` (
 \end_layout
 
 \begin_layout Verbatim
-
 		  `camera` int(11) DEFAULT NULL,
 \end_layout
 
 \begin_layout Verbatim
-
 		  `filename` varchar(80) NOT NULL DEFAULT '',
 \end_layout
 
 \begin_layout Verbatim
-
 		  `frame` int(11) DEFAULT NULL,
 \end_layout
 
 \begin_layout Verbatim
-
 		  `file_type` int(11) DEFAULT NULL,
 \end_layout
 
 \begin_layout Verbatim
-
 		  `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE
  CURRENT_TIMESTAMP,
 \end_layout
 
 \begin_layout Verbatim
-
 		  `text_event` varchar(40) NOT NULL DEFAULT '0000-00-00 00:00:00',
 \end_layout
 
 \begin_layout Verbatim
-
 		  `event_time_stamp` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
 \end_layout
 
 \begin_layout Verbatim
-
 		  `file_size` varchar(36) NOT NULL DEFAULT '0',
 \end_layout
 
 \begin_layout Verbatim
-
 		  KEY `time_stamp` (`time_stamp`),
 \end_layout
 
 \begin_layout Verbatim
-
 		  KEY `event_time_stamp` (`event_time_stamp`)
 \end_layout
 
 \begin_layout Verbatim
-
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8
 \end_layout
 
 \begin_layout Verbatim
-
 	
 \end_layout
 
@@ -523,8 +492,108 @@ Other Log names and locations can be set as required.
  
 \end_layout
 
+\begin_layout Subsection
+config.ini
+\end_layout
+
+\begin_layout Standard
+The following settings need to be customised.
+\end_layout
+
+\begin_layout Description
+[webcam] 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+\begin_inset Flex Enquote
+status collapsed
+
+\begin_layout Plain Layout
+server
+\end_layout
+
+\end_inset
+
+ The location where motion is running.
+ By default this is set to 
+\begin_inset Flex Enquote
+status collapsed
+
+\begin_layout Plain Layout
+localhost
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+webcam_port[<id>] Map the camera IDs as recorded in the database to the
+ port used to access them.
+\end_layout
+
+\begin_layout Description
+setup_port The port used to access motion's settings.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+[mysql] 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Set the below values to point to the location where motion is storing its
+ records, including the appropriate username and password for read and write
+ access to the table.
+\end_layout
+
+\begin_layout Description
+host the server where the MySQL database is running.
+\end_layout
+
+\begin_layout Description
+user the user name to use to login.
+\end_layout
+
+\begin_layout Description
+password the user's password.
+\end_layout
+
+\begin_layout Description
+db the database containing the table.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+[disk]
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+freeSpaceMin The minimum free space to reserve on the storage disk.
+ This is expressed as a percentage of the total disk space.
+ If you wish to use a maximum of 70% of the disk, then this value should
+ be set to 30.
+\end_layout
+
+\end_deeper
 \begin_layout Section
 History
+\end_layout
+
+\begin_layout Subsection
+Version 2.0
+\end_layout
+
+\begin_layout Standard
+Totally rewritten to use CSS div elements rather than tables, so as to degrade
+ better and to display better on a wider range of devices.
+ Also rewritten to use object-based coding, rather than procedural coding
+ (as in the original), to ease maintenance.
+ Code also separated into more discrete units to ease maintenance.
 \end_layout
 
 \begin_layout Subsection

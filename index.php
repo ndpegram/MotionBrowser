@@ -5,26 +5,30 @@
  * Main file. Mostly loads other files.
  */
 
-// Global variable for the path where index.php resides so can run under a sub director or as a named host.
-global $root_dir ;
-$path_parts = pathinfo(filter_input(INPUT_SERVER, 'PHP_SELF') );
-$root_dir = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . $path_parts['dirname'] ;
+// Load settings from ini file.
+global $ini ;
+$ini = parse_ini_file('config.ini', true, INI_SCANNER_TYPED) ;
+
+// Get the path where index.php resides so can run under a sub director or as a named host.
+$ini['root_dir'] = dirname(__FILE__) ;
+
+// Set language.
+require_once $ini['root_dir'] . "lang.inc" ; 
 
 // Setup error handler.
-require_once $root_dir . '/util/errors.php';
+require_once $ini['root_dir'] . '/util/errors.php';
 $errors = new errors() ;
 
-// Starting items
-require_once $root_dir . '/config.inc';
-require_once $root_dir . '/head.php';
+// HTML <head>
+ require_once $ini['root_dir'] . '/head.php';
 
-// Body content
+// HTML body content
 ?>
 <body>
         <?php
-        require_once $root_dir . '/header.php';
-        require_once $root_dir . '/sidebar.php';
-        require_once $root_dir . '/main.php';
-        require_once $root_dir . '/footer.php';
+            require_once $ini['root_dir'] . '/header.php';
+            require_once $ini['root_dir'] . '/sidebar.php';
+            require_once $ini['root_dir'] . '/main.php';
+            require_once $ini['root_dir'] . '/footer.php';
         ?>
 </body>

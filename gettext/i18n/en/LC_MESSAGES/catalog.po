@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MotionBrowser\n"
 "POT-Creation-Date: 2019-08-18 08:58+0800\n"
-"PO-Revision-Date: 2019-08-18 09:07+0800\n"
+"PO-Revision-Date: 2019-08-18 15:32+0800\n"
 "Last-Translator: Nigel Pegram <nigel@pegram.homelinux.net>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -23,7 +23,7 @@ msgstr "MotionBrowser"
 
 #: head.php:12 old_index.php:347 old_index.php:412
 msgid "config_version"
-msgstr "1.2.1"
+msgstr "2.0.alpha.1"
 
 #: js_gettext.php:14
 msgid "js gettext no message"
