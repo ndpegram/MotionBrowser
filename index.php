@@ -5,15 +5,26 @@
  * Main file. Mostly loads other files.
  */
 
-require_once ('./config.inc');
+// Global variable for the path where index.php resides so can run under a sub director or as a named host.
+global $root_dir ;
+$path_parts = pathinfo($_SERVER['PHP_SELF'] );
+$root_dir = $_SERVER['DOCUMENT_ROOT'] . $path_parts['dirname'] ;
 
-require_once ('./head.php');
+// Setup error handler.
+require_once $root_dir . '/util/errors.php';
+$errors = new errors() ;
+
+// Starting items
+require_once $root_dir . '/config.inc';
+require_once $root_dir . '/head.php';
+
+// Body content
 ?>
 <body>
         <?php
-        require_once ('./header.php');
-        require_once ('./sidebar.php');
-        require_once ('./main.php');
-        require_once ('./footer.php');
+        require_once $root_dir . '/header.php';
+        require_once $root_dir . '/sidebar.php';
+        require_once $root_dir . '/main.php';
+        require_once $root_dir . '/footer.php';
         ?>
 </body>
