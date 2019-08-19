@@ -6,7 +6,7 @@
 .footer{
     background-color: white ;
     text-align: center ;
-    width: 90% ;   
+    /*width: 90% ;*/   
     margin: 1ex;
     position: fixed;
     bottom: 1ex;
@@ -16,9 +16,6 @@
     padding: 0.5em ;
 }
 
-.diskGraph{
-    padding-top: 0.5ex ;
-    padding-bottom: 0.5ex;
-    /*background-color: lightgrey ;*/
-    background: linear-gradient(to right, green, yellow, orange);
+.footer meter {
+    width:100% ;
 }

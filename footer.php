@@ -6,14 +6,17 @@
  */
 require_once $ini['root_dir'].'/classes/dataPath.php' ;
 $data = new dataPath() ;
-// TODO: adjust graph so that colour gradient shows green, yellow, orange, red depending on width.
+
 ?>
 
 <div class="footer">
-    <div>Disk free: <?php echo $data->getFreePercentString() ; ?></div>
-    <div style='width:100%; float:left; background-color: white; border: 1px solid black ;'>
-    <div class='diskGraph' style='width:<?php echo $data->getFreePercentString() ?>'>
-        &nbsp;
-    </div>
-    </div>
+    <div>Disk free space = <?php echo $data->getFreePercentString() ; ?></div>
+    <meter 
+        min="0"
+        max="100"
+        low="<?php echo $ini['disk']['freeSpaceBuffer'] ?>"
+        optimum="<?php echo $ini['disk']['freeSpaceOptimum'] ?>"
+        value="<?php echo $data->getFreePercent() ?>"
+        >
+    </meter>           
 </div>

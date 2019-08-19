@@ -121,8 +121,15 @@ the database containing the table.
 <span><span>\[</span>disk<span>\]</span></span>  
  
 
-<span>freeSpaceMin</span>  
-The minimum free space to reserve on the storage disk. This is expressed as a percentage of the total disk space. If you wish to use a maximum of 70% of the disk, then this value should be set to 30.
+<span>freeSpaceOptimum</span>  
+The “target” percentage of space to keep free. (At present this only impacts on the display of the free space meter.)
+
+<span>freeSpaceBuffer</span>  
+The minimum free space to reserve on the disk where recordings and images are saved. This is expressed as a percentage of the total disk space. If you wish to use a maximum of 70% of the disk, then this value should be set to 30.
+
+You must not set this so high that no recordings are retained. For example, if other software and files on the disk use 25% of the free space and this is set to 75% or higher, then no files will be retained. You should calculate the value so that:
+
+<span><span style="font-variant:small-caps;"></span>disk space used other than by motion (%) + free space buffer (%) + motion video recording space (%) ≦ 100%</span>
 
 History
 =======
