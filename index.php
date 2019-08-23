@@ -15,7 +15,7 @@ $ini['root_dir'] = dirname(__FILE__) ;
 $ini['server_dir'] = dirname($_SERVER['PHP_SELF']) ;
 
 
-// Set language.
+// Set language for gettext
 require_once $ini['root_dir'] . "/lang.inc" ; 
 
 // Setup error handler.
