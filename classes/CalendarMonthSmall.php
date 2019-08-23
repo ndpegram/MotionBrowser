@@ -43,7 +43,7 @@ class CalendarMonthSmall {
     }
 
     protected function getCalendarHeader(): string {
-        $header = "<table class='minicalendar' border=\"1\">\n";
+        $header = "<table border=\"1\">\n";
         $header .= "\t<tr><th></th><th colspan=5>";
         $header .= $this->getMonthName() . " " . $this->getYear();
         $header .= "</th><th></th></tr>\n";
