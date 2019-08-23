@@ -44,9 +44,7 @@ class CalendarMonthSmall {
 
     protected function getCalendarHeader(): string {
         $header = "<table border=\"1\">\n";
-        $header .= "\t<tr><th></th><th colspan=5>";
-        $header .= $this->getMonthName() . " " . $this->getYear();
-        $header .= "</th><th></th></tr>\n";
+        $header .= "\t<caption>". $this->getMonthName() . " " . $this->getYear() . "</caption>";
         $header .= "\t<tr><th>Su</th><th>M</th><th>Tu</th><th>W</th><th>Th</th><th>F</th><th>Sa</th></tr>";
         return($header);
     }
@@ -143,7 +141,7 @@ class CalendarMonthSmall {
      * 
      * @return string The full month name.
      */
-    private function getMonthName(): string {
+    protected function getMonthName(): string {
         return (date("F", $this->getDate()));
     }
 
@@ -151,7 +149,7 @@ class CalendarMonthSmall {
      * 
      * @return int The year as an integer.
      */
-    private function getYear(): int {
+    protected function getYear(): int {
         return(date("Y", $this->getDate()));
     }
 
@@ -199,4 +197,4 @@ class CalendarMonthSmall {
 
 }
 
-//CalendarMonthSmall::test() ;
+CalendarMonthSmall::test() ;
