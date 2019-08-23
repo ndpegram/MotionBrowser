@@ -3,15 +3,20 @@
  * Code to draw sidebar, including calendar, controls and credits.
  * 
  */
+require_once $ini['root_dir'].'/classes/CalendarMonthMotion.php';
 ?>
-
 
 <div class="sidebar">
     <p class=title>
         <?php
-        echo gettext("config_title") . "<br />version " . gettext("config_version")
+        echo gettext("config_title") . "<br /><span style='font-size:smaller;'>version " . gettext("config_version") . "</span>" ;
         ?>
     </p>
+    
+    <?php
+    $cal = new CalendarMonthMotion() ;
+    echo $cal->getHTML() ;
+    ?>
 
     <div style='text-align: center;'>
         <p class='separator'></p>
