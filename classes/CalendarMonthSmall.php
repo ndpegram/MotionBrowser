@@ -77,11 +77,16 @@ class CalendarMonthSmall {
 
     /**
      * Override this function to allow links, scripts and formatting in cells.
-     * @param string $date
-     * @return string The content to place in the date cell. 
+     * @param int $date if no date to display, the value will be <= 0 
+     * @return string The content of the date cell. 
      */
-    protected function getCalendarCell(string $date) {
-        return "<td>" . $date . "</td>" ;
+    protected function getCalendarCell(int $date): string {
+        $content = "" ;
+        if ($date > 0) {
+            $content = $date ;
+        }
+
+        return "<td>" . $content . "</td>" ;
     }
 
     /**
@@ -110,9 +115,9 @@ class CalendarMonthSmall {
         for ($nCount = 0; $nCount < 7; $nCount++) {
             $date = $day + $nCount;
             if (($date < 1) || ($date > $this->daysInMonth)) {
-                $szDate = "";
+                $szDate = -1 ;
             } else {
-                $szDate = "" . $date;
+                $szDate = $date;
             }
 
             $dates[$nCount] = $szDate;
@@ -139,6 +144,14 @@ class CalendarMonthSmall {
 
     /**
      * 
+     * @return string The month number (1-12).
+     */
+    protected function getMonth(): int {
+        return (date("n", $this->getDate()));
+    }
+
+    /**
+     * 
      * @return string The full month name.
      */
     protected function getMonthName(): string {
@@ -161,20 +174,13 @@ class CalendarMonthSmall {
         return (date("j", $this->getDate()));
     }
 
-    /**
-     * 
-     * @return int The number of blank days to leave at the start of the month.
-     */
-    private function getStartingOffset(): int {
-        return(date("w", $this->getDate()));
-    }
-
     /*
      * Called when a datetime is set. 
      */
 
     private function setOffset() {
-        $this->offset = $this->getStartingOffset();
+        $firstOfMonth = mktime(0, 0, 0, $this->getMonth(), 1, $this->getYear()) ;        
+        $this->offset = date("w", $firstOfMonth) ;
     }
 
     /**
@@ -185,7 +191,7 @@ class CalendarMonthSmall {
         }
 
     /** Use the code below for testing. */
-        public static function test(){
+    public static function test(){
         $cal = new CalendarMonthSmall();
         $year = date("Y", time()) ;
 
@@ -193,6 +199,29 @@ class CalendarMonthSmall {
             $cal->setDateFromValues($year, $nCount + 1, 1);
             echo $cal->getHTML();
         }
+    }
+    
+    /**
+     * 
+     * @param int $day The day in the current month to test
+     * @return bool True if the day passed is the day of the current month.
+     */
+    protected function isToday(int $day): bool {
+        $timeToTest = mktime(0, 0, 0, $this->getMonth(), $day, $this->getYear()) ;
+        $today = mktime(0, 0, 0, date("n"), date("j"), date("Y")) ;
+        return (($timeToTest === $today) ? true : false) ;
+    }
+
+    /**
+     * 
+     * @param int $day The day in the current month to test
+     * @return bool True if the day passed is a weekend of the current month.
+     */
+    protected function isWeekend(int $day): bool {
+        $timeToTest = mktime(0, 0, 0, $this->getMonth(), $day, $this->getYear()) ;
+        $dayNum = date("N", $timeToTest) ;
+        $bRc = ($dayNum > 5) ? true : false ;
+        return ($bRc) ;
     }
 
 }
