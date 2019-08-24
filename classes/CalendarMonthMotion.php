@@ -10,10 +10,16 @@
  *  weekend-day
  *  selected-day
 
- *  *  calendar-month
+ *  calendar-month
  *  calendar-header
- *  calendar-footer * @author nigel
+ *  calendar-footer 
+ * 
+ *  @author nigel
  */
+
+// TODO: implement date click to display content.
+// TODO: implement display content on date change.
+
 require_once $ini['root_dir'] . '/classes/CalendarMonthSmall.php';
 
 class CalendarMonthMotion extends CalendarMonthSmall {

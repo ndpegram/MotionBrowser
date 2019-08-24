@@ -15,6 +15,9 @@
     <link rel="stylesheet" media="all" href="./css/sidebar.css" />
     <link rel="stylesheet" media="all" href="./css/main.css" />
     <link rel="stylesheet" media="all" href="./css/footer.css" />
+    
+    <LINK REL="shortcut icon" HREF="./images/icon_video.gif" TYPE="image/x-icon">
+
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
