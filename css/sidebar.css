@@ -55,12 +55,6 @@
     color:black; 
     font-weight:bold
 }
-.today {
-    visibility: hidden; 
-    width: 0 ; 
-    height: 0 ; 
-}
-
 .calendar-month { 
     font-weight:bold; 
     text-align:center
