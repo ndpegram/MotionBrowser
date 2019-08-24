@@ -130,7 +130,7 @@ class CalendarMonthSmall {
      * 
      * @return int The date as a Unix timestamp.
      */
-    private function getDate(): int {
+    protected function getDate(): int {
         return $this->theDate;
     }
 
@@ -208,7 +208,7 @@ class CalendarMonthSmall {
      */
     protected function isToday(int $day): bool {
         $timeToTest = mktime(0, 0, 0, $this->getMonth(), $day, $this->getYear()) ;
-        $today = mktime(0, 0, 0, date("n"), date("j"), date("Y")) ;
+        $today = mktime(0, 0, 0, date("n", $this->getDate()), date("j", $this->getDate()), date("Y", $this->getDate())) ;
         return (($timeToTest === $today) ? true : false) ;
     }
 

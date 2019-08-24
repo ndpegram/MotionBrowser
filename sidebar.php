@@ -7,17 +7,20 @@ require_once $ini['root_dir'].'/classes/CalendarMonthMotion.php';
 ?>
 
 <div class="sidebar">
+    <script type="text/javascript" src="<?php echo $ini['server_dir'].'/js/sidebar.js' ?>"></script>
     <p class=title>
         <?php
         echo gettext("config_title") . "<br /><span style='font-size:smaller;'>version " . gettext("config_version") . "</span>" ;
         ?>
     </p>
     
-    <?php
-    $cal = new CalendarMonthMotion() ;
-    echo $cal->getHTML() ;
-    ?>
-
+    <div class="minicalendar">
+        <?php
+        $cal = new CalendarMonthMotion() ;
+        echo $cal->getHTML() ;
+        ?>
+   </div>
+ 
     <div style='text-align: center;'>
         <p class='separator'></p>
         <p>
