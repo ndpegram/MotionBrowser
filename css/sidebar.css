@@ -62,8 +62,11 @@
 
 .calendar-month > div {
     display: inline-block; 
-    padding-left :0.5em ;
-    padding-right: 0.5em;
+}
+
+.calendar-month-name{
+/*    width:-webkit-fill-available;     Uncomment these lines to show the name on a separate line.
+    width: -moz-available;*/
 }
 
 .calendar-header { 

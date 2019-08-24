@@ -48,7 +48,6 @@ class CalendarMonthMotion extends CalendarMonthSmall {
         
         $footer = '<tr><td colspan=7 align=center class=calendar-footer>';
         // Today button
-//        $footer .= '<input type=button value="' . gettext("today") . '" onclick="document.location=\'' . $ini['server_dir'] . '\'; " >';
         $footer .= "<input type=button value=\"" . gettext("today") . "\" onclick='displayMonth($now) ;' >";
         $footer .= '</td></tr>';
         $footer .= parent::getCalendarFooter();
@@ -64,7 +63,7 @@ class CalendarMonthMotion extends CalendarMonthSmall {
         $previousMonth = strtotime("last month", $this->getDate()) ;
 
         $header .= "<caption class='calendar-month'>";
-        $header .= "<div style='width:-webkit-fill-available;'>" . $this->getMonthName() . " " . $this->getYear() . "</div>";
+        $header .= "<div class=calendar-month-name>" . $this->getMonthName() . " " . $this->getYear() . "</div>";
         $header .= "<div style='float:left' onclick='displayMonth($previousMonth) ;'><img src='$base/images/arrowLeft.gif'></div>";
         $header .= "<div style='float:right;' onclick='displayMonth($nextMonth) ;'><img src='$base/images/arrowRight.gif'></div>\n";
         $header .= "</caption>\n";
