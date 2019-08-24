@@ -64,7 +64,7 @@ class CalendarMonthMotion extends CalendarMonthSmall {
         $previousMonth = strtotime("last month", $this->getDate()) ;
 
         $header .= "<caption class='calendar-month'>";
-        $header .= "<div style='width:100%;'>" . $this->getMonthName() . " " . $this->getYear() . "</div>";
+        $header .= "<div style='width:-webkit-fill-available;'>" . $this->getMonthName() . " " . $this->getYear() . "</div>";
         $header .= "<div style='float:left' onclick='displayMonth($previousMonth) ;'><img src='$base/images/arrowLeft.gif'></div>";
         $header .= "<div style='float:right;' onclick='displayMonth($nextMonth) ;'><img src='$base/images/arrowRight.gif'></div>\n";
         $header .= "</caption>\n";
