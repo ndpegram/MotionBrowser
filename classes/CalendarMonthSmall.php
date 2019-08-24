@@ -80,8 +80,8 @@ class CalendarMonthSmall {
      * @param string $date
      * @return string The content to place in the date cell. 
      */
-    protected function getCalendarCellContent(string $date) {
-        return $date;
+    protected function getCalendarCell(string $date) {
+        return "<td>" . $date . "</td>" ;
     }
 
     /**
@@ -93,7 +93,7 @@ class CalendarMonthSmall {
         $HTML = "<tr>";
         $dates = $this->getCalendarRowDates($day);
         for ($nCount = 0; $nCount < sizeof($dates); $nCount++) {
-            $HTML .= "<td>" . $this->getCalendarCellContent($dates[$nCount]) . "</td>";
+            $HTML .= $this->getCalendarCell($dates[$nCount]) ;
         }
         $HTML .= "</tr>\n";
         return ($HTML);
