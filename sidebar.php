@@ -4,6 +4,7 @@
  * 
  */
 require_once $ini['root_dir'].'/classes/CalendarMonthMotion.php';
+$setupURL = $ini['webcam']['server'].":".$ini['webcam']['setup_port'] ;
 ?>
 
 <div class="sidebar">
@@ -35,7 +36,7 @@ require_once $ini['root_dir'].'/classes/CalendarMonthMotion.php';
 
         <p class='separator'></p>
         <p>
-            <a href="http://$server_addr:$setup_port" target=_blank>
+            <a href="http://<?php echo $setupURL ?>" target=_blank>
                 <?php echo gettext("config_motion") ?>
             </a>
         </p>
@@ -51,12 +52,12 @@ require_once $ini['root_dir'].'/classes/CalendarMonthMotion.php';
             </a>
         </p>
         <p>
-            <a href='https://github.com/ndpegram/MotionBrowser/'>github.com/ndpegram<br />/MotionBrowser/
+            <a href='https://github.com/ndpegram/MotionBrowser/' target=_blank>github.com/ndpegram<br />/MotionBrowser/
             </a>
         </p>
 
         <p class=credits>
-            <a href='https://motion-project.github.io/'>
+            <a href='https://motion-project.github.io/' target=_blank>
                 motion-project.github.io/
             </a>
         </p>
