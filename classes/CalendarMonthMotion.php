@@ -38,10 +38,12 @@ class CalendarMonthMotion extends CalendarMonthSmall {
     }
 
     protected function getCalendarFooter(): string {
-        global $ini ;
+        $now = time() ;
+        
         $footer = '<tr><td colspan=7 align=center class=calendar-footer>';
         // Today button
-        $footer .= '<input type=button value="' . gettext("today") . '" onclick="document.location=\'' . $ini['server_dir'] . '\'; " >';
+//        $footer .= '<input type=button value="' . gettext("today") . '" onclick="document.location=\'' . $ini['server_dir'] . '\'; " >';
+        $footer .= "<input type=button value=\"" . gettext("today") . "\" onclick='displayMonth($now) ;' >";
         $footer .= '</td></tr>';
         $footer .= parent::getCalendarFooter();
         return ($footer);
@@ -54,12 +56,11 @@ class CalendarMonthMotion extends CalendarMonthSmall {
         
         $nextMonth = strtotime("next month", $this->getDate()) ;
         $previousMonth = strtotime("last month", $this->getDate()) ;
-        $callback = $ini['server_dir'] . "/callbacks/getCalendar.php" ;
 
         $header .= "<caption class='calendar-month'>";
         $header .= "<div style='width:100%;'>" . $this->getMonthName() . " " . $this->getYear() . "</div>";
-        $header .= "<div style='float:left' onclick='displayMonth($previousMonth, \"$callback\") ;'><img src='$base/images/arrowLeft.gif'></div>";
-        $header .= "<div style='float:right;' onclick='displayMonth($nextMonth, \"$callback\") ;'><img src='$base/images/arrowRight.gif'></div>\n";
+        $header .= "<div style='float:left' onclick='displayMonth($previousMonth) ;'><img src='$base/images/arrowLeft.gif'></div>";
+        $header .= "<div style='float:right;' onclick='displayMonth($nextMonth) ;'><img src='$base/images/arrowRight.gif'></div>\n";
         $header .= "</caption>\n";
 
         $header .= "<tr class='calendar-header'><th>Su</th><th>M</th><th>Tu</th><th>W</th><th>Th</th><th>F</th><th>Sa</th></tr>\n";
