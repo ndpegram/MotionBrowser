@@ -45,7 +45,7 @@ class event {
         $this->setFilename($row['filename']);
         $this->setFrame($row['frame']);
         $this->setFileType($row['file_type']);
-        $this->setTimeStamp($row['timeStamp']);
+        $this->setTimeStamp($row['timestamp']);
         $this->setTextEvent($row['text_event']);
         $this->setTimeStampEvent($row['event_time_stamp']);
         $this->setFileSize($row['file_size']);
@@ -104,14 +104,17 @@ class event {
     }
 
     private function setTimeStamp($timeStamp) {
+        // TODO: convert to Unix timestamp
         $this->timeStamp = $timeStamp;
     }
 
     private function setTimeStampEvent($timeStampEvent) {
+        // TODO: convert to Unix timestamp
         $this->timeStampEvent = $timeStampEvent;
     }
 
     private function setFileSize($fileSize) {
+        // TODO: deal with filesize = 0 ;
         $this->fileSize = $fileSize;
     }
 

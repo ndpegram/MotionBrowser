@@ -18,7 +18,4 @@ require_once $_SESSION['root_dir'] . '/classes/errors.php';
 $errors = new errors() ;
 
 // Setup database access
-global $db ;
 require_once $_SESSION['root_dir'] . '/libs/mysql/mysql.php' ;
-$db = new database($_SESSION['mysql']['db'], $_SESSION['mysql']['host'], $_SESSION['mysql']['user'], $_SESSION['mysql']['password']) ;
-$_SESSION['db'] = $db ;
