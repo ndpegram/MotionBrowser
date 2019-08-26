@@ -3,12 +3,12 @@
  * Code to draw sidebar, including calendar, controls and credits.
  * 
  */
-require_once $ini['root_dir'].'/classes/CalendarMonthMotion.php';
-$setupURL = $ini['webcam']['server'].":".$ini['webcam']['setup_port'] ;
+require_once $_SESSION['root_dir'].'/classes/CalendarMonthMotion.php';
+$setupURL = $_SESSION['webcam']['server'].":".$_SESSION['webcam']['setup_port'] ;
 ?>
 
 <div class="sidebar">
-    <script type="text/javascript" src="<?php echo $ini['server_dir'].'/js/sidebar.js' ?>"></script>
+    <script type="text/javascript" src="<?php echo $_SESSION['server_dir'].'/js/sidebar.js' ?>"></script>
     <p class=title>
         <?php
         echo gettext("config_title") . "<br /><span style='font-size:smaller;'>version " . gettext("config_version") . "</span>" ;

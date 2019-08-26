@@ -63,8 +63,7 @@ class dataPath {
     
     private function getPathFromDB() : string {
         /** @var database */
-        global $ini ;
-        $db = $ini['db'] ;
+        $db = $_SESSION['db'] ;
         $result = $db->query(self::query) ;
         if (!$result){ 
             die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 

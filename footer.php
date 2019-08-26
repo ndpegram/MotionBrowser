@@ -4,7 +4,7 @@
  * Code for display of footer elements.
  * 
  */
-require_once $ini['root_dir'].'/classes/diskSpaceDisplay.php' ;
+require_once $_SESSION['root_dir'].'/classes/diskSpaceDisplay.php' ;
 
 ?>
 

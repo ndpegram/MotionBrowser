@@ -4,7 +4,7 @@
  * Error handling code.
  */
 
-require_once $ini['root_dir'] . "/lang.inc" ; 
+require_once $_SESSION['root_dir'] . "/lang.inc" ; 
 
 class errors {
     /**

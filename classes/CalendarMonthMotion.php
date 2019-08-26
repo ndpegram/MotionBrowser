@@ -20,7 +20,7 @@
 // TODO: implement date click to display content.
 // TODO: implement display content on date change.
 
-require_once $ini['root_dir'] . '/classes/CalendarMonthSmall.php';
+require_once $_SESSION['root_dir'] . '/classes/CalendarMonthSmall.php';
 
 class CalendarMonthMotion extends CalendarMonthSmall {
 
@@ -55,8 +55,7 @@ class CalendarMonthMotion extends CalendarMonthSmall {
     }
 
     protected function getCalendarHeader(): string {
-        global $ini;
-        $base = $ini['server_dir'];
+        $base = $_SESSION['server_dir'];
         $header = "<table class='minicalendar'>\n";
         
         $nextMonth = strtotime("next month", $this->getDate()) ;
