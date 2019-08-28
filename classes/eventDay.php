@@ -6,7 +6,7 @@
  * @author nigel
  */
 session_start();
-require_once $_SESSION['root_dir'] . '/libs/mysql/mysql.php';
+require_once $_SESSION['root_dir'] . '/classes/dbMotion.php';
 require_once $_SESSION['root_dir'] . '/classes/eventHour.php';
 require_once $_SESSION['root_dir'] . '/classes/event.php';
 
@@ -20,7 +20,7 @@ class eventDay {
 
     /** Query used to select a day's event. */
     CONST QUERY = 'SELECT *, TIME(event_time_stamp) as timefield, HOUR(event_time_stamp) as hourfield, ' .
-            'event_time_stamp+0 as timestamp ' .
+            'event_time_stamp+0 as ts ' .
             'FROM security ' .
             'WHERE event_time_stamp >= %s000000 ' .
             'AND event_time_stamp <= %s235959 ' .
@@ -44,7 +44,7 @@ class eventDay {
         $hour = -1;
         $szDay = $this->getTsDay();
         $query = sprintf(SELF::QUERY, $szDay, $szDay);
-        $db = $this->getDB();
+        $db = new dbMotion();
         $result = $db->query($query);
         $this->processSqlResult($result);
     }
@@ -52,21 +52,26 @@ class eventDay {
     private function processSqlResult(mysqli_result $result) {
         $hour = null;
         $eventsForHour = null;
-        while ($aRow = $result->fetch_assoc()) {
+        
+        // Currently uses the fact that the query is sorted and grouped by hour. Could do this by adding events and filtering in an addEvent method.
+        foreach ($result as $aRow) {
             if ($hour <> $aRow['hourfield']) {
-                if (!is_null($hour)){
-                    $this->addEventsForHour($eventsForHour);
-                }
+                $this->addEventsForHour($eventsForHour);                
                 $hour = $aRow['hourfield'];
+                $eventsForHour = new eventHour() ;
             }
 
             $event = new event();
             $event->loadFromArray($aRow);
-            $eventsForHour[] = $event;
+            $eventsForHour->addEvent($event) ;
+        }
+        
+        if (!is_null($eventsForHour)){
+            $this->addEventsForHour($eventsForHour) ;
         }
     }
 
-    private function addEventsForHour(array $eventsForHour) {
+    private function addEventsForHour(eventHour $eventsForHour) {
         if (is_null($eventsForHour)) {
             return;
         }
@@ -76,15 +81,6 @@ class eventDay {
             $hour->addEvent($anEvent);
         }
         $this->hourEvents[] = $hour;
-    }
-
-    private function getDB() {
-        $db = new database($_SESSION['mysql']['db'],
-                $_SESSION['mysql']['host'],
-                $_SESSION['mysql']['user'],
-                $_SESSION['mysql']['password']);
-
-        return($db);
     }
 
     private function getEventsForHour(): array {

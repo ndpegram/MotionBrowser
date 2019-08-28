@@ -20,7 +20,7 @@ class eventHour {
      */
     public function addEvent(event $event) {
         $this->events[] = $event ;
-        if (is_null($this->getHour())){
+        if (is_null($this->hour)){
             $this->setHour($event->getHour());
         }
     }

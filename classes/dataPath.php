@@ -8,7 +8,7 @@
  *
  * @author nigel
  */
-
+require_once $_SESSION['root_dir'] . '/classes/dbMotion.php';
 
 class dataPath {
     /** Query used to get file storage information from database. */
@@ -63,20 +63,9 @@ class dataPath {
     
     private function getPathFromDB() : string {
         /** @var database */
-        $db = $_SESSION['db'] ;
+        $db = new dbMotion();
         $result = $db->query(self::query) ;
-        if (!$result){ 
-            die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
-                $db->errno,
-                $db->error, 
-                __FILE__,
-                __LINE__,
-                self::query,
-                $result    
-                ));
-        }
-        
-        // Query successful
+
         $row = $result->fetch_assoc();
         $result->free() ;
 
