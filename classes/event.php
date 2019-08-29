@@ -35,6 +35,9 @@ class event {
 
     /** @var string Unused at present */
     private $textEvent;
+    
+    /** @var int the hour of the event */
+    private $hour ;
 
     /**
      * Set the member variables using an associative array of values.
@@ -45,10 +48,11 @@ class event {
         $this->setFilename($row['filename']);
         $this->setFrame($row['frame']);
         $this->setFileType($row['file_type']);
-        $this->setTimeStamp($row['timestamp']);
+        $this->setTimeStamp($row['ts']);
         $this->setTextEvent($row['text_event']);
         $this->setTimeStampEvent($row['event_time_stamp']);
         $this->setFileSize($row['file_size']);
+        $this->setHour($row['hourfield']) ;
     }
 
     public function getCamera() {
@@ -68,7 +72,7 @@ class event {
     }
 
     public function getHour(): int {
-        return (date("G", $this->getTimeStamp()));
+        return ($this->hour);
     }
 
     public function getTimeStamp() {
@@ -95,14 +99,17 @@ class event {
         $this->filename = $filename;
     }
 
-    private function setFrame($frame) {
+    private function setFrame(int $frame) {
         $this->frame = $frame;
     }
 
-    private function setFileType($fileType) {
+    private function setFileType(int $fileType) {
         $this->fileType = $fileType;
     }
 
+    private function setHour(int $hour) {
+        $this->hour = $hour ;
+    }
     private function setTimeStamp($timeStamp) {
         // TODO: convert to Unix timestamp
         $this->timeStamp = $timeStamp;
@@ -114,7 +121,7 @@ class event {
     }
 
     private function setFileSize($fileSize) {
-        // TODO: deal with filesize = 0 ;
+        // TODO: deal with filesize = 0. See setFileSize function in old_index.php.
         $this->fileSize = $fileSize;
     }
 
@@ -122,4 +129,7 @@ class event {
         $this->textEvent = $textEvent;
     }
 
+    public function __toString() {
+        return ("<p>" . $this->getTimeStamp() . "\t" . $this->getFilename() . "</p>") ;
+    }
 }

@@ -10,11 +10,11 @@ require_once $_SESSION['root_dir'].'/classes/event.php';
 class eventHour {
     /** @var int The hour of the events 0..23. */
     private $hour = null ;
-    /** @var event[] Array of event objects. */
+    /** @var event[] An associative array of event objects. The key is the event timestamp. */
     private $events ;
     
     /**
-     * Add an event to the end of the events array.
+     * Add an event to the events array.
      * If the hour property has not yet been set, automatically set it.
      * @param event $event
      */
@@ -32,4 +32,16 @@ class eventHour {
         $this->hour = $hour ;
     }
     
+    public function getEvents() : array {
+        return ($this->events) ;
+    }
+    
+    public function __toString() {
+        $text = "<h1>" . $this->getHour() . "</h1>" ;
+
+        foreach ($this->getEvents() as $event) {
+            $text .= $event ;
+        }
+        return ($text) ;
+    }
 }

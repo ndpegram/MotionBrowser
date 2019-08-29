@@ -71,16 +71,12 @@ class eventDay {
         }
     }
 
-    private function addEventsForHour(eventHour $eventsForHour) {
+    private function addEventsForHour(?eventHour $eventsForHour) {
         if (is_null($eventsForHour)) {
             return;
         }
 
-        $hour = new evenHour();
-        foreach ($eventsForHour as $anEvent) {
-            $hour->addEvent($anEvent);
-        }
-        $this->hourEvents[] = $hour;
+        $this->hourEvents[$eventsForHour->getHour()] = $eventsForHour;
     }
 
     private function getEventsForHour(): array {
@@ -102,7 +98,17 @@ class eventDay {
     private function setTs($ts) {
         $this->ts = $ts;
     }
+    
+    public function __toString() {
+        $text = "" ;
+        foreach ($this->getEventsForHour() as $hour){
+            $text .= $hour ;
+            
+        }
+        return ($text) ;
+    }
 
 }
 
 $day = new eventDay();
+echo ($day) ;
