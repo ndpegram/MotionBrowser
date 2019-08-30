@@ -15,11 +15,17 @@ class event {
     /** @var int The camera ID. */
     private $camera;
 
-    /** @var string The full path and name of the file recording this event. */
-    private $filename;
+    /** @var string The full path and name of the image recording this event. */
+    private $filenameImage;
+
+    /** @var string The full path and name of the video recording this event. */
+    private $filenameVideo;
 
     /** @var int The number of frames. */ // TODO: check this description with the motion sources.
-    private $frame;
+    private $frameImage;
+
+    /** @var int The number of frames. */ // TODO: check this description with the motion sources.
+    private $frameVideo;
 
     /** @var int The file type. */
     private $fileType;
@@ -35,36 +41,83 @@ class event {
 
     /** @var string Unused at present */
     private $textEvent;
-    
+
     /** @var int the hour of the event */
-    private $hour ;
+    private $hour;
 
     /**
-     * Set the member variables using an associative array of values.
+     * Set the member variables using an associative array of values. 
+     * Set the file name to that of the video or data file depending on file type.
+     * filename, frame, file_type and time_stamp vary according to file type.
+     * 
      * @param array $row An associative array containing the values from one row of the database.
      */
     public function loadFromArray(array $row) {
         $this->setCamera($row['camera']);
-        $this->setFilename($row['filename']);
-        $this->setFrame($row['frame']);
-        $this->setFileType($row['file_type']);
-        $this->setTimeStamp($row['ts']);
         $this->setTextEvent($row['text_event']);
         $this->setTimeStampEvent($row['event_time_stamp']);
-        $this->setFileSize($row['file_size']);
-        $this->setHour($row['hourfield']) ;
+        $this->setHour($row['hourfield']);
+        $this->setTimeStamp($row['ts']);
+        $this->setFileDetails($row['file_type'], $row['filename'], $row['frame'], $row['file_size']);
+    }
+
+    public function mergeEvent(event $anEvent) {
+        // The only fields we need to worry about are the file ones.
+        $filetype = (is_null($anEvent->getImageFilename())) ? event::VIDEO_MP4 : event::IMAGE_JPEG ;
+        $filesize = $anEvent->getVideoFileSize();
+
+        switch ($filetype) {
+            case self::IMAGE_JPEG:
+                $filename = $anEvent->getImageFilename();
+                $frame = $anEvent->getImageFrame();
+                break;
+
+            case self::VIDEO_MP4:
+                $filename = $anEvent->getVideoFilename();
+                $frame = $anEvent->getVideoFrame();
+                break;
+        }
+
+        $this->setFileDetails($filetype, $filename, $frame, $filesize);
+    }
+
+    private function setFileDetails(int $filetype, string $filename, int $frame, string $filesize) {
+        // Consolidate image and movie data.
+        switch ($filetype) {
+            case self::IMAGE_JPEG:
+                $this->setImageFilename($filename);
+                $this->setImageFrame($frame);
+                break;
+
+            case self::VIDEO_MP4:
+                $this->setVideoFilename($filename);
+                $this->setVideoFrame($frame);
+                $this->setVideoFileSize($filesize);
+                break;
+
+            default:
+                throw new ErrorException(gettext("Unknown file type in SQL"));
+        }
     }
 
     public function getCamera() {
         return $this->camera;
     }
 
-    public function getFilename() {
-        return $this->filename;
+    public function getImageFilename() {
+        return $this->filenameImage;
     }
 
-    public function getFrame() {
-        return $this->frame;
+    public function getVideoFilename() {
+        return $this->filenameVideo;
+    }
+
+    public function getImageFrame() {
+        return $this->frameImage;
+    }
+
+    public function getVideoFrame() {
+        return $this->frameVideo;
     }
 
     public function getFileType() {
@@ -83,7 +136,7 @@ class event {
         return $this->timeStampEvent;
     }
 
-    public function getFileSize() {
+    public function getVideoFileSize() {
         return $this->fileSize;
     }
 
@@ -95,12 +148,20 @@ class event {
         $this->camera = $camera;
     }
 
-    private function setFilename($filename) {
-        $this->filename = $filename;
+    private function setImageFilename($filename) {
+        $this->filenameImage = $filename;
     }
 
-    private function setFrame(int $frame) {
-        $this->frame = $frame;
+    private function setVideoFilename($filename) {
+        $this->filenameVideo = $filename;
+    }
+
+    private function setImageFrame(int $frame) {
+        $this->frameImage = $frame;
+    }
+
+    private function setVideoFrame(int $frame) {
+        $this->frameVideo = $frame;
     }
 
     private function setFileType(int $fileType) {
@@ -108,8 +169,9 @@ class event {
     }
 
     private function setHour(int $hour) {
-        $this->hour = $hour ;
+        $this->hour = $hour;
     }
+
     private function setTimeStamp($timeStamp) {
         // TODO: convert to Unix timestamp
         $this->timeStamp = $timeStamp;
@@ -120,7 +182,7 @@ class event {
         $this->timeStampEvent = $timeStampEvent;
     }
 
-    private function setFileSize($fileSize) {
+    private function setVideoFileSize($fileSize) {
         // TODO: deal with filesize = 0. See setFileSize function in old_index.php.
         $this->fileSize = $fileSize;
     }
@@ -130,6 +192,7 @@ class event {
     }
 
     public function __toString() {
-        return ("<p>" . $this->getTimeStamp() . "\t" . $this->getFilename() . "</p>") ;
+        return ("<p>" . $this->getTimeStamp() . "\t" . $this->getVideoFilename() . "\t" . $this->getImageFilename() . "</p>");
     }
+
 }
