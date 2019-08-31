@@ -5,7 +5,6 @@
  *
  * @author nigel
  */
-session_start();
 require_once $_SESSION['root_dir'] . '/classes/dbMotion.php';
 require_once $_SESSION['root_dir'] . '/classes/eventHour.php';
 require_once $_SESSION['root_dir'] . '/classes/event.php';
@@ -26,6 +25,12 @@ class eventDay {
             'AND event_time_stamp <= %s235959 ' .
             //'AND file_type=8 '. // list only movies
             'ORDER BY hourfield, camera, timefield, file_type';
+
+    /** Query used to get cameras with data for this day. */
+    CONST QUERY_CAMERAS = 'SELECT distinct `camera` FROM `security` ' .
+            'WHERE event_time_stamp >= %s000000 ' .
+            'AND event_time_stamp <= %s235959 ' .
+            'ORDER BY `camera` ';
 
     /**
      * 
@@ -52,22 +57,22 @@ class eventDay {
     private function processSqlResult(mysqli_result $result) {
         $hour = null;
         $eventsForHour = null;
-        
+
         // Currently uses the fact that the query is sorted and grouped by hour. Could do this by adding events and filtering in an addEvent method.
         foreach ($result as $aRow) {
             if ($hour <> $aRow['hourfield']) {
-                $this->addEventsForHour($eventsForHour);                
+                $this->addEventsForHour($eventsForHour);
                 $hour = $aRow['hourfield'];
-                $eventsForHour = new eventHour() ;
+                $eventsForHour = new eventHour();
             }
 
             $event = new event();
             $event->loadFromArray($aRow);
-            $eventsForHour->addEvent($event) ;
+            $eventsForHour->addEvent($event);
         }
-        
-        if (!is_null($eventsForHour)){
-            $this->addEventsForHour($eventsForHour) ;
+
+        if (!is_null($eventsForHour)) {
+            $this->addEventsForHour($eventsForHour);
         }
     }
 
@@ -98,17 +103,57 @@ class eventDay {
     private function setTs($ts) {
         $this->ts = $ts;
     }
-    
+
     public function __toString() {
-        $text = "" ;
-        foreach ($this->getEventsForHour() as $hour){
-            $text .= $hour ;
-            
+        $text = "";
+        foreach ($this->getEventsForHour() as $hour) {
+            $text .= $hour;
         }
-        return ($text) ;
+        return ($text);
+    }
+
+    private function getCameras(): array {
+        $szDay = $this->getTsDay();
+        $query = sprintf(self::QUERY_CAMERAS, $szDay, $szDay);
+        $db = new dbMotion();
+        $result = $db->query($query);
+        $cameras = array();
+        foreach ($result as $row) {
+            $cameras[] = $row['camera'];
+        }
+        return($cameras);
+    }
+
+    public function toHTML(): string {
+        $cameras = $this->getCameras();
+        $html = "<TABLE id=idtable border=1 cellspacing=0 cellpadding=4 class=timeline>\n";
+        $img = $_SESSION['server_dir']. "/" ;
+
+        // Header row
+        $html .= '<TR class=timeline-header><th> </th>' ;
+        foreach ($cameras as $cam) {
+            $webcam = 'http://' . $_SESSION['webcam']['server'] . ':' . $_SESSION['webcam']['webcam_port'][($cam)] . '/';
+            $title = sprintf(gettext("camera name %d"), $cam);
+            $href = sprintf ("javascript:openwindow('%s', '%s', %u, %u);", $webcam, $title, $_SESSION['webcam']['x'],  $_SESSION['webcam']['y']);
+            $html .= "<th>$title".
+                    "<a href=\"$href\">".
+                    ' <img src=images/icon_video.gif border=0 alt="' . gettext("see_camera") . '">' .
+                    '</a></th>';
+        }
+        $html .= "</TR>\n";
+        
+        // Body rows
+        foreach ($this->getEventsForHour() as $hour) {
+            $html .= $hour->toHTML(sizeof($cameras)) ;
+        }
+        
+
+        $html .= "</TABLE>";
+        return ($html);
     }
 
 }
 
-$day = new eventDay();
-echo ($day) ;
+//session_start() ;
+//$day = new eventDay();
+//echo ($day->toHTML());

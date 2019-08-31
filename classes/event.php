@@ -44,6 +44,9 @@ class event {
 
     /** @var int the hour of the event */
     private $hour;
+    
+    /** @var string the time of the event as a string. */
+    private $time ;
 
     /**
      * Set the member variables using an associative array of values. 
@@ -56,6 +59,7 @@ class event {
         $this->setCamera($row['camera']);
         $this->setTextEvent($row['text_event']);
         $this->setTimeStampEvent($row['event_time_stamp']);
+        $this->setTime($row['timefield']) ;
         $this->setHour($row['hourfield']);
         $this->setTimeStamp($row['ts']);
         $this->setFileDetails($row['file_type'], $row['filename'], $row['frame'], $row['file_size']);
@@ -63,7 +67,7 @@ class event {
 
     public function mergeEvent(event $anEvent) {
         // The only fields we need to worry about are the file ones.
-        $filetype = (is_null($anEvent->getImageFilename())) ? event::VIDEO_MP4 : event::IMAGE_JPEG ;
+        $filetype = (is_null($anEvent->getImageFilename())) ? event::VIDEO_MP4 : event::IMAGE_JPEG;
         $filesize = $anEvent->getVideoFileSize();
 
         switch ($filetype) {
@@ -127,6 +131,10 @@ class event {
     public function getHour(): int {
         return ($this->hour);
     }
+    
+    public function getTime() {
+        return ($this->time) ;
+    }
 
     public function getTimeStamp() {
         return $this->timeStamp;
@@ -171,6 +179,10 @@ class event {
     private function setHour(int $hour) {
         $this->hour = $hour;
     }
+    
+    private function setTime($time){
+        $this->time = $time ;
+    }
 
     private function setTimeStamp($timeStamp) {
         // TODO: convert to Unix timestamp
@@ -193,6 +205,20 @@ class event {
 
     public function __toString() {
         return ("<p>" . $this->getTimeStamp() . "\t" . $this->getVideoFilename() . "\t" . $this->getImageFilename() . "</p>");
+    }
+
+    public function toHTML() {
+        $html = '<div>';
+        $html .= sprintf('<a href="stream.php?file=%s"><img src="thumbnail.php?image=%s&width=88&height=72" border=0></a><br />',
+                $this->getVideoFilename(),
+                $this->getImageFilename());
+        $html .= sprintf('<input type="checkbox" name="%s" value=%s> %s %s',
+                $this->getTimeStamp(),
+                $this->getTimeStamp(),
+                $this->getTime(),
+                $this->getVideoFileSize());
+        $html .= '</div>';
+        return ($html);
     }
 
 }

@@ -11,7 +11,7 @@ class eventHour {
     /** @var int The hour of the events 0..23. */
     private $hour = null ;
     /** @var event[] An associative array of event objects. The key is the event timestamp. */
-    private $events ;
+    private $events = array() ;
     
     /**
      * Add an event to the events array.
@@ -19,7 +19,14 @@ class eventHour {
      * @param event $event
      */
     public function addEvent(event $event) {
-        $this->events[] = $event ;
+        // consolidate image and video events using timestamp as the array key.
+        // TODO: avoid replacing image with video.
+        if (key_exists($event->getTimeStamp(), $this->events)){
+            $this->events[$event->getTimeStamp()]->mergeEvent($event) ;
+        } else {
+            $this->events[$event->getTimeStamp()] = $event ;
+        }
+        
         if (is_null($this->hour)){
             $this->setHour($event->getHour());
         }
@@ -43,5 +50,38 @@ class eventHour {
             $text .= $event ;
         }
         return ($text) ;
+    }
+    
+    public function toHTML(int $numCameras) {
+        $hour_event_count = sizeof($this->getEvents()) ;
+        $camera_cells = array() ;
+        
+        for ($nCount = 1 ; $nCount <= $numCameras ; $nCount++){
+            $camera_cells[$nCount] = "" ;
+        }
+        
+        // hour summary
+        $html = sprintf ('<tr class="hour-summary" id="%s">', $this->getHour()) ;
+        $html .= sprintf('<td valign=top class=timeline-hour>%02u%s</td>', $this->getHour(), gettext("hours"));
+        $html .= sprintf('<td colspan=%u class=timeline-row-header>', $numCameras) ;
+        $html .= sprintf('<img class="plus" id="%s" src="images/plus.gif" border=0 onclick="plusclick(this);">', $this->getHour()) ;
+        $html .= sprintf(ngettext("%d event", "%d events", $hour_event_count), $hour_event_count) ;
+        $html .= '</td></tr>' ;
+
+        // Data cell content
+        foreach ($this->getEvents() as $event){
+            $camera_cells[$event->getCamera()] .= $event->toHTML() ;
+        }
+        
+        // Data row
+        $html .= sprintf('<tr class="hour-events" id="%s">', $this->getHour()) ;
+        $html .= '<td class="timeline-hour"></td>' ;
+        for ($nCount = 1 ; $nCount <= sizeof($camera_cells) ; $nCount++) {
+            $html .= '<td>' ;
+            $html .= $camera_cells[$nCount] ;
+            $html .= '</td>' ;
+        }
+        $html .= '</tr>' ;
+        return ($html) ;
     }
 }
