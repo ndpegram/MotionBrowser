@@ -152,7 +152,7 @@ require_once("stream.php") ;
         }
         
         $szSize = sprintf("%d %s", $fSize, $szUnits) ;
-        $query = "update security set file_size='$fSize' where filename ='$szFileName';";
+        $query = "update security set file_size='$szSize' where filename ='$szFileName';";
         mysqli_query($conn, $query) or 
             die (sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
                 mysqli_connect_errno(),
