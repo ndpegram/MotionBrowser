@@ -43,15 +43,6 @@ class eventHour {
         return ($this->events) ;
     }
     
-    public function __toString() {
-        $text = "<h1>" . $this->getHour() . "</h1>" ;
-
-        foreach ($this->getEvents() as $event) {
-            $text .= $event ;
-        }
-        return ($text) ;
-    }
-    
     public function toHTML(int $numCameras) {
         $hour_event_count = sizeof($this->getEvents()) ;
         $camera_cells = array() ;
@@ -60,7 +51,7 @@ class eventHour {
             $camera_cells[$nCount] = "" ;
         }
         
-        // hour summary
+        // hour summary row
         $html = sprintf ('<tr class="hour-summary" id="%s">', $this->getHour()) ;
         $html .= sprintf('<td valign=top class=timeline-hour>%02u%s</td>', $this->getHour(), gettext("hours"));
         $html .= sprintf('<td colspan=%u class=timeline-row-header>', $numCameras) ;
@@ -82,6 +73,7 @@ class eventHour {
             $html .= '</td>' ;
         }
         $html .= '</tr>' ;
+        
         return ($html) ;
     }
 }

@@ -4,6 +4,7 @@
  * 
  */
 require_once $_SESSION['root_dir'] . '/classes/eventDay.php';
+require_once $_SESSION['root_dir'] . '/classes/eventDayFormatter.php';
 $day = new eventDay();
 
 ?>
@@ -11,7 +12,7 @@ $day = new eventDay();
 
 <div class="main">
 
-<?php echo ($day->toHTML()); ?>
+<?php echo (eventDayFormatUtils::formatEventDay(formatUtils::FORMAT_TEXT, $day)); ?>
 
 </div>
 

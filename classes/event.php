@@ -203,22 +203,4 @@ class event {
         $this->textEvent = $textEvent;
     }
 
-    public function __toString() {
-        return ("<p>" . $this->getTimeStamp() . "\t" . $this->getVideoFilename() . "\t" . $this->getImageFilename() . "</p>");
-    }
-
-    public function toHTML() {
-        $html = '<div>';
-        $html .= sprintf('<a href="stream.php?file=%s"><img src="thumbnail.php?image=%s&width=88&height=72" border=0></a><br />',
-                $this->getVideoFilename(),
-                $this->getImageFilename());
-        $html .= sprintf('<input type="checkbox" name="%s" value=%s> %s %s',
-                $this->getTimeStamp(),
-                $this->getTimeStamp(),
-                $this->getTime(),
-                $this->getVideoFileSize());
-        $html .= '</div>';
-        return ($html);
-    }
-
 }

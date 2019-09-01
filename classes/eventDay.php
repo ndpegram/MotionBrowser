@@ -84,7 +84,7 @@ class eventDay {
         $this->hourEvents[$eventsForHour->getHour()] = $eventsForHour;
     }
 
-    private function getEventsForHour(): array {
+    public function getEventsForHour(): array {
         return $this->hourEvents;
     }
 
@@ -104,15 +104,7 @@ class eventDay {
         $this->ts = $ts;
     }
 
-    public function __toString() {
-        $text = "";
-        foreach ($this->getEventsForHour() as $hour) {
-            $text .= $hour;
-        }
-        return ($text);
-    }
-
-    private function getCameras(): array {
+    public function getCameras(): array {
         $szDay = $this->getTsDay();
         $query = sprintf(self::QUERY_CAMERAS, $szDay, $szDay);
         $db = new dbMotion();
@@ -123,36 +115,8 @@ class eventDay {
         }
         return($cameras);
     }
-
-    public function toHTML(): string {
-        $cameras = $this->getCameras();
-        $html = "<TABLE id=idtable border=1 cellspacing=0 cellpadding=4 class=timeline>\n";
-        $img = $_SESSION['server_dir']. "/" ;
-
-        // Header row
-        $html .= '<TR class=timeline-header><th> </th>' ;
-        foreach ($cameras as $cam) {
-            $webcam = 'http://' . $_SESSION['webcam']['server'] . ':' . $_SESSION['webcam']['webcam_port'][($cam)] . '/';
-            $title = sprintf(gettext("camera name %d"), $cam);
-            $href = sprintf ("javascript:openwindow('%s', '%s', %u, %u);", $webcam, $title, $_SESSION['webcam']['x'],  $_SESSION['webcam']['y']);
-            $html .= "<th>$title".
-                    "<a href=\"$href\">".
-                    ' <img src=images/icon_video.gif border=0 alt="' . gettext("see_camera") . '">' .
-                    '</a></th>';
-        }
-        $html .= "</TR>\n";
-        
-        // Body rows
-        foreach ($this->getEventsForHour() as $hour) {
-            $html .= $hour->toHTML(sizeof($cameras)) ;
-        }
-        
-
-        $html .= "</TABLE>";
-        return ($html);
-    }
-
-}
+    
+ }
 
 //session_start() ;
 //$day = new eventDay();
