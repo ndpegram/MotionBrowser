@@ -12,7 +12,7 @@ $day = new eventDay();
 
 <div class="main">
 
-<?php echo (eventDayFormatUtils::formatEventDay(formatUtils::FORMAT_TEXT, $day)); ?>
+<?php echo (eventDayFormatUtils::formatEventDay(formatUtils::FORMAT_HTML, $day)); ?>
 
 </div>
 

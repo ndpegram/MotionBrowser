@@ -53,7 +53,7 @@ class htmlEventDayFormatter implements eventDayFormatter {
 
         // Body rows
         foreach ($aDay->getEventsForHour() as $hour) {
-            $html .= eventHourFormatUtils::formatEventHour(formatUtils::FORMAT_TEXT, $hour);
+            $html .= eventHourFormatUtils::formatEventHour(formatUtils::FORMAT_HTML, $hour);
         }
 
         // Footer/finish.
