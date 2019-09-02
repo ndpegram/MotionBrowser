@@ -1,8 +1,8 @@
 
-// Events to execut once document loaded.
+// Events to execute once document loaded.
 $( document ).ready(function() {
     // collapse the timeline table
-    timelineDetailsHide() ;
+    // timelineDetailsHide() ;
 });
 
 
@@ -101,29 +101,6 @@ function openwindow(url, title, xx, yy)
 }
 
 
-/**
- * plusClick Respond to the plus image being clicked.
- * @param {object} image
- * @returns {void}
- */
-function plusclick(image)
-{
-    // row ID is same as image, but with 'hour-events' class
-    var ID = image.id ;
-    var selector = "#"  + ID + '.hour-events' ;
-    var row = $(selector) ;
-
-    // Toggle image and row
-    if (image.src.indexOf('mais.gif') !== -1) {
-        image.src = "./menos.gif";
-        row.show() ;
-    }
-    else {
-        image.src = "./mais.gif";
-        row.hide() ;
-    }
-}
-
 // See https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit
 /**
  * sends a request to the specified url from a form. this will change the window location.
@@ -156,11 +133,3 @@ function post(path, params, method='post') {
   form.submit();
 }
 
-/**
- * Hide all timeline detail rows (rows showing the videos).
- * @returns {void} 
- */
-function timelineDetailsHide(){
-    // Hide all table rows of class 'hour-events'
-    $(".hour-events").hide();
-}

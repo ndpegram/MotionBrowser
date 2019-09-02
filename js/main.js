@@ -12,3 +12,35 @@ function openwindow(url, title, xx, yy)
 	wh.focus();
 }
 
+/**
+ * Hide all timeline detail rows (rows showing the videos).
+ * @returns {void} 
+ */
+function timelineDetailsHide(){
+    // Hide all table rows of class 'hour-events'
+    $(".hour-events").hide();
+}
+
+/**
+ * plusClick Respond to the plus image being clicked.
+ * @param {object} image
+ * @returns {void}
+ */
+function plusclick(image)
+{
+    // row ID is same as image, but with 'hour-events' class
+    var ID = image.id ;
+    var selector = "tr#"  + ID + '.hour-events' ;
+    var row = $(selector) ;
+
+    // Toggle image and row
+    if (!row.is(":visible") ) {
+        image.src = "images/minus.gif";
+        row.show() ;
+    }
+    else {
+        image.src = "images/plus.gif";
+        row.hide() ;
+    }
+}
+

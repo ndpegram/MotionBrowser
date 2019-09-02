@@ -20,7 +20,6 @@ class eventHour {
      */
     public function addEvent(event $event) {
         // consolidate image and video events using timestamp as the array key.
-        // TODO: avoid replacing image with video.
         if (key_exists($event->getTimeStamp(), $this->events)){
             $this->events[$event->getTimeStamp()]->mergeEvent($event) ;
         } else {

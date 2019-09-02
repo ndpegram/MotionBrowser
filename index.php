@@ -11,17 +11,19 @@ $_SESSION['root_dir'] = dirname(__FILE__) ;
 $_SESSION['server_dir'] = dirname(filter_input(INPUT_SERVER, 'PHP_SELF')) ;
 
 require_once $_SESSION['root_dir'].'/setup.php';
-
-// HTML <head>
- require_once $_SESSION['root_dir'] . '/head.php';
-
-// HTML body content
 ?>
-<body>
-        <?php
-            require_once $_SESSION['root_dir'] . '/header.php';
-            require_once $_SESSION['root_dir'] . '/sidebar.php';
-            require_once $_SESSION['root_dir'] . '/main.php';
-            require_once $_SESSION['root_dir'] . '/footer.php';
-        ?>
-</body>
+<!DOCTYPE html>
+<html>
+    <!--HTML <head>-->
+    <?php require_once $_SESSION['root_dir'] . '/head.php'; ?>
+
+     <!--HTML body content-->
+    <body>
+            <?php
+                require_once $_SESSION['root_dir'] . '/header.php';
+                require_once $_SESSION['root_dir'] . '/sidebar.php';
+                require_once $_SESSION['root_dir'] . '/main.php';
+                require_once $_SESSION['root_dir'] . '/footer.php';
+            ?>
+    </body>
+</html>

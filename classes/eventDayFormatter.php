@@ -58,6 +58,7 @@ class htmlEventDayFormatter implements eventDayFormatter {
 
         // Footer/finish.
         $html .= "</TABLE>";
+        $html .= "<script type='text/javascript'> timelineDetailsHide() ; </script>" ;
         
         return ($html) ;
     }
