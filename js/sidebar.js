@@ -30,3 +30,33 @@ function displayMonth(ts) {
                 document.querySelector("div.main").innerHTML = "" ;
             });
 }
+
+/**
+ * Set all video selection checkboxes to selected.
+ * @returns {undefined}
+ */
+function select_all(){
+	set_all(true);
+}
+
+/**
+ * Set all video selection checkboxes to deselected.
+ * @returns {undefined}
+ */
+function select_none(){
+	set_all(false);
+}
+
+/**
+ * Set all video selection checkboxes to the state indicated by the parameter.
+ * @param {boolean} value The selection state for all checkboxes.
+ * @returns {undefined}
+ */
+function set_all(value){
+	var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+		checkboxes[i].checked = value ;
+	}
+}
+

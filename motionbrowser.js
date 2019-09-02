@@ -76,22 +76,6 @@ function deleteSelection() {
 
 
 
-function select_all(){
-	set_all(true);
-}
-
-function select_none(){
-	set_all(false);
-}
-
-function set_all(value){
-	var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-    for (var i = 0; i < checkboxes.length; i++) {
-		checkboxes[i].checked = value ;
-	}
-}
-
 function openwindow(url, title, xx, yy)
 {
 	var wh = open(url, title, 'scrollbars=no,status=no,menubar=no,resizable=no,toolbar=yes,width=' + xx + ',height=' + yy);
