@@ -18,9 +18,10 @@ interface eventDayFormatter {
 class textEventDayFormatter implements eventDayFormatter {
     public function format(\eventDay $aDay): string {
         $text = "";
+        $numCameras = sizeof($aDay->getCameras()) ;
 
         foreach ($aDay->getEventsForHour() as $hour) {
-            $text .= eventHourFormatUtils::formatEventHour(formatUtils::FORMAT_TEXT, $hour);
+            $text .= eventHourFormatUtils::formatEventHour(formatUtils::FORMAT_TEXT, $hour, $numCameras);
         }
         return ($text);
     }
@@ -53,7 +54,7 @@ class htmlEventDayFormatter implements eventDayFormatter {
 
         // Body rows
         foreach ($aDay->getEventsForHour() as $hour) {
-            $html .= eventHourFormatUtils::formatEventHour(formatUtils::FORMAT_HTML, $hour);
+            $html .= eventHourFormatUtils::formatEventHour(formatUtils::FORMAT_HTML, $hour, $numCameras);
         }
 
         // Footer/finish.

@@ -11,13 +11,13 @@ require_once $_SESSION['root_dir'] . '/classes/eventFormatter.php';
 ////////////////////////////////////////////////////////////////////////////////
 interface eventHourFormatter {
 
-    public function format(eventHour $anHour);
+    public function format(eventHour $anHour, int $numCameras);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 class textEventHourFormatter implements eventHourFormatter {
 
-    public function format(\eventHour $anHour): string {
+    public function format(\eventHour $anHour, int $numCameras): string {
         $text = "#" . $anHour->getHour() . "\n";
 
         foreach ($anHour->getEvents() as $event) {
@@ -32,10 +32,14 @@ class textEventHourFormatter implements eventHourFormatter {
 ////////////////////////////////////////////////////////////////////////////////
 class htmlEventHourFormatter implements eventHourFormatter {
 
-    public function format(\eventHour $anHour): string {
+    public function format(\eventHour $anHour, int $numCameras): string {
         $hour_event_count = sizeof($anHour->getEvents());
         $camera_cells = array();
 
+        for ($nCount = 1 ; $nCount <= $numCameras ; $nCount++){
+            $camera_cells[$nCount] = "" ;
+        }
+        
         // hour summary row
         $html = sprintf('<tr class="hour-summary" id="%s">', $anHour->getHour());
         $html .= sprintf('<td valign=top class=timeline-hour>%02u%s</td>', $anHour->getHour(), gettext("hours"));
@@ -46,20 +50,19 @@ class htmlEventHourFormatter implements eventHourFormatter {
 
         // Data cell content
         foreach ($anHour->getEvents() as $event) {
-            if (!isset($camera_cells[$event->getCamera()])) {
-                $camera_cells[$event->getCamera()] = "";
-            }
-
             $camera_cells[$event->getCamera()] .= eventFormatUtils::formatEvent(formatUtils::FORMAT_HTML, $event);
         }
 
         // Data row
         $html .= sprintf('<tr class="hour-events" id="%s">', $anHour->getHour());
         $html .= '<td class="timeline-hour"></td>';
-        for ($nCount = 1; $nCount <= sizeof($camera_cells); $nCount++) {
+        for ($nCount = 1 ; $nCount <= $numCameras ; $nCount++) {
             $html .= '<td>';
             if (isset($camera_cells[$nCount])) {
                 $html .= $camera_cells[$nCount];
+            }
+            else {
+                $html .= '&nbsp;' ;
             }
             $html .= '</td>';
         }
@@ -73,7 +76,7 @@ class htmlEventHourFormatter implements eventHourFormatter {
 ////////////////////////////////////////////////////////////////////////////////
 class eventHourFormatUtils extends formatUtils {
 
-    public static function formatEventHour(int $type, eventHour $anHour) {
+    public static function formatEventHour(int $type, eventHour $anHour, int $numCameras) {
         switch ($type) {
             case formatUtils::FORMAT_TEXT:
             case formatUtils::FORMAT_HTML:
@@ -84,7 +87,7 @@ class eventHourFormatUtils extends formatUtils {
         }
 
         $formatter = self::createEventHourFormatter($type);
-        return ($formatter->format($anHour));
+        return ($formatter->format($anHour, $numCameras));
     }
 
     private static function createEventHourFormatter(int $type) {

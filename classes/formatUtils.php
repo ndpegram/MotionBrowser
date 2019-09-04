@@ -1,0 +1,9 @@
+<?php
+
+////////////////////////////////////////////////////////////////////////////////
+abstract class formatUtils {
+
+    const FORMAT_TEXT = 0;
+    const FORMAT_HTML = 1;
+
+}

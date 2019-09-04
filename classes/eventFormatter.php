@@ -6,6 +6,7 @@
  * @author nigel
  */
 require_once $_SESSION['root_dir'] . '/classes/event.php';
+require_once $_SESSION['root_dir'] . '/classes/formatUtils.php';
 
 ////////////////////////////////////////////////////////////////////////////////
 interface eventFormatter {
@@ -39,14 +40,6 @@ class htmlEventFormatter implements eventFormatter {
         $html .= '</div>';
         return ($html);
     }
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-abstract class formatUtils {
-
-    const FORMAT_TEXT = 0;
-    const FORMAT_HTML = 1;
 
 }
 
