@@ -43,7 +43,7 @@ class htmlEventFormatter implements eventFormatter {
 
 }
 
-class eventFormatUtils extends formatUtils {
+class eventFormatUtils implements formatUtils {
 
     public static function formatEvent(int $type, event $anEvent) {
         switch ($type) {
@@ -55,11 +55,11 @@ class eventFormatUtils extends formatUtils {
                 throw new InvalidArgumentException(sprintf(gettext("Invalid type argument passed to '%s'."), 'formatEvent'));
         }
 
-        $formatter = self::createEventFormatter($type);
+        $formatter = self::createFormatter($type);
         return ($formatter->format($anEvent));
     }
 
-    private static function createEventFormatter(int $type) {
+    static function createFormatter(int $type) {
         switch ($type) {
             case formatUtils::FORMAT_TEXT:
                 return (new textEventFormatter());

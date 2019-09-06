@@ -74,7 +74,7 @@ class htmlEventHourFormatter implements eventHourFormatter {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-class eventHourFormatUtils extends formatUtils {
+class eventHourFormatUtils implements formatUtils {
 
     public static function formatEventHour(int $type, eventHour $anHour, int $numCameras) {
         switch ($type) {
@@ -86,11 +86,11 @@ class eventHourFormatUtils extends formatUtils {
                 throw new InvalidArgumentException(sprintf(gettext("Invalid type argument passed to '%s'."), 'formatEventHour'));
         }
 
-        $formatter = self::createEventHourFormatter($type);
+        $formatter = self::createFormatter($type);
         return ($formatter->format($anHour, $numCameras));
     }
 
-    private static function createEventHourFormatter(int $type) {
+    static function createFormatter(int $type) {
         switch ($type) {
             case formatUtils::FORMAT_TEXT:
                 $formatter = new textEventHourFormatter();

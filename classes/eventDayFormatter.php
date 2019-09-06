@@ -67,7 +67,7 @@ class htmlEventDayFormatter implements eventDayFormatter {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-class eventDayFormatUtils extends formatUtils {
+class eventDayFormatUtils implements formatUtils {
 
     public static function formatEventDay(int $type, eventDay $aDay) {
         switch ($type) {
@@ -79,11 +79,11 @@ class eventDayFormatUtils extends formatUtils {
                 throw new InvalidArgumentException(sprintf(gettext("Invalid type argument passed to '%s'."), 'formatEventDay'));
         }
 
-        $formatter = self::createEventDayFormatter($type);
+        $formatter = self::createFormatter($type);
         return ($formatter->format($aDay));
     }
 
-    private static function createEventDayFormatter(int $type) {
+    static function createFormatter(int $type) {
         switch ($type) {
             case formatUtils::FORMAT_TEXT:
                 return (new textEventDayFormatter());
