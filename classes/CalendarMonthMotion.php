@@ -47,7 +47,7 @@ class CalendarMonthMotion extends CalendarMonthSmall {
             if ($this->isToday($content)) {
                 $style = "selected-day";
             } else {
-                $script = sprintf('onClick="alert (\'%s\') ;"', date('d-m-y', $thisDay));
+                $script = sprintf('onClick="showDate (\'%u\') ;"', $thisDay);
             }
         }
 
