@@ -16,15 +16,12 @@
  * 
  *  @author nigel
  */
-// TODO: implement date click to display content.
-// TODO: implement display content on date change.
 
 require_once $_SESSION['root_dir'] . '/classes/CalendarMonthSmall.php';
 
 class CalendarMonthMotion extends CalendarMonthSmall {
 
     protected function getCalendarCell(int $date): string {
-        // TODO: set the ID of the cell to the unix timestamp of the date. 
         // The date() function format is Ymd
         // May need to set this in parent class or juse javascript from here.
         $style = "normal-day";
@@ -47,7 +44,7 @@ class CalendarMonthMotion extends CalendarMonthSmall {
             if ($this->isToday($content)) {
                 $style = "selected-day";
             } else {
-                $script = sprintf('onClick="showDate (\'%u\') ;"', $thisDay);
+                $script = sprintf('onClick="displayMonth (\'%u\') ;"', $thisDay);
             }
         }
 
@@ -59,7 +56,7 @@ class CalendarMonthMotion extends CalendarMonthSmall {
 
         $footer = '<tr><td colspan=7 align=center class=calendar-footer>';
         // Today button
-        $footer .= "<input type=button value=\"" . gettext("today") . "\" onclick='showDate($now) ;' >";
+        $footer .= "<input type=button value=\"" . gettext("today") . "\" onclick='displayMonth($now) ;' >";
         $footer .= '</td></tr>';
         $footer .= parent::getCalendarFooter();
         return ($footer);

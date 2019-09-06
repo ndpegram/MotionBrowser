@@ -11,12 +11,14 @@
  */
 function displayMonth(ts) {
     var divMinicalendar = document.querySelector("div.minicalendar");
+    var divMain = document.querySelector("div.main");
 
-    var URL = getBaseDir() + "/callbacks/getCalendar.php"
+    // Redraw the calendar.
+    var URL = getBaseDir() + "/callbacks/getCalendar.php";
 
     $.post(URL,
             {
-                ts: ts,
+                ts: ts
             },
             function (data, status) {
                 // Redraw the calendar
@@ -24,16 +26,13 @@ function displayMonth(ts) {
                 // Clear the main window
                 document.querySelector("div.main").innerHTML = "";
             });
-}
 
-function showDate(ts) {
-    displayMonth(ts);
-    var URL = getBaseDir() + "/callbacks/getEvents.php?ts=" + ts;
-    var divMain = document.querySelector("div.main");
+    // Display details for the day in the main window.
+    URL = getBaseDir() + "/callbacks/getEvents.php?ts=" + ts;
 
     $.post(URL,
             {
-                ts: ts,
+                ts: ts
             },
             function (data, status) {
                 // Redraw the calendar
