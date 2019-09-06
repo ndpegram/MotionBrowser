@@ -188,6 +188,10 @@ Original Carlos Ladeira version.
 To Do/Planned features
 ======================
 
+-   FIXME: Display of 2 September causes server error. Debug.
+
+-   TODO: Alter code for month change arrows so that destination date info is displayed.
+
 -   Update the code to object-oriented format
 
 -   Convert layout from tables to DIV and CSS format, to allow for better display on mobiles, etc., and to allow for more useful degrading.
