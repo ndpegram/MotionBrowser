@@ -36,7 +36,7 @@ class eventDay {
      * 
      * @param type $ts The timestamp of the day whose events are to be loaded. If null, then today is used.
      */
-    public function __construct(\int $ts = null) {
+    public function __construct(?int $ts = null) {
         if (is_null($ts)) {
             $ts = time();
         }
