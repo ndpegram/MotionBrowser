@@ -59,7 +59,7 @@ class CalendarMonthMotion extends CalendarMonthSmall {
 
         $footer = '<tr><td colspan=7 align=center class=calendar-footer>';
         // Today button
-        $footer .= "<input type=button value=\"" . gettext("today") . "\" onclick='displayMonth($now) ;' >";
+        $footer .= "<input type=button value=\"" . gettext("today") . "\" onclick='showDate($now) ;' >";
         $footer .= '</td></tr>';
         $footer .= parent::getCalendarFooter();
         return ($footer);

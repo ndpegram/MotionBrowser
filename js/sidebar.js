@@ -12,12 +12,7 @@
 function displayMonth(ts) {
     var divMinicalendar = document.querySelector("div.minicalendar");
 
-    // Get base directory so can then get callback using relative paths. 
-    //This allows installation on a range of servers without having to change hard-coded file locations.
-    var scripts= document.getElementsByTagName('script');       // Get the first script DOM (this one)
-    var path= scripts[0].baseURI.split('?')[0];      // remove any ?query
-    var mydir= path.split('/').slice(0, -1).join('/')+'/';      // remove last filename part of path
-    URL = mydir + "/callbacks/getCalendar.php"
+    var URL = getBaseDir() + "/callbacks/getCalendar.php"
 
     $.post(URL,
             {
@@ -27,28 +22,53 @@ function displayMonth(ts) {
                 // Redraw the calendar
                 divMinicalendar.innerHTML = data;
                 // Clear the main window
-                document.querySelector("div.main").innerHTML = "" ;
+                document.querySelector("div.main").innerHTML = "";
             });
 }
 
 function showDate(ts) {
-    displayMonth(ts) ;
+    displayMonth(ts);
+    var URL = getBaseDir() + "/callbacks/getEvents.php?ts=" + ts;
+    var divMain = document.querySelector("div.main");
+
+    $.post(URL,
+            {
+                ts: ts,
+            },
+            function (data, status) {
+                // Redraw the calendar
+                divMain.innerHTML = data;
+                $(".hour-events").hide();
+            });
+}
+
+/**
+ * 
+ * @returns {String} The base URL.
+ */
+function getBaseDir() {
+    // Get base directory so can then get callback using relative paths. 
+    //This allows installation on a range of servers without having to change hard-coded file locations.
+    var scripts = document.getElementsByTagName('script');       // Get the first script DOM (this one)
+    var path = scripts[0].baseURI.split('?')[0];      // remove any ?query
+    var mydir = path.split('/').slice(0, -1).join('/') + '/';      // remove last filename part of path
+    return mydir;
 }
 
 /**
  * Set all video selection checkboxes to selected.
  * @returns {undefined}
  */
-function select_all(){
-	set_all(true);
+function select_all() {
+    set_all(true);
 }
 
 /**
  * Set all video selection checkboxes to deselected.
  * @returns {undefined}
  */
-function select_none(){
-	set_all(false);
+function select_none() {
+    set_all(false);
 }
 
 /**
@@ -56,11 +76,11 @@ function select_none(){
  * @param {boolean} value The selection state for all checkboxes.
  * @returns {undefined}
  */
-function set_all(value){
-	var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+function set_all(value) {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
     for (var i = 0; i < checkboxes.length; i++) {
-		checkboxes[i].checked = value ;
-	}
+        checkboxes[i].checked = value;
+    }
 }
 
