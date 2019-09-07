@@ -188,13 +188,9 @@ Original Carlos Ladeira version.
 To Do/Planned features
 ======================
 
--   FIXME: Display of 2 September causes server error. Debug.
-
--   TODO: Alter code for month change arrows so that destination date info is displayed.
-
 -   Update the code to object-oriented format
 
--   Convert layout from tables to DIV and CSS format, to allow for better display on mobiles, etc., and to allow for more useful degrading.
+-   Convert layout from tables to DIV and CSS format, to allow for better display on mobiles, etc., and to allow for more useful degrading. Not converting video output to table as semantically it is a table of rows and columns.
 
 -   As part of the above, perhaps move to AJAX interface. For example, responding to date clicks via AJAX to fill content DIV, rather than submitting a form and redrawing the whole page (as it currently does).
 

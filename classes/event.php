@@ -6,6 +6,8 @@
  *
  * @author nigel
  */
+require_once $_SESSION['root_dir'] . '/libs/getid3/getid3.php';
+
 class event {
 
     // TODO: Inspect motion sources for other values and to confirm these descriptions. Note that the documentation does not describe these.
@@ -44,9 +46,12 @@ class event {
 
     /** @var int the hour of the event */
     private $hour;
-    
+
     /** @var string the time of the event as a string. */
-    private $time ;
+    private $time;
+
+    /** @var string the length of the video. */
+    private $videoLength = null;
 
     /**
      * Set the member variables using an associative array of values. 
@@ -59,7 +64,7 @@ class event {
         $this->setCamera($row['camera']);
         $this->setTextEvent($row['text_event']);
         $this->setTimeStampEvent($row['event_time_stamp']);
-        $this->setTime($row['timefield']) ;
+        $this->setTime($row['timefield']);
         $this->setHour($row['hourfield']);
         $this->setTimeStamp($row['ts']);
         $this->setFileDetails($row['file_type'], $row['filename'], $row['frame'], $row['file_size']);
@@ -85,7 +90,7 @@ class event {
         $this->setFileDetails($filetype, $filename, $frame, $filesize);
     }
 
-    private function setFileDetails(int $filetype, string $filename, int $frame, string $filesize) {
+    private function setFileDetails(int $filetype, string $filename, int $frame, ?string $filesize) {
         // Consolidate image and movie data.
         switch ($filetype) {
             case self::IMAGE_JPEG:
@@ -131,9 +136,9 @@ class event {
     public function getHour(): int {
         return ($this->hour);
     }
-    
+
     public function getTime() {
-        return ($this->time) ;
+        return ($this->time);
     }
 
     public function getTimeStamp() {
@@ -179,9 +184,9 @@ class event {
     private function setHour(int $hour) {
         $this->hour = $hour;
     }
-    
-    private function setTime($time){
-        $this->time = $time ;
+
+    private function setTime($time) {
+        $this->time = $time;
     }
 
     private function setTimeStamp($timeStamp) {
@@ -196,11 +201,30 @@ class event {
 
     private function setVideoFileSize($fileSize) {
         // TODO: deal with filesize = 0. See setFileSize function in old_index.php.
+        if (is_null($fileSize) || ($fileSize == 0)) {
+            $fileSize = "";
+        }
         $this->fileSize = $fileSize;
     }
 
     private function setTextEvent($textEvent) {
         $this->textEvent = $textEvent;
+    }
+
+    public function getVideoLength() {
+        if (is_null($this->videoLength)) {
+            // Initialize getID3 engine
+            $getID3 = new getID3;
+
+            // Analyze file and store returned data in $ThisFileInfo
+            $fileInfo = $getID3->analyze($this->getVideoFilename());
+
+            if (!isset($fileInfo['error'])) {
+                $this->videoLength = $fileInfo['playtime_string'];            // playtime in minutes:seconds, formatted string
+            }
+        }
+
+        return ($this->videoLength);
     }
 
 }

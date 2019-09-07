@@ -32,11 +32,13 @@ class htmlEventFormatter implements eventFormatter {
         $html .= sprintf('<a href="stream.php?file=%s"><img src="callbacks/thumbnail.php?image=%s&width=88&height=72" border=0></a><br />',
                 $anEvent->getVideoFilename(),
                 $anEvent->getImageFilename());
-        $html .= sprintf('<input type="checkbox" name="%s" value=%s> %s %s',
-                $anEvent->getTimeStamp(),
-                $anEvent->getTimeStamp(),
+        $html .= sprintf('%s <input type="checkbox" name="%s" value=%s> <br />Size: %s <br />Length: %s',
                 $anEvent->getTime(),
-                $anEvent->getVideoFileSize());
+                $anEvent->getTimeStamp(),
+                $anEvent->getTimeStamp(),
+                $anEvent->getVideoFileSize(),
+                $anEvent->getVideoLength() 
+                );
         $html .= '</div>';
         return ($html);
     }
