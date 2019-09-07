@@ -757,22 +757,14 @@ To Do/Planned features
 \end_layout
 
 \begin_layout Itemize
-FIXME: Display of 2 September causes server error.
- Debug.
-\end_layout
-
-\begin_layout Itemize
-TODO: Alter code for month change arrows so that destination date info is
- displayed.
-\end_layout
-
-\begin_layout Itemize
 Update the code to object-oriented format
 \end_layout
 
 \begin_layout Itemize
 Convert layout from tables to DIV and CSS format, to allow for better display
  on mobiles, etc., and to allow for more useful degrading.
+ Not converting video output to table as semantically it is a table of rows
+ and columns.
 \end_layout
 
 \begin_layout Itemize
