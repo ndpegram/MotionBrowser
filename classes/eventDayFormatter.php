@@ -32,6 +32,11 @@ class textEventDayFormatter implements eventDayFormatter {
 class htmlEventDayFormatter implements eventDayFormatter {
 
     public function format(\eventDay $aDay): string {
+        
+        if (null === $aDay->getEventsForHour()){
+            return (gettext(gettext("no_events"))) ;
+        }
+        
         $html = "";
         $cameras = $aDay->getCameras();
         $numCameras = sizeof($cameras);

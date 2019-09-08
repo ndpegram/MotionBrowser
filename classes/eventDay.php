@@ -18,7 +18,7 @@ class eventDay {
     private $ts;
 
     /** Query used to select a day's event. */
-    CONST QUERY = 'SELECT *, TIME(event_time_stamp) as timefield, HOUR(event_time_stamp) as hourfield, ' .
+    private CONST QUERY = 'SELECT *, TIME(event_time_stamp) as timefield, HOUR(event_time_stamp) as hourfield, ' .
             'event_time_stamp+0 as ts ' .
             'FROM security ' .
             'WHERE event_time_stamp >= %s000000 ' .
@@ -27,7 +27,7 @@ class eventDay {
             'ORDER BY hourfield, camera, timefield, file_type';
 
     /** Query used to get cameras with data for this day. */
-    CONST QUERY_CAMERAS = 'SELECT distinct `camera` FROM `security` ' .
+    private CONST QUERY_CAMERAS = 'SELECT distinct `camera` FROM `security` ' .
             'WHERE event_time_stamp >= %s000000 ' .
             'AND event_time_stamp <= %s235959 ' .
             'ORDER BY `camera` ';
@@ -84,8 +84,13 @@ class eventDay {
         $this->hourEvents[$eventsForHour->getHour()] = $eventsForHour;
     }
 
-    public function getEventsForHour(): array {
-        return $this->hourEvents;
+    public function getEventsForHour(): ?array {
+        if (isset($this->hourEvents)){
+            return $this->hourEvents;
+        }
+        else {
+            return (null) ;
+        }
     }
 
     private function getTs() {
