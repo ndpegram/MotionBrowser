@@ -9,7 +9,8 @@
 require_once $_SESSION['root_dir'] . '/libs/getid3/getid3.php';
 
 class event {
-
+    private const QUERY_SAVE_FILE_SIZE = "update security set file_size='%s' where filename ='%s';";
+    
     // TODO: Inspect motion sources for other values and to confirm these descriptions. Note that the documentation does not describe these.
     CONST VIDEO_MP4 = 8;
     CONST IMAGE_JPEG = 1;
@@ -200,11 +201,52 @@ class event {
     }
 
     private function setVideoFileSize($fileSize) {
-        // TODO: deal with filesize = 0. See setFileSize function in old_index.php.
+        $bSave = false ;
+        
         if (is_null($fileSize) || ($fileSize == 0)) {
-            $fileSize = "";
+            $szFileSize = $this->calculateVideoFileSize($this->getVideoFilename()) ;
+            $bSave = true ;
         }
+
         $this->fileSize = $fileSize;
+        
+        if ($bSave){
+            $this->saveFileSize() ;
+        }
+    }
+    
+    private function calculateVideoFileSize (string $szFileName) : string {
+        $fSize = filesize($szFileName) ;
+        $szFileSize = $this->formatBytes($fSize) ;
+    }
+    
+    private function saveFileSize() {
+        $query = sprintf(self::QUERY_SAVE_FILE_SIZE, $this->getVideoFileSize(), $this->getVideoFilename()) ;
+
+        $db = new dbMotion();
+        $bRc = $db->query($query);
+        if (!$bRc) {
+            $szMsg = sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
+                                mysqli_connect_errno(),
+                                mysqli_connect_error(), 
+                                __FILE__,
+                                __LINE__,
+                                $query,
+                                ""    
+                                ) ;
+            throw new RuntimeException($szMsg) ;
+        }
+    }
+
+    private function formatBytes(float $bytes, int $precision = 2) : string {
+        $units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        $i = 0;
+
+        while ($bytes > 1024) {
+            $bytes /= 1024;
+            $i++;
+        }
+        return round($bytes, $precision) . ' ' . $units[$i];
     }
 
     private function setTextEvent($textEvent) {
@@ -216,11 +258,12 @@ class event {
             // Initialize getID3 engine
             $getID3 = new getID3;
 
-            // Analyze file and store returned data in $ThisFileInfo
+            // Analyze file
             $fileInfo = $getID3->analyze($this->getVideoFilename());
 
             if (!isset($fileInfo['error'])) {
-                $this->videoLength = $fileInfo['playtime_string'];            // playtime in minutes:seconds, formatted string
+                // TODO: write out to database.
+                $this->videoLength = $fileInfo['playtime_string']; // playtime in minutes:seconds, formatted string
             }
         }
 
