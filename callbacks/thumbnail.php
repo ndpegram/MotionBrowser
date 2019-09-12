@@ -10,8 +10,8 @@ $newwidth = filter_input(INPUT_GET, 'width') ;
 $newheight = filter_input(INPUT_GET, 'height') ;
 
 // load image
-$source = imagecreatefromjpeg($filename) ;
-if ($source) {
+if (file_exists($filename)) {
+    $source = imagecreatefromjpeg($filename) ;
     // Content type
     header('Content-type: image/jpeg');
 
