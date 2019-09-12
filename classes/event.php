@@ -204,11 +204,12 @@ class event {
         $bSave = false;
 
         if (is_null($fileSize) || ($fileSize == 0)) {
-            $szFileSize = $this->calculateVideoFileSize($this->getVideoFilename());
+            $this->fileSize = $this->calculateVideoFileSize($this->getVideoFilename());
             $bSave = true;
         }
-
-        $this->fileSize = $szFileSize;
+        else {
+            $this->fileSize = $fileSize ;
+        }
 
         if ($bSave) {
             $this->saveFileSize();
