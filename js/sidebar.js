@@ -15,6 +15,9 @@ function displayMonth(ts) {
 
     // Redraw the calendar.
     var URL = getBaseDir() + "/callbacks/getCalendar.php";
+    
+    var cursor = document.body.style.cursor ;
+    document.body.style.cursor = 'wait' ;
 
     $.post(URL,
             {
@@ -37,7 +40,11 @@ function displayMonth(ts) {
             function (data, status) {
                 // Redraw the calendar
                 divMain.innerHTML = data;
+                // hide all event rows in the table.
                 $(".hour-events").hide();
+                //show the original cursor.
+                document.body.style.cursor = cursor ;
+
             });
 }
 
