@@ -5,6 +5,7 @@
  */
 session_start() ;
 
+require_once $_SESSION['root_dir'] . '/lang.inc' ;
 require_once $_SESSION['root_dir'] . '/classes/CalendarMonthMotion.php';
 
 $ts = filter_input(INPUT_POST, "ts") ;
