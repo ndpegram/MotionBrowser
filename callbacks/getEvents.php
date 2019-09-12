@@ -8,6 +8,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
+require_once $_SESSION['root_dir'] . '/lang.inc' ;
 require_once $_SESSION['root_dir'] . '/classes/eventDay.php';
 require_once $_SESSION['root_dir'] . '/classes/eventDayFormatter.php';
 
