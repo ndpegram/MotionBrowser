@@ -9,8 +9,8 @@
 require_once $_SESSION['root_dir'] . '/libs/getid3/getid3.php';
 
 class event {
+
     private const QUERY_SAVE_FILE_SIZE = "update security set file_size='%s' where filename ='%s';";
-    
     // TODO: Inspect motion sources for other values and to confirm these descriptions. Note that the documentation does not describe these.
     CONST VIDEO_MP4 = 8;
     CONST IMAGE_JPEG = 1;
@@ -201,45 +201,51 @@ class event {
     }
 
     private function setVideoFileSize($fileSize) {
-        $bSave = false ;
-        
+        $bSave = false;
+
         if (is_null($fileSize) || ($fileSize == 0)) {
-            $szFileSize = $this->calculateVideoFileSize($this->getVideoFilename()) ;
-            $bSave = true ;
+            $szFileSize = $this->calculateVideoFileSize($this->getVideoFilename());
+            $bSave = true;
         }
 
-        $this->fileSize = $fileSize;
-        
-        if ($bSave){
-            $this->saveFileSize() ;
+        $this->fileSize = $szFileSize;
+
+        if ($bSave) {
+            $this->saveFileSize();
         }
     }
-    
-    private function calculateVideoFileSize (string $szFileName) : string {
-        $fSize = filesize($szFileName) ;
-        $szFileSize = $this->formatBytes($fSize) ;
+
+    private function calculateVideoFileSize(string $szFileName): string {
+        if (file_exists($szFileName)) {
+            $fSize = filesize($szFileName);
+            $szFileSize = $this->formatBytes($fSize);
+        }
+        else {
+            $szFileSize = gettext("n/a") ;
+        }
+        return ($szFileSize);
     }
-    
+
     private function saveFileSize() {
-        $query = sprintf(self::QUERY_SAVE_FILE_SIZE, $this->getVideoFileSize(), $this->getVideoFilename()) ;
+        $query = sprintf(self::QUERY_SAVE_FILE_SIZE, $this->getVideoFileSize(), $this->getVideoFilename());
 
         $db = new dbMotion();
         $bRc = $db->query($query);
         if (!$bRc) {
-            $szMsg = sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"), 
-                                mysqli_connect_errno(),
-                                mysqli_connect_error(), 
-                                __FILE__,
-                                __LINE__,
-                                $query,
-                                ""    
-                                ) ;
-            throw new RuntimeException($szMsg) ;
+            $szMsg = sprintf(gettext("query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s <br /> line: %d <br /> query: %s <br /> result: %s"),
+                    mysqli_connect_errno(),
+                    mysqli_connect_error(),
+                    __FILE__,
+                    __LINE__,
+                    $query,
+                    ""
+                    );
+            throw new RuntimeException($szMsg);
         }
     }
 
-    private function formatBytes(float $bytes, int $precision = 2) : string {
-        $units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    private function formatBytes(float $bytes, int $precision = 2): string {
+        $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
         $i = 0;
 
         while ($bytes > 1024) {
@@ -254,6 +260,10 @@ class event {
     }
 
     public function getVideoLength() {
+        if (!file_exists($this->getVideoFilename())){
+            return gettext("n/a") ;
+        }
+        
         if (is_null($this->videoLength)) {
             // Initialize getID3 engine
             $getID3 = new getID3;
