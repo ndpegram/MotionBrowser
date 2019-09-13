@@ -44,7 +44,8 @@ function displayMonth(ts) {
                 $(".hour-events").hide();
                 //show the original cursor.
                 document.body.style.cursor = cursor ;
-
+                //reinitialise lightbox (requried to get AJAX content to work).
+                $(".html5lightbox").html5lightbox();
             });
 }
 
