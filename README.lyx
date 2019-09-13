@@ -236,74 +236,92 @@ It is supposed to work with the following motion.conf options set as shown
 \end_layout
 
 \begin_layout Verbatim
+
 		pre_capture 8		(works for me with a framerate of 6)
 \end_layout
 
 \begin_layout Verbatim
+
 		post_capture 8		(ie)
 \end_layout
 
 \begin_layout Verbatim
+
 		output_all off
 \end_layout
 
 \begin_layout Verbatim
+
 		output_normal best (or) first
 \end_layout
 
 \begin_layout Verbatim
+
 		output_motion off
 \end_layout
 
 \begin_layout Verbatim
+
 		text_event %Y%m%d%H%M%S
 \end_layout
 
 \begin_layout Verbatim
+
 		ffmpeg_cap_new on
 \end_layout
 
 \begin_layout Verbatim
+
 		ffmpeg_video_codec msmpeg4
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_log_image on
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_log_snapshot off
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_log_mpeg on
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_log_timelapse off
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_query INSERT ...	(I use the default)
 \end_layout
 
 \begin_layout Verbatim
+
 		mysql_db motion		(my database name)
 \end_layout
 
 \begin_layout Verbatim
+
 		mysql_host localhost
 \end_layout
 
 \begin_layout Verbatim
+
 		mysql_user ...		(the user name i created in MySQL)
 \end_layout
 
 \begin_layout Verbatim
+
 		mysql_password ...	(the password associated with user)
 \end_layout
 
 \begin_layout Verbatim
+
 	
 \end_layout
 
@@ -343,14 +361,17 @@ www-data
 \end_layout
 
 \begin_layout Verbatim
+
 		sudo chgrp -R www-data /var/lib/motion
 \end_layout
 
 \begin_layout Verbatim
+
 		sudo chmod -R g+rw /var/lib/motion
 \end_layout
 
 \begin_layout Verbatim
+
 	
 \end_layout
 
@@ -363,55 +384,68 @@ Use the following to create your mySQL table.
 \end_layout
 
 \begin_layout Verbatim
+
 		CREATE TABLE `security` (
 \end_layout
 
 \begin_layout Verbatim
+
 		  `camera` int(11) DEFAULT NULL,
 \end_layout
 
 \begin_layout Verbatim
+
 		  `filename` varchar(80) NOT NULL DEFAULT '',
 \end_layout
 
 \begin_layout Verbatim
+
 		  `frame` int(11) DEFAULT NULL,
 \end_layout
 
 \begin_layout Verbatim
+
 		  `file_type` int(11) DEFAULT NULL,
 \end_layout
 
 \begin_layout Verbatim
+
 		  `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE
  CURRENT_TIMESTAMP,
 \end_layout
 
 \begin_layout Verbatim
+
 		  `text_event` varchar(40) NOT NULL DEFAULT '0000-00-00 00:00:00',
 \end_layout
 
 \begin_layout Verbatim
+
 		  `event_time_stamp` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
 \end_layout
 
 \begin_layout Verbatim
+
 		  `file_size` varchar(36) NOT NULL DEFAULT '0',
 \end_layout
 
 \begin_layout Verbatim
+
 		  KEY `time_stamp` (`time_stamp`),
 \end_layout
 
 \begin_layout Verbatim
+
 		  KEY `event_time_stamp` (`event_time_stamp`)
 \end_layout
 
 \begin_layout Verbatim
+
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8
 \end_layout
 
 \begin_layout Verbatim
+
 	
 \end_layout
 
@@ -487,6 +521,51 @@ DocumentRoot should be set to the fully-qualified path of where you intalled
  the MotionBrowser files 
 \end_layout
 
+\begin_layout Description
+Alias an alias needs to be created so that directory 
+\begin_inset Flex Enquote
+status collapsed
+
+\begin_layout Plain Layout
+video
+\end_layout
+
+\end_inset
+
+ in the root directory points to the location where the files are saved.
+ For example: 
+\end_layout
+
+\begin_deeper
+\begin_layout Verbatim
+# Alias for streaming video data for MotionBrowser 	
+\end_layout
+
+\begin_layout Verbatim
+alias "/MotionBrowser/video/" "/var/lib/motion/" 	
+\end_layout
+
+\begin_layout Verbatim
+<Directory "/var/lib/motion/">
+\end_layout
+
+\begin_layout Verbatim
+	Options Indexes
+\end_layout
+
+\begin_layout Verbatim
+	AllowOverride None 		
+\end_layout
+
+\begin_layout Verbatim
+	Require all granted
+\end_layout
+
+\begin_layout Verbatim
+</Directory>
+\end_layout
+
+\end_deeper
 \begin_layout Description
 Other Log names and locations can be set as required.
  
@@ -626,6 +705,55 @@ Totally rewritten to use CSS div elements rather than tables, so as to degrade
  Also rewritten to use object-based coding, rather than procedural coding
  (as in the original), to ease maintenance.
  Code also separated into more discrete units to ease maintenance.
+\end_layout
+
+\begin_layout Standard
+Used a number of external libraries to increase functionality and appearance:
+\end_layout
+
+\begin_layout Itemize
+getID3 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://getid3.sourceforge.net/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+HTML5 Lightbox 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://html5box.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+jQuery AJAX 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://jquery.com/
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection

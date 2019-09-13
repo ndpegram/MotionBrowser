@@ -28,10 +28,13 @@ class textEventFormatter implements eventFormatter {
 class htmlEventFormatter implements eventFormatter {
 
     public function format(\event $anEvent): string {
+//        return (self::test) ;
+        $videoURL = self::getVideoBaseURL() ;
+        $videoURL .= basename($anEvent->getVideoFilename()) ;
         $html = '<div>';
-        $html .= sprintf('<a href="stream.php?file=%s"><img src="callbacks/thumbnail.php?image=%s&width=88&height=72" border=0></a><br />',
-                $anEvent->getVideoFilename(),
-                $anEvent->getImageFilename());
+        $html .= sprintf('<a target="_blank" href="%1$s" class="html5lightbox" title="%1$s"><img src="callbacks/thumbnail.php?image=%2$s&width=88&height=72" border=0></a><br />',
+                        $videoURL,
+                        $anEvent->getImageFilename());
         $html .= sprintf('%s <input type="checkbox" name="%s" value=%s> <br />Size: %s <br />Length: %s',
                 $anEvent->getTime(),
                 $anEvent->getTimeStamp(),
@@ -43,6 +46,26 @@ class htmlEventFormatter implements eventFormatter {
         return ($html);
     }
 
+    private static function getVideoBaseURL() : string {
+        $URL1 = $_SERVER['HTTP_REFERER'] ;
+        $nPos = strpos($URL1, '?') ;
+        $URL2 = substr ($URL1, 0, $nPos) ;
+        $nPos = strrpos($URL2, '/') ;
+        $URL3 = substr ($URL2, 0, $nPos) ;
+        $URL3 .= '/video/' ;
+        return ($URL3) ;
+    }
+
+    public const test='		<div>
+			<a target=_blank href="http://localhost/MotionBrowser/video/717-20190901011332.mp4" class="html5lightbox" >
+				<img src="../MotionBrowser/callbacks/thumbnail.php?image=/var/lib/motion/CAM1_717-20190901011333-22.jpg&amp;width=88&amp;height=72" border="0">
+			</a>
+			<br>01:13:32 
+			<input type="checkbox" name="20190901011332" value="20190901011332"> 
+			<br>Size: 37 MB 
+			<br>Length: 0:44
+		</div>
+' ;
 }
 
 class eventFormatUtils implements formatUtils {

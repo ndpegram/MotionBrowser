@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MotionBrowser\n"
-"POT-Creation-Date: 2019-08-18 17:26+0800\n"
-"PO-Revision-Date: 2019-08-18 17:28+0800\n"
+"POT-Creation-Date: 2019-09-12 12:13+0800\n"
+"PO-Revision-Date: 2019-09-12 12:15+0800\n"
 "Last-Translator: Nigel Pegram <nigel@pegram.homelinux.net>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -16,6 +16,10 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: libs\n"
 "X-Poedit-SearchPath-2: classes\n"
+
+#: classes/CalendarMonthMotion.php:59
+msgid "today"
+msgstr "today"
 
 #: classes/errors.php:71
 #, php-format
@@ -46,46 +50,24 @@ msgstr ""
 "<p>Fatal error on line %u in file %s. Aborting&hellip;</p> \n"
 " <p><i>PHP %s (%s).</i></p>\n"
 
-#: head.php:12 old_index.php:347 old_index.php:412 sidebar.php:12
-msgid "config_title"
-msgstr "MotionBrowser"
-
-#: head.php:12 old_index.php:347 old_index.php:412 sidebar.php:12
-msgid "config_version"
-msgstr "2.0.alpha.1"
-
-#: js_gettext.php:14
-msgid "js gettext no message"
+#: classes/event.php:109
+msgid "Unknown file type in SQL"
 msgstr ""
-"A call has been made to js_gettext.php with no value in the 'message' field."
 
-#: js_gettext.php:26
-msgid "No items selected for deletion"
-msgstr "Please select something to delete first"
+#: classes/event.php:225 classes/event.php:265
+msgid "n/a"
+msgstr ""
 
-#: js_gettext.php:27
-msgid "Delete selected items"
-msgstr "Delete the selected items"
-
-#: js_gettext.php:28
-msgid "Error deleting"
-msgstr "Error deleting file"
-
-#: old_index.php:87 old_index.php:517 old_index.php:589
-#, php-format
-msgid "%d event"
-msgid_plural "%d events"
-msgstr[0] "%3d event"
-msgstr[1] "%3d events"
-
-#: old_index.php:99 old_index.php:157 old_index.php:201 old_index.php:244
-#: old_index.php:268 old_index.php:291 old_index.php:372 old_index.php:389
+#: classes/event.php:236 libs/mysql/mysql.php:44 old files/old_index.php:99
+#: files/old_index.php:157 files/old_index.php:201 files/old_index.php:244
+#: files/old_index.php:268 files/old_index.php:291 files/old_index.php:372
+#: files/old_index.php:389
 #, php-format
 msgid ""
 "query failed <br />debugging errno: %d  <br />debugging error: %s <br /> %s "
 "<br /> line: %d <br /> query: %s <br /> result: %s"
 msgstr ""
-"Query failed <br />\n"
+"mySQL Query failed <br />\n"
 "Debugging errno: %d <br />\n"
 "Debugging error: %s <br />\n"
 "%s <br /> \n"
@@ -93,81 +75,151 @@ msgstr ""
 "Query: %s <br />\n"
 "Result: %s <br />"
 
-#: old_index.php:262
-#, php-format
-msgid "Error deleting %s"
-msgstr "Error unlinking file %s."
+#: classes/eventDayFormatter.php:37 old files/old_index.php:596
+msgid "no_events"
+msgstr "No events on the selected day !"
 
-#: old_index.php:315
-msgid "error establishing database connection"
-msgstr "error establishing database connection"
-
-#: old_index.php:316 old_index.php:323
-msgid "Debugging errno"
-msgstr "Error number"
-
-#: old_index.php:317 old_index.php:324
-msgid "Debugging error"
-msgstr "Error message"
-
-#: old_index.php:319 old_index.php:326
-msgid "line"
-msgstr "line"
-
-#: old_index.php:322
-msgid "error selecting database"
-msgstr "error selecting database"
-
-#: old_index.php:338
-msgid "delete"
-msgstr "delete"
-
-#: old_index.php:419 sidebar.php:19
-msgid "all"
-msgstr "Select All"
-
-#: old_index.php:420 sidebar.php:22
-msgid "nothing"
-msgstr "Select Nothing"
-
-#: old_index.php:421 sidebar.php:25
-msgid "erase_selection"
-msgstr "Delete Selection"
-
-#: old_index.php:424 sidebar.php:31
-msgid "config_motion"
-msgstr "Configure Motion"
-
-#: old_index.php:428 sidebar.php:40
-msgid "config_credits"
-msgstr "© 2006 Carlos Ladeira <br />© 2019 Nigel Pegram"
-
-#: old_index.php:429 sidebar.php:41 sidebar.php:42
-msgid "config_mailname"
-msgstr "ndpegram@gmail.com"
-
-#: old_index.php:446
+#: classes/eventDayFormatter.php:51 old files/old_index.php:446
 #, php-format
 msgid "camera name %d"
 msgstr "Camera %d"
 
-#: old_index.php:447
+#: classes/eventDayFormatter.php:55 old files/old_index.php:447
 msgid "see_camera"
 msgstr "View as webcam"
 
-#: old_index.php:525
+#: classes/eventDayFormatter.php:84 classes/eventFormatter.php:79
+#: classes/eventHourFormatter.php:86
+#, php-format
+msgid "Invalid type argument passed to '%s'."
+msgstr ""
+
+#: classes/eventHour.php:55 classes/eventHourFormatter.php:45 old
+#: files/old_index.php:525
 msgid "hours"
 msgstr "h"
 
-#: old_index.php:596
-msgid "no_events"
-msgstr "No events on the selected day !"
+#: classes/eventHour.php:58 classes/eventHourFormatter.php:48 old
+#: files/old_index.php:87 files/old_index.php:517 files/old_index.php:589
+#, php-format
+msgid "%d event"
+msgid_plural "%d events"
+msgstr[0] "%3d event"
+msgstr[1] "%3d events"
 
-#: old_index.php:610
+#: head.php:12 old files/old_index.php:347 files/old_index.php:412
+#: sidebar.php:14
+msgid "config_title"
+msgstr "MotionBrowser"
+
+#: head.php:12 old files/old_index.php:347 files/old_index.php:412
+#: sidebar.php:14
+msgid "config_version"
+msgstr "2.0.alpha.1"
+
+#: libs/html5lightbox/pdfjs/build/pdf.js:4
+msgid ""
+"getDocument is called with pdfDataRangeTransport, passwordCallback or "
+"progressCallback argument"
+msgstr ""
+
+#: libs/html5lightbox/pdfjs/build/pdf.js:4
+msgid "render is used with continueCallback parameter"
+msgstr ""
+
+#: libs/html5lightbox/pdfjs/build/pdf.js:5
+msgid "page destroy method, use cleanup() instead"
+msgstr ""
+
+#: libs/html5lightbox/pdfjs/build/pdf.js:5
+msgid ""
+"Global UnsupportedManager.listen is used:  use PDFDocumentLoadingTask."
+"onUnsupportedFeature instead"
+msgstr ""
+
+#: libs/html5lightbox/pdfjs/web/pdf.viewer.js:5
+msgid "Cannot use postMessage transfers"
+msgstr ""
+
+#: libs/html5lightbox/pdfjs/web/pdf.viewer.js:5
+msgid "The worker has been disabled."
+msgstr ""
+
+#: old files/js_gettext.php:14
+msgid "js gettext no message"
+msgstr ""
+"A call has been made to js_gettext.php with no value in the 'message' field."
+
+#: old files/js_gettext.php:26
+msgid "No items selected for deletion"
+msgstr "Please select something to delete first"
+
+#: old files/js_gettext.php:27
+msgid "Delete selected items"
+msgstr "Delete the selected items"
+
+#: old files/js_gettext.php:28
+msgid "Error deleting"
+msgstr "Error deleting file"
+
+#: old files/old_index.php:262
+#, php-format
+msgid "Error deleting %s"
+msgstr "Error unlinking file %s."
+
+#: old files/old_index.php:315
+msgid "error establishing database connection"
+msgstr "error establishing database connection"
+
+#: old files/old_index.php:316 files/old_index.php:323
+msgid "Debugging errno"
+msgstr "Error number"
+
+#: old files/old_index.php:317 files/old_index.php:324
+msgid "Debugging error"
+msgstr "Error message"
+
+#: old files/old_index.php:319 files/old_index.php:326
+msgid "line"
+msgstr "line"
+
+#: old files/old_index.php:322
+msgid "error selecting database"
+msgstr "error selecting database"
+
+#: old files/old_index.php:338
+msgid "delete"
+msgstr "delete"
+
+#: old files/old_index.php:419 sidebar.php:28
+msgid "all"
+msgstr "Select All"
+
+#: old files/old_index.php:420 sidebar.php:31
+msgid "nothing"
+msgstr "Select Nothing"
+
+#: old files/old_index.php:421 sidebar.php:34
+msgid "erase_selection"
+msgstr "Delete Selection"
+
+#: old files/old_index.php:424 sidebar.php:40
+msgid "config_motion"
+msgstr "Configure Motion"
+
+#: old files/old_index.php:428 sidebar.php:49
+msgid "config_credits"
+msgstr "© 2006 Carlos Ladeira <br />© 2019 Nigel Pegram"
+
+#: old files/old_index.php:429 sidebar.php:50 sidebar.php:51
+msgid "config_mailname"
+msgstr "ndpegram@gmail.com"
+
+#: old files/old_index.php:610
 msgid "disk space low nothing to delete"
 msgstr " Disk space is very low, but there are no items available to delete."
 
-#: old_index.php:617
+#: old files/old_index.php:617
 #, php-format
 msgid "disk space used %s %f"
 msgstr "Volume containing %s is %.2f percent free."
@@ -258,6 +310,3 @@ msgstr "Volume containing %s is %.2f percent free."
 
 #~ msgid "space1"
 #~ msgstr "Disk space on volume"
-
-#~ msgid "today"
-#~ msgstr "today"

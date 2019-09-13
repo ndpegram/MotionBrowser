@@ -81,6 +81,17 @@ For example: `http://192.168.2.42:9080/`, where 192.168.2.42 is the server where
 <span>DocumentRoot</span>  
 should be set to the fully-qualified path of where you intalled the MotionBrowser files
 
+<span>Alias</span>  
+an alias needs to be created so that directory “video” in the root directory points to the location where the files are saved. For example:
+
+    # Alias for streaming video data for MotionBrowser  
+    alias "/MotionBrowser/video/" "/var/lib/motion/"    
+    <Directory "/var/lib/motion/">
+        Options Indexes
+        AllowOverride None      
+        Require all granted
+    </Directory>
+
 <span>Other</span>  
 Log names and locations can be set as required.
 
@@ -138,6 +149,14 @@ Version 2.0
 -----------
 
 Totally rewritten to use CSS div elements rather than tables, so as to degrade better and to display better on a wider range of devices. Also rewritten to use object-based coding, rather than procedural coding (as in the original), to ease maintenance. Code also separated into more discrete units to ease maintenance.
+
+Used a number of external libraries to increase functionality and appearance:
+
+-   getID3 <http://getid3.sourceforge.net/>
+
+-   HTML5 Lightbox <https://html5box.com>
+
+-   jQuery AJAX <https://jquery.com/>
 
 Version 1.2.1
 -------------
