@@ -11,9 +11,15 @@ require_once $_SESSION['root_dir'] . '/libs/getid3/getid3.php';
 class event {
 
     private const QUERY_SAVE_FILE_SIZE = "update security set file_size='%s' where filename ='%s';";
-    // TODO: Inspect motion sources for other values and to confirm these descriptions. Note that the documentation does not describe these.
-    CONST VIDEO_MP4 = 8;
-    CONST IMAGE_JPEG = 1;
+    // Filetypes. See motion.h in the motion sources.
+    private CONST IMAGE                 = 1;
+    private CONST IMAGE_SNAPSHOT        = 2  ;
+    private CONST IMAGE_MOTION          = 4  ;
+    private CONST VIDEO_MPEG            = 8  ;
+    private CONST VIDEO_MPEG_MOTION     = 16 ;
+    private CONST VIDEO_MPEG_TIMELAPSE  = 32 ;
+    private CONST IMAGE_ANY = event::IMAGE | event::IMAGE_SNAPSHOT | event::IMAGE_MOTION ;
+    private CONST VIDEO_ANY = event::VIDEO_MPEG | event::VIDEO_MPEG_MOTION | event::VIDEO_MPEG_TIMELAPSE ;
 
     /** @var int The camera ID. */
     private $camera;
@@ -73,16 +79,16 @@ class event {
 
     public function mergeEvent(event $anEvent) {
         // The only fields we need to worry about are the file ones.
-        $filetype = (is_null($anEvent->getImageFilename())) ? event::VIDEO_MP4 : event::IMAGE_JPEG;
+        $filetype = (is_null($anEvent->getImageFilename())) ? event::VIDEO_ANY : event::IMAGE_ANY ;
         $filesize = $anEvent->getVideoFileSize();
 
         switch ($filetype) {
-            case self::IMAGE_JPEG:
+            case self::IMAGE_ANY:
                 $filename = $anEvent->getImageFilename();
                 $frame = $anEvent->getImageFrame();
                 break;
 
-            case self::VIDEO_MP4:
+            case self::VIDEO_ANY:
                 $filename = $anEvent->getVideoFilename();
                 $frame = $anEvent->getVideoFrame();
                 break;
@@ -92,14 +98,15 @@ class event {
     }
 
     private function setFileDetails(int $filetype, string $filename, int $frame, ?string $filesize) {
+        $nFiletype = (((int)$filetype) & event::VIDEO_ANY) ? event::VIDEO_ANY : event::IMAGE_ANY ;
         // Consolidate image and movie data.
-        switch ($filetype) {
-            case self::IMAGE_JPEG:
+        switch ($nFiletype) {
+            case self::IMAGE_ANY:
                 $this->setImageFilename($filename);
                 $this->setImageFrame($frame);
                 break;
 
-            case self::VIDEO_MP4:
+            case self::VIDEO_ANY:
                 $this->setVideoFilename($filename);
                 $this->setVideoFrame($frame);
                 $this->setVideoFileSize($filesize);
@@ -178,10 +185,6 @@ class event {
         $this->frameVideo = $frame;
     }
 
-    private function setFileType(int $fileType) {
-        $this->fileType = $fileType;
-    }
-
     private function setHour(int $hour) {
         $this->hour = $hour;
     }
@@ -228,7 +231,7 @@ class event {
     }
 
     private function saveFileSize() {
-        $query = sprintf(self::QUERY_SAVE_FILE_SIZE, $this->getVideoFileSize(), $this->getVideoFilename());
+        $query = sprintf(event::QUERY_SAVE_FILE_SIZE, $this->getVideoFileSize(), $this->getVideoFilename());
 
         $db = new dbMotion();
         $bRc = $db->query($query);
