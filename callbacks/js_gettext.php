@@ -7,7 +7,9 @@
  * This is used to provide translated values for alerts, etc.
  */
 
-require_once ("lang.inc") ;
+session_start() ;
+
+require_once $_SESSION['root_dir'] . '/lang.inc' ;
 
 
 if (!filter_has_var(INPUT_POST, 'message')) {
