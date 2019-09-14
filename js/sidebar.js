@@ -91,3 +91,71 @@ function set_all(value) {
     }
 }
 
+/**
+ * Delete selected items (with confirmation).
+ * @return	{void}		nothing
+ */
+// TODO: allow error message from delete to be formatted in html. May need to use external library dialogs instead of vanilla alert.
+
+function deleteSelection() {
+	// are any items selected?
+	var IDs = [] ;
+	var numSelected = 0 ;
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+			numSelected++ ;
+			IDs.push (checkboxes[i].value) ;
+		}
+    }
+
+	// No, alert and exit
+	if (numSelected == 0) {
+		$.post(
+			"./js_gettext.php",
+			{message: "No items selected for deletion"},
+			function(data){
+				alert (data + ".") ;
+			}
+		);
+		return false ;
+	}
+
+	// Exit if deletion not confirmed.
+	$.post(
+		"./js_gettext.php",
+		{message: "Delete selected items"},
+		function(data){
+			var theDate ;
+			var params ;
+			var msg ;
+
+			msg = data + "?" ;
+
+			if(confirm(msg))  {
+				// Get date to return to
+				theDate = $(".today").html() ;
+				// Do the deletion.
+				params = {what: "delete", todelete: IDs} ;
+				$.post (document.location.href,  params,
+					function(data){
+						// Enable the line below if debugging.
+						alert (data) ;
+					}
+				)
+				.done(function(){
+					// Show the page we were on.
+					params = {view_date: theDate} ;
+					post (document.location, params) ;
+				})
+				.fail(function(){
+					alert ('Error deleting'+'.') ;
+				});
+
+			}
+		}
+	);
+
+}
+
