@@ -3,6 +3,9 @@
  * Code to draw sidebar, including calendar, controls and credits.
  * 
  */
+
+//TODO: Currently only allows for landscape screens. Allow for portrait screens. Possibly place sidebar as header?
+
 require_once $_SESSION['root_dir'].'/classes/CalendarMonthMotion.php';
 $setupURL = $_SESSION['webcam']['server'].":".$_SESSION['webcam']['setup_port'] ;
 ?>
