@@ -9,7 +9,6 @@
 require_once $_SESSION['root_dir'] . '/libs/getid3/getid3.php';
 
 class event {
-
     private const QUERY_SAVE_FILE_SIZE = "update security set file_size='%s' where filename ='%s';";
     // Filetypes. See motion.h in the motion sources.
     private CONST IMAGE                 = 1;
