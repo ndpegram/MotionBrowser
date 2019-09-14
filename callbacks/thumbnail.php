@@ -3,6 +3,7 @@
 /*
   Output a thumbnail of a provided bigger image.
  */
+$bCreateThumbnail = true ;
 
 // File and new size
 $filename = filter_input(INPUT_GET, 'image') ;
@@ -10,8 +11,18 @@ $newwidth = filter_input(INPUT_GET, 'width') ;
 $newheight = filter_input(INPUT_GET, 'height') ;
 
 // load image
-if (file_exists($filename)) {
+if (!file_exists($filename)) {
+    $bCreateThumbnail = false ;
+}
+
+if ($bCreateThumbnail) {
     $source = imagecreatefromjpeg($filename) ;
+    if ($source === false) {
+        $bCreateThumbnail = false ;
+    }
+}
+
+if ($bCreateThumbnail) {
     // Content type
     header('Content-type: image/jpeg');
 
