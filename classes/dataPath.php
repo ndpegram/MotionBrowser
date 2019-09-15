@@ -12,7 +12,7 @@ require_once $_SESSION['root_dir'] . '/classes/dbMotion.php';
 
 class dataPath {
     /** Query used to get file storage information from database. */
-    const query = 'SELECT filename FROM security order by time_stamp desc limit 0,1' ;
+    private const query = 'SELECT filename FROM security order by time_stamp desc limit 1' ;
     /** @var string Any path on which one wishes to find out disk info. */
     private $path = null ;
     /** @var float The size of the disk in bytes. */
