@@ -7,6 +7,7 @@
  */
 require_once $_SESSION['root_dir'] . '/classes/event.php';
 require_once $_SESSION['root_dir'] . '/classes/formatUtils.php';
+require_once $_SESSION['root_dir'] . '/classes/eventFileInfo.php';
 
 ////////////////////////////////////////////////////////////////////////////////
 interface eventFormatter {
@@ -29,8 +30,7 @@ class htmlEventFormatter implements eventFormatter {
 
     public function format(\event $anEvent): string {
 //        return (self::test) ;
-        $videoURL = self::getVideoBaseURL() ;
-        $videoURL .= basename($anEvent->getVideoFilename()) ;
+        $videoURL = $anEvent->getURLVideo () ;
         $html = '<div>';
         $html .= sprintf('<a target="_blank" href="%1$s" class="html5lightbox" title="%1$s"><img src="callbacks/thumbnail.php?image=%2$s&width=88&height=72" border=0></a><br />',
                         $videoURL,
@@ -44,16 +44,6 @@ class htmlEventFormatter implements eventFormatter {
                 );
         $html .= '</div>';
         return ($html);
-    }
-
-    private static function getVideoBaseURL() : string {
-        $URL1 = $_SERVER['HTTP_REFERER'] ;
-        $nPos = strpos($URL1, '?') ;
-        $URL2 = substr ($URL1, 0, $nPos) ;
-        $nPos = strrpos($URL2, '/') ;
-        $URL3 = substr ($URL2, 0, $nPos) ;
-        $URL3 .= '/video/' ;
-        return ($URL3) ;
     }
 
     public const test='		<div>

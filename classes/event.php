@@ -7,6 +7,7 @@
  * @author nigel
  */
 require_once $_SESSION['root_dir'] . '/libs/getid3/getid3.php';
+require_once $_SESSION['root_dir'] . '/classes/eventFileInfo.php';
 
 class event {
     private const QUERY_SAVE_FILE_SIZE = "update security set file_size='%s' where filename ='%s';";
@@ -23,28 +24,25 @@ class event {
     /** @var int The camera ID. */
     private $camera;
 
-    /** @var string The full path and name of the image recording this event. */
-    private $filenameImage;
-
-    /** @var string The full path and name of the video recording this event. */
-    private $filenameVideo;
-
-    /** @var int The number of frames. */ // TODO: check this description with the motion sources.
+    /** @var int The number of frames. */ 
+    // TODO: check this description with the motion sources.
+    // TODO: Do we need this?
     private $frameImage;
 
-    /** @var int The number of frames. */ // TODO: check this description with the motion sources.
+    /** @var int The number of frames. */ 
+    // TODO: check this description with the motion sources.
+    // TODO: Do we need this?
     private $frameVideo;
 
-    /** @var int The file type. */
-    private $fileType;
-
-    /** @var int A Unix timestamp representing the record modification timestamp. */ // TODO: setup contants to make converting SQL dates to unix timestamps.
+    /** @var int A Unix timestamp representing the record modification timestamp. */ 
+    // TODO: setup constants to make converting SQL dates to unix timestamps.
     private $timeStamp;
 
     /** @var int A Unix timestamp representing the event timestamp. */
     private $timeStampEvent;
 
     /** @var string The file's size. */
+    // TODO: review setting and getting this in light of change to use SplFileInfo class.
     private $fileSize;
 
     /** @var string Unused at present */
@@ -58,6 +56,12 @@ class event {
 
     /** @var string the length of the video. */
     private $videoLength = null;
+    
+    /** @var eventFileInfo File information for the video file */
+    private $videoFileInfo = null ;
+
+    /** @var eventFileInfo File information for the image file */
+    private $imageFileInfo = null ;
 
     /**
      * Set the member variables using an associative array of values. 
@@ -78,7 +82,7 @@ class event {
 
     public function mergeEvent(event $anEvent) {
         // The only fields we need to worry about are the file ones.
-        $filetype = (is_null($anEvent->getImageFilename())) ? event::VIDEO_ANY : event::IMAGE_ANY ;
+        $filetype = ($anEvent->hasImageFile()) ? event::IMAGE_ANY : event::VIDEO_ANY ;
         $filesize = $anEvent->getVideoFileSize();
 
         switch ($filetype) {
@@ -108,6 +112,7 @@ class event {
             case self::VIDEO_ANY:
                 $this->setVideoFilename($filename);
                 $this->setVideoFrame($frame);
+                // TODO: review this in light of conversion to SplFileInfo class.
                 $this->setVideoFileSize($filesize);
                 break;
 
@@ -115,17 +120,32 @@ class event {
                 throw new ErrorException(gettext("Unknown file type in SQL"));
         }
     }
+    
+    private function hasImageFile():bool {
+        if (is_null($this->imageFileInfo) || is_null($this->getImageFilename())){
+            return (false) ;
+        }
+        return (true) ;
+    }
 
     public function getCamera() {
         return $this->camera;
     }
 
     public function getImageFilename() {
-        return $this->filenameImage;
+        if (is_null($this->imageFileInfo)){
+            $msg = sprintf (gettext('Accessing NULL member variable %s.'), 'event::imageFileInfo') ;
+            throw new RuntimeException($msg) ;
+        }
+        return $this->imageFileInfo->getRealPath() ;
     }
 
     public function getVideoFilename() {
-        return $this->filenameVideo;
+        if (is_null($this->videoFileInfo)){
+            $msg = sprintf (gettext('Accessing NULL member variable %s.'), 'event::imageFileInfo') ;
+            throw new RuntimeException($msg) ;
+        }
+        return $this->videoFileInfo->getRealPath() ;
     }
 
     public function getImageFrame() {
@@ -134,10 +154,6 @@ class event {
 
     public function getVideoFrame() {
         return $this->frameVideo;
-    }
-
-    public function getFileType() {
-        return $this->fileType;
     }
 
     public function getHour(): int {
@@ -155,6 +171,10 @@ class event {
     public function getTimeStampEvent() {
         return $this->timeStampEvent;
     }
+    
+    public function getURLVideo(){
+        return ($this->videoFileInfo->getURL()) ;
+    }
 
     public function getVideoFileSize() {
         return $this->fileSize;
@@ -169,11 +189,11 @@ class event {
     }
 
     private function setImageFilename($filename) {
-        $this->filenameImage = $filename;
+        $this->imageFileInfo = new eventFileInfo($filename) ;
     }
 
     private function setVideoFilename($filename) {
-        $this->filenameVideo = $filename;
+        $this->videoFileInfo = new eventFileInfo($filename) ;
     }
 
     private function setImageFrame(int $frame) {

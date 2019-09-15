@@ -21,18 +21,18 @@
  */
 class eventFileInfo extends SplFileInfo {
     /** The path from the root to the images and videos. */
-    private CONST URL_PATH = '/video' ;
+    private CONST URL_PATH = '/video/' ;
     /** @var String URL to access the file. */
     private $URL ;
     
-    public function __construct(string $file_name): \SplFileInfo {
+    public function __construct(string $file_name) {
         parent::__construct($file_name);
         $this->setURL() ;
     }
     
     private function setURL() {
         $URL = self::getVideoBaseURL() ;
-        $URL .= $this->getBasename() ;
+        $URL .= self::URL_PATH . $this->getBasename() ;
         $this->URL = $URL ;
     }
     
@@ -41,9 +41,11 @@ class eventFileInfo extends SplFileInfo {
     }
     
     private static function getVideoBaseURL() : string {
-        $url = parse_url(filter_input(INPUT_SERVER, 'HTTP_REFERER')) ;
-        $base = $url[PHP_URL_SCHEME].$url[PHP_URL_HOST] ;
-        return ($base) ;
+        $referer = parse_url(filter_input(INPUT_SERVER, 'HTTP_REFERER')) ;
+        $base = $referer['scheme'] . '://' . $referer['host'] . $referer['path'] ;
+        $nPos = strrpos($base, '/') ;
+        $URL = substr($base, 0, $nPos) ;
+        return ($URL) ;
     }
 
 }

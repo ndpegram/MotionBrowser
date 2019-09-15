@@ -15,9 +15,9 @@ function displayMonth(ts) {
 
     // Redraw the calendar.
     var URL = getBaseDir() + "/callbacks/getCalendar.php";
-    
-    var cursor = document.body.style.cursor ;
-    document.body.style.cursor = 'wait' ;
+
+    var cursor = document.body.style.cursor;
+    document.body.style.cursor = 'wait';
 
     $.post(URL,
             {
@@ -43,7 +43,7 @@ function displayMonth(ts) {
                 // hide all event rows in the table.
                 $(".hour-events").hide();
                 //show the original cursor.
-                document.body.style.cursor = cursor ;
+                document.body.style.cursor = cursor;
                 //reinitialise lightbox (requried to get AJAX content to work).
                 $(".html5lightbox").html5lightbox();
             });
@@ -98,64 +98,76 @@ function set_all(value) {
 // TODO: allow error message from delete to be formatted in html. May need to use external library dialogs instead of vanilla alert.
 
 function deleteSelection() {
-	// are any items selected?
-	var IDs = [] ;
-	var numSelected = 0 ;
+    // are any items selected?
+    var IDs = [];
+    var numSelected = 0;
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
-			numSelected++ ;
-			IDs.push (checkboxes[i].value) ;
-		}
+            numSelected++;
+            IDs.push(checkboxes[i].value);
+        }
     }
 
-	// No, alert and exit
-	if (numSelected == 0) {
-		$.post(
-			"./js_gettext.php",
-			{message: "No items selected for deletion"},
-			function(data){
-				alert (data + ".") ;
-			}
-		);
-		return false ;
-	}
+    // No, alert and exit
+    if (numSelected === 0) {
+        alert(jsGettext("No items selected for deletion") + '.');
+        return false;
+    }
 
-	// Exit if deletion not confirmed.
-	$.post(
-		"./js_gettext.php",
-		{message: "Delete selected items"},
-		function(data){
-			var theDate ;
-			var params ;
-			var msg ;
+    // Exit if deletion not confirmed.
+    msg = jsGettext('Delete selected items') + '?' ;
+    if (confirm(msg)) {
+        // Get date to return to
+        theDate = $(".selected-day").attr('id'); 
+        // Do the deletion.
+        params = {what: "delete", todelete: IDs};
+        // FIXME: Use a callback to do the job.
+        URL = getBaseDir() + "/callbacks/delete.php";
+        $.post(URL, params,
+                function (data) {
+                    // Enable the line below if debugging.
+                    alert(data);
+                }
+        )
+                .done(function () {
+                    // Show the page we were on.
+                    displayMonth(theDate);
+                }
+                )
+                .fail(function () {
+                    alert('Error deleting "' + IDs + '".');
+                }
+                );
 
-			msg = data + "?" ;
-
-			if(confirm(msg))  {
-				// Get date to return to
-				theDate = $(".today").html() ;
-				// Do the deletion.
-				params = {what: "delete", todelete: IDs} ;
-				$.post (document.location.href,  params,
-					function(data){
-						// Enable the line below if debugging.
-						alert (data) ;
-					}
-				)
-				.done(function(){
-					// Show the page we were on.
-					params = {view_date: theDate} ;
-					post (document.location, params) ;
-				})
-				.fail(function(){
-					alert ('Error deleting'+'.') ;
-				});
-
-			}
-		}
-	);
+    }
 
 }
 
+/**
+ * 
+ * @param {String} szKey The key to look up in the translation database.
+ * @returns {String} The translated key.
+ */
+function jsGettext(szKey) {
+    var szReturn = szKey; // Use key if function call fails
+    var URL = getBaseDir() + "/callbacks/js_gettext.php";
+
+    $.ajax({
+        async: false, // We want to get the value from the callback before returning.
+        type: 'POST',
+        url: URL,
+        data: {message: szKey},
+        success: function(data){
+                    szReturn = data ;
+                },
+        error: function(jqXHR, textStatus, errorThrown){
+                    console.log("Error in jsGettext().\n Error getting string '" + szKey + "' from js_gettext.php. Default value used.");
+                    console.log('Status: ' + textStatus) ;
+                    console.log ('Error thrown: ' + errorThrown) ;
+                    szReturn = 'error' ;        }
+                }) ;
+
+    return (szReturn) ;
+}
