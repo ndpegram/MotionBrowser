@@ -46,7 +46,6 @@ class eventDay {
     }
 
     private function loadDay() {
-        $hour = -1;
         $szDay = $this->getTsDay();
         $query = sprintf(SELF::QUERY, $szDay, $szDay);
         $db = new dbMotion();
