@@ -42,6 +42,13 @@ class eventFileInfo extends SplFileInfo {
     
     private static function getVideoBaseURL() : string {
         $referer = parse_url(filter_input(INPUT_SERVER, 'HTTP_REFERER')) ;
+        if ($referer['path'] === "") {
+            // initial load, so manually set values
+            $referer['scheme'] = filter_input(INPUT_SERVER, 'REQUEST_SCHEME') ;
+            $referer['host'] = filter_input(INPUT_SERVER, 'SERVER_NAME')  ;
+            $path_parts = pathinfo(filter_input(INPUT_SERVER, 'SCRIPT_NAME')) ;
+            $referer['path'] = $path_parts['dirname'] ;
+        }
         $base = $referer['scheme'] . '://' . $referer['host'] . $referer['path'] ;
         $nPos = strrpos($base, '/') ;
         $URL = substr($base, 0, $nPos) ;
