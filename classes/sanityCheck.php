@@ -62,8 +62,13 @@ class sanityCheck
         }
     }
 
+    /**
+     * Compare disk and SQL records for mismatches.
+     * @return bool Returns false if no differences, true if mismatches found.
+     */
     private function compare() 
     {
+        $bRC = false ;
         $diskFilesIterator = new ArrayIterator($this->getDiskFiles()) ;
         $dbPaths = $this->getDbPaths() ;
         $notFound = [];
@@ -78,12 +83,16 @@ class sanityCheck
         }
         
         if (sizeof($notFound) > 0) {
+            $bRC = true ;
             printf ('The following files were not found in the database:<br />%s', implode(',<br />', $notFound)) ;
         }
         
         if (sizeof($dbPaths) > 0) {
+            $bRC = true ;
             printf('The following database entries did not have files on disk:<br />%s', implode(',<br /> ', $dbPaths)) ;
         }
+        
+        return ($bRC) ;
     }
 
     private function addDBPath($path) 
