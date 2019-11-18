@@ -142,7 +142,7 @@ class event {
 
     public function getVideoFilename() {
         if (is_null($this->videoFileInfo)){
-            $msg = sprintf (gettext('Accessing NULL member variable %s.'), 'event::imageFileInfo') ;
+            $msg = sprintf (gettext('Accessing NULL member variable %s.'), 'event::videoFileInfo') ;
             throw new RuntimeException($msg) ;
         }
         return $this->videoFileInfo->getRealPath() ;
@@ -173,6 +173,10 @@ class event {
     }
     
     public function getURLVideo(){
+        if (is_null($this->videoFileInfo)){
+            $msg = sprintf (gettext('Accessing NULL member variable %s.'), 'event::videoFileInfo') ;
+            throw new RuntimeException($msg) ;
+        }
         return ($this->videoFileInfo->getURL()) ;
     }
 

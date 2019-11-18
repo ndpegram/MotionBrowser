@@ -48,7 +48,7 @@ function deleteItems($IDs) {
 
             // if no problem, delete the record from the database
             $query = "DELETE FROM security WHERE filename='" . $filename . "'";
-            $db->query($query) ;
+            $result = $db->query($query) ;
         } else {
             // Running development machine/version--take no irreversible actions
             $filenames[] = $filename ;

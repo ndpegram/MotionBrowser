@@ -9,6 +9,9 @@ foreach ($ini as $key => $value) {
     $_SESSION[$key] = $value ;
 }
 
+// TODO: Do some sanity checking e.g. disk free space must not be zero nor 100%. 
+//       Perhaps create sanity check method which reports on load. Could also save date checked and compare with editing date of settings file so only checks if file changed since last check.
+
 // Set language for gettext
 require_once $_SESSION['root_dir'] . "/lang.inc" ; 
 

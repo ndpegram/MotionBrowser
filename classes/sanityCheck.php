@@ -7,10 +7,6 @@
  *
  * @author nigel
  */
-if (!isset($_SESSION)) {
-    session_start();
-}
-
 require_once $_SESSION['root_dir'] . '/lang.inc';
 require_once $_SESSION['root_dir'] . '/classes/dbMotion.php';
 
@@ -58,8 +54,9 @@ class sanityCheck {
     public function sanityCheck($repair = self::CHECK_ONLY) {
         $this->getAllDB();
         $this->getAllFiles();
+        $this->compare() ;
 
-        if ($repair && self::CHECK_AND_REPAIR) {
+        if ($repair === self::CHECK_AND_REPAIR) {
             if ($this->errors && self::ERRORS_FILES) {
                 $this->fixFiles();
             }
@@ -107,7 +104,7 @@ class sanityCheck {
         $this->filesNotInDatabase = [];
 
         foreach ($diskFilesIterator as $filename) {
-            if (key_exists($filename, $dbPaths)) {
+            if (key_exists($filename, $this->dbPathsNotFound)) {
                 unset($this->dbPathsNotFound[$filename]);
             } else {
                 $this->filesNotInDatabase[] = $filename;
@@ -161,5 +158,3 @@ class sanityCheck {
     }
 
 }
-
-//$checker = new sanityCheck() ;

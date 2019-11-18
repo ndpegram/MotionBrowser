@@ -122,15 +122,14 @@ function deleteSelection() {
         // Get date to return to
         theDate = $(".selected-day").attr('id'); 
         // Do the deletion.
-        params = {what: "delete", todelete: IDs};
-        // FIXME: Use a callback to do the job.
+        params = {todelete: IDs};
         URL = getBaseDir() + "/callbacks/delete.php";
         $.post(URL, params,
                 function (data) {
                     // Enable the line below if debugging.
-                    alert(data);
+//                    alert(data);
                 }
-        )
+                )
                 .done(function () {
                     // Show the page we were on.
                     displayMonth(theDate);
