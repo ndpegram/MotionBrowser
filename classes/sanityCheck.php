@@ -13,16 +13,16 @@ require_once $_SESSION['root_dir'] . '/classes/dbMotion.php';
 class sanityCheck {
 
     /** Constant used in constructor. */
-    private const CHECK_ONLY = 0;
+    public const CHECK_ONLY = 0;
 
     /** Constant used in constructor. */
-    private const CHECK_AND_REPAIR = 1;
+    public const CHECK_AND_REPAIR = 1;
 
     /** SQL query to list all records. */
     private const ALL_SQL_RECORDS = 'select `filename` from `security` where 1';
 
     /** SQL query to delete records without matching file. The parameter is for use with sprintf to insert file paths. */
-    private const DELETE_ORPHAN_SQL = 'delete from `security` where `filename` in (%s) ';
+    private const DELETE_ORPHAN_SQL = 'select count(*) from `security` where `filename` in ("%s") ';
 
     /** Check result value mask */
     private const ERRORS_NONE = 0;
@@ -87,11 +87,16 @@ class sanityCheck {
     private function getAllFiles() {
         $path = $this->getFilePath();
         $iterator = new FilesystemIterator($path);
-
+        
         foreach ($iterator as $file) {
             $this->addDiskFile($file->getFilename());
         }
-    }
+
+        /* Will be null if no files on disk. */
+        if (is_null($this->diskFiles)){
+            $this->diskFiles = [] ;
+        }
+   }
 
     /**
      * Compare disk and SQL records for mismatches.
@@ -113,12 +118,12 @@ class sanityCheck {
 
         if (sizeof($this->filesNotInDatabase) > 0) {
             $this->errors |= self::ERRORS_FILES;
-            printf('The following files were not found in the database:<br />%s', implode(',<br />', $this->filesNotInDatabase));
+            printf('<H3>The following %d files were not found in the database:</H3><p>%s</p>', sizeof($this->filesNotInDatabase), implode(',<br />', $this->filesNotInDatabase));
         }
 
         if (sizeof($this->dbPathsNotFound) > 0) {
             $this->errors |= self::ERRORS_SQL;
-            printf('The following database entries did not have files on disk:<br />%s', implode(',<br /> ', $this->dbPathsNotFound));
+            printf('<H3>The following %d database entries did not have files on disk:</H3><p>%s</p>', sizeof($this->dbPathsNotFound), implode(',<br /> ', $this->dbPathsNotFound));
         }
     }
 
@@ -146,14 +151,22 @@ class sanityCheck {
         $this->diskFiles[] = $file;
     }
 
-    public function fixSQL() {
-        $query = sprintf (self::DELETE_ORPHAN_SQL, implode(', ', $this->dbPathsNotFound)) ;
-        $this->getDatabase()->query($query) ;
+    private function fixSQL() {
+        $db = $this->getDatabase() ;
+        $query = sprintf (self::DELETE_ORPHAN_SQL, implode('", "', $this->dbPathsNotFound)) ;
+        if ($db->query($query)){
+            printf ('<h3>Fixed database</h3><p>%s</p>', $query) ;
+        }
     }
 
-    public function fixFiles() {
+    private function fixFiles() {
+        $path = $this->getFilePath();
+
+        printf ('<h3>Deleting files</h3>') ;
         foreach ($this->filesNotInDatabase as $filename) {
-            unlink($filename) ;
+            $filePath = $path . '/' . $filename ;
+            unlink($filePath) ;
+            printf ('<p>unlinked %s</p>', $filePath) ;
         }
     }
 

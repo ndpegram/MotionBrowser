@@ -12,4 +12,4 @@ if (!isset($_SESSION)) {
 
 require_once './classes/sanityCheck.php';
 
-$checker = new sanityCheck() ;
+$checker = new sanityCheck(sanityCheck::CHECK_AND_REPAIR) ;
