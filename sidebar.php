@@ -8,10 +8,11 @@
 
 require_once $_SESSION['root_dir'].'/classes/CalendarMonthMotion.php';
 $setupURL = $_SESSION['webcam']['server'].":".$_SESSION['webcam']['setup_port'] ;
+$sideBarJS = str_replace('//', '/', $_SESSION['server_dir'].'/js/sidebar.js') ;
 ?>
 
 <div class="sidebar">
-    <script type="text/javascript" src="<?php echo $_SESSION['server_dir'].'/js/sidebar.js' ?>"></script>
+    <script type="text/javascript" src="<?php echo $sideBarJS ?>"></script>
     <p class=title>
         <?php
         echo gettext("config_title") . "<br /><span style='font-size:smaller;'>version " . gettext("config_version") . "</span>" ;
