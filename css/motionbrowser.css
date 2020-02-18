@@ -62,3 +62,7 @@ img.plus{
     padding-left:  1ex;
     padding-right: 1ex ;
 }
+
+#idtable > tbody {
+    vertical-align: top ;
+}
