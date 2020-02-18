@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MotionBrowser\n"
 "POT-Creation-Date: 2019-09-15 17:01+0800\n"
-"PO-Revision-Date: 2019-09-15 17:03+0800\n"
+"PO-Revision-Date: 2020-02-17 20:17+0800\n"
 "Last-Translator: Nigel Pegram <nigel@pegram.homelinux.net>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -216,7 +216,7 @@ msgstr "Delete Selection"
 
 #: old files/old_index.php:424 sidebar.php:43
 msgid "config_motion"
-msgstr "Configure Motion"
+msgstr "Configure & Live View"
 
 #: old files/old_index.php:428 sidebar.php:52
 msgid "config_credits"

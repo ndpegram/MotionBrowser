@@ -87,8 +87,8 @@ an alias needs to be created so that directory “video” in the root directory
     # Alias for streaming video data for MotionBrowser  
     alias "/MotionBrowser/video/" "/var/lib/motion/"    
     <Directory "/var/lib/motion/">
-        Options Indexes
-        AllowOverride None      
+        Options none
+        AllowOverride none      
         Require all granted
     </Directory>
 
