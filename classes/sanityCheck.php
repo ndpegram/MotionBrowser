@@ -10,6 +10,8 @@
 require_once $_SESSION['root_dir'] . '/lang.inc';
 require_once $_SESSION['root_dir'] . '/classes/dbMotion.php';
 
+//TODO: internationalise.
+
 class sanityCheck {
 
     /** Constant used in constructor. */
@@ -265,4 +267,52 @@ class sanityCheck {
         $bRc = $this->errors !== self::ERRORS_NONE ? true : false ;
         return ($bRc) ;
     }
+    
+    /**
+     * Report errors
+     * 
+     * @return String A text representation of the errors found. NULL if no errors.
+     * 
+     */
+    // TODO: convert to a reporter factory which allows both HTML and text output.
+    // TODO: internationalise.
+    public function reportErrors () {
+        if (!$this->hasErrors()){
+            return (null) ;
+        }
+        
+        $msg = "" ;
+        $msg .= $this->reportSQLErrors() ;
+        $msg .= $this->reportDiskErrors() ;
+        
+        return ($msg) ;
+    }
+    
+    /**
+     * Report SQL errors.
+     * @return String A text representation of the errors found. NULL if no errors.
+     */
+    private function reportSQLErrrors() {
+        if (!$this->hasSQLErrors()) {
+            return ;
+        }
+        
+        $msg = sprintf ("<h3>SQL errors found<s3><p>%s</p>", $this->dbPathsNotFound) ;
+        return ($msg) ;
+    }
+
+    /**
+     * Report disk errors.
+     * @return String A text representation of the errors found. NULL if no errors.
+     */
+    private function reportDiskErrrors() {
+        if (!$this->hasDiskErrors()) {
+            return ;
+        }
+        
+        $msg = sprintf ("<h3>Disk errors found<s3><p>%s</p>", $this->filesNotInDatabase) ;
+        return ($msg) ;
+    }
+
+    
 }
