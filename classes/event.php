@@ -8,6 +8,7 @@
  */
 require_once $_SESSION['root_dir'] . '/libs/getid3/getid3.php';
 require_once $_SESSION['root_dir'] . '/classes/eventFileInfo.php';
+require_once $_SESSION['root_dir'] . '/classes/sanityCheck.php';
 
 class event {
     private const QUERY_SAVE_FILE_SIZE = "update security set file_size='%s' where filename ='%s';";
@@ -135,6 +136,12 @@ class event {
     public function getImageFilename() {
         if (is_null($this->imageFileInfo)){
             $msg = sprintf (gettext('Accessing NULL member variable %s.'), 'event::imageFileInfo') ;
+            
+            $checker = new sanityCheck(sanityCheck::CHECK_ONLY) ;
+            if ($checker->hasErrors()) {
+                $msg .= "\n\n" . $checker->reportErrors() . "\n" ;
+            }
+            
             throw new RuntimeException($msg) ;
         }
         return $this->imageFileInfo->getRealPath() ;
@@ -143,6 +150,12 @@ class event {
     public function getVideoFilename() {
         if (is_null($this->videoFileInfo)){
             $msg = sprintf (gettext('Accessing NULL member variable %s.'), 'event::videoFileInfo') ;
+            
+            $checker = new sanityCheck(sanityCheck::CHECK_ONLY) ;
+            if ($checker->hasErrors()) {
+                $msg .= "\n\n" . $checker->reportErrors() . "\n" ;
+            }
+            
             throw new RuntimeException($msg) ;
         }
         return $this->videoFileInfo->getRealPath() ;
