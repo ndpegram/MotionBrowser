@@ -857,8 +857,8 @@ Update the code to object-oriented format
 \begin_layout Itemize
 Convert layout from tables to DIV and CSS format, to allow for better display
  on mobiles, etc., and to allow for more useful degrading.
- Not converting video output to table as semantically it is a table of rows
- and columns.
+ Leaving video output to table as semantically it is a table of rows and
+ columns.
 \end_layout
 
 \begin_layout Itemize
