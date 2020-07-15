@@ -2,6 +2,13 @@
 
 /*
  * Class to reduce disk space used if less than minimum allowed is free.
+ * 
+ * TODO: Convert this to delete files based on two criteria:
+ *      1. Number of days of recordings to retain (need new setting in config)
+ *      2. Disk free space.
+ * 
+ *      The amount of free space should be checked first, then files deleted 
+ *      according to number of days of recordings to retain.
  *  
  */
 require_once $_SESSION['root_dir'] . '/classes/dataPath.php';
@@ -71,9 +78,9 @@ class diskCleaner {
      * @return dataPath Class encapsulating information about data store. Null on failure.
      */
     private function getFileStoreInfo(): dataPath {
-        if (is_null($this->fileStoreInfo)) {
+        //if (is_null($this->fileStoreInfo)) {
             $this->fileStoreInfo = new dataPath();
-        }
+        //}
 
         return ($this->fileStoreInfo);
     }
@@ -93,7 +100,7 @@ class diskCleaner {
      * Files are deleted from disk and matching SQL records removed.
      * The removal is done oldest files first.
      */
-    private function releaseSpace(): null {
+    private function releaseSpace() {
         while ($this->isTooFull()) {
             if (!$this->deleteOldestDay()) {
                 $msg = 'Disk free space less than minimum specified with no files available to delete to free space.';
@@ -109,7 +116,9 @@ class diskCleaner {
      */
     private function deleteOldestDay(): bool {
         $timestamps = $this->getOldestDayTimestamps();
+        $bFilesFoundToDelete = sizeof($timestamps) > 0 ? true : false ;
         $this->deleteOldestDayItems($timestamps);
+        return ($bFilesFoundToDelete) ;
     }
 
     /**
@@ -123,7 +132,7 @@ class diskCleaner {
         
         $query = sprintf(self::QUERY_FILENAMES_FROM_IDS, $timestamps) ;
         $result = $db->query($query) ;
-
+        // TODO: possibly rewrite loop to remove counter. ? use for (fetch_array) style?
         for ($i = 0; $i < $result->num_rows; $i++) {
             $row = $result->fetch_array();
             $filename = $row['filename'];
