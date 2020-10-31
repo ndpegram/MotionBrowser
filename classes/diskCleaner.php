@@ -38,21 +38,33 @@ class diskCleaner {
                                             ORDER BY `event_time_stamp`
                                             LIMIT 1)
                                     ORDER BY `event_time_stamp`';
-    
+    const QUERY_EXPIRED_FILE_IDS = 'SELECT 
+                                        group_concat(DISTINCT `event_time_stamp`+0 SEPARATOR \', \') 
+                                    FROM security.security
+                                    where
+                                        abs(datediff(`event_time_stamp`, curdate())) > % 
+                                    ORDER BY 
+                                        `event_time_stamp` 
+                                        DESC ';
+
     /**
      * @const string Query to get file paths given comma-separated list of record IDs (timestamps) 
      * 
      * Use sprintf to replace %s with list of IDs.
      */
-    const QUERY_FILENAMES_FROM_IDS = 'SELECT `filename` FROM `security` WHERE `event_time_stamp` IN (%s)' ;
-    
+    const QUERY_FILENAMES_FROM_IDS = 'SELECT `filename` FROM `security` WHERE `event_time_stamp` IN (%s)';
+
     /**
      * @const string Query to delete a record from the database given the records full disk file's path.
      * 
      * Use sprintf to replace %s with the file path.
      */
-    const QUERY_DELETE_RECORD_BY_FILENAME = "DELETE FROM security WHERE filename='%s'" ;
+    const QUERY_DELETE_RECORD_BY_FILENAME = "DELETE FROM security WHERE filename='%s'";
 
+    /**
+     * @const bool  Flag used when running in testing mode.
+     */
+    const TESTING = FALSE;
 
     /**
      * @var dataPath Class encapsulating information about data store.
@@ -79,7 +91,7 @@ class diskCleaner {
      */
     private function getFileStoreInfo(): dataPath {
         //if (is_null($this->fileStoreInfo)) {
-            $this->fileStoreInfo = new dataPath();
+        $this->fileStoreInfo = new dataPath();
         //}
 
         return ($this->fileStoreInfo);
@@ -101,6 +113,10 @@ class diskCleaner {
      * The removal is done oldest files first.
      */
     private function releaseSpace() {
+        // First delete files past expiry date
+        $this->expireOldFiles();
+
+        // Now free extra space if needed.
         while ($this->isTooFull()) {
             if (!$this->deleteOldestDay()) {
                 $msg = 'Disk free space less than minimum specified with no files available to delete to free space.';
@@ -116,35 +132,35 @@ class diskCleaner {
      */
     private function deleteOldestDay(): bool {
         $timestamps = $this->getOldestDayTimestamps();
-        $bFilesFoundToDelete = sizeof($timestamps) > 0 ? true : false ;
-        $this->deleteOldestDayItems($timestamps);
-        return ($bFilesFoundToDelete) ;
+        $bFilesFoundToDelete = sizeof($timestamps) > 0 ? true : false;
+        $this->deleteByTimestamp($timestamps);
+        return ($bFilesFoundToDelete);
     }
 
     /**
      * Delete files and database entries. 
-     * @param {string}  IDs of items to delete. (Comma-separated list.)
+     * @param {string}  Timestamps of items to delete. (Comma-separated list.)
      * @return	{void}	nothing
      */
-    public function deleteOldestDayItems($timestamps) {
+    public function deleteByTimestamp($timestamps) {
         // TODO: add code to allow testing mode, rather than just acting.
-        $db = new dbMotion() ;
-        
-        $query = sprintf(self::QUERY_FILENAMES_FROM_IDS, $timestamps) ;
-        $result = $db->query($query) ;
+        $db = new dbMotion();
+
+        $query = sprintf(self::QUERY_FILENAMES_FROM_IDS, $timestamps);
+        $result = $db->query($query);
         // TODO: possibly rewrite loop to remove counter. ? use for (fetch_array) style?
         for ($i = 0; $i < $result->num_rows; $i++) {
             $row = $result->fetch_array();
             $filename = $row['filename'];
-            
+
             // delete the file first
             if (!unlink($filename)) {
-                    die(sprintf(gettext("Error deleting %s"), $filename)) ;
+                die(sprintf(gettext("Error deleting %s"), $filename));
             }
 
             // if no problem, delete the record from the database
-            $query = sprintf (self::QUERY_DELETE_RECORD_BY_FILENAME, $filename) ;
-            $db->query($query) ;
+            $query = sprintf(self::QUERY_DELETE_RECORD_BY_FILENAME, $filename);
+            $db->query($query);
         }
     }
 
@@ -162,18 +178,63 @@ class diskCleaner {
             return ("");
         }
 
-        $timestamps = $result->fetch_array(MYSQLI_NUM) ;
-        
+        $timestamps = $result->fetch_array(MYSQLI_NUM);
+
         if (is_array($timestamps)) {
             $timestamps = implode(', ', $timestamps);
         }
-        
+
         // trim any trailing comma
         $timestamps = rtrim($timestamps, ', ');
 
 
 
-        return ($timestamps) ;
+        return ($timestamps);
     }
+
+    /**
+     * Delete files older than the maximum age specified in the config file.
+     */
+    private function expireOldFiles() {
+        $maxDays = self::getMaxDays();
+        $IDs = $this->getExpiredFilesIDs($maxDays);
+        $this->deleteByTimestamp($IDs);
+    }
+
+    /**
+     * Get the maximum number of days before files have to be deleted.
+     * @return int Maximum number of days before which a file is deleted.
+     */
+    public static function getMaxDays(): int {
+        return ($_SESSION['fileAgeing']);
+    }
+
+    /**
+     * Get the timestamps of any items which are older than the maximum age allowed.
+     * @param int $maxDays The maximum age of a file, expressed as an integer difference from today. 
+     * @return string Comma-separated list of timestamps to be used as IDs.
+     */
+    public function getExpiredFilesIDs($maxDays) {
+        $query = sprintf(diskCleaner::QUERY_EXPIRED_FILE_IDS, $maxDays);
+
+        $db = new dbMotion();
+        $result = $db->query($query) ;
+        
+        if ($result->num_rows === 0) {
+            return ("");
+        }
+
+        /** @var string $timestamps */
+        $timestamps = $result->fetch_array(MYSQLI_NUM);
+
+        if (is_array($timestamps)) {
+            $timestamps = implode(', ', $timestamps);
+        }
+
+        // trim any trailing comma
+        $timestamps = rtrim($timestamps, ', ');
+
+        return ($timestamps);
+ }
 
 }

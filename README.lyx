@@ -5,70 +5,6 @@
 \save_transient_properties true
 \origin unavailable
 \textclass scrartcl
-\begin_preamble
-% !TEX TS-program = pdflatex
-% !TEX encoding = UTF-8 Unicode
-
-% This is a simple template for a LaTeX document using the "article" class.
-% See "book", "report", "letter" for other types of document.
-
-% use larger type; default would be 10pt
-
-% set input encoding (not needed with XeLaTeX)
-
-%%% Examples of Article customizations
-% These packages are optional, depending whether you want the features they provide.
-% See the LaTeX Companion or other references for full information.
-
-%%% PAGE DIMENSIONS
-% to change the page dimensions
- % or letterpaper (US) or a5paper or....
-% \geometry{margin=2in} % for example, change the margins to 2 inches all round
-% \geometry{landscape} % set up the page for landscape
-%   read geometry.pdf for detailed page layout information
-
-\usepackage{graphicx}% support the \includegraphics command and options
-
-% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
-
-%%% PACKAGES
-\usepackage{booktabs}% for much better looking tables
-\usepackage{array}% for better arrays (eg matrices) in maths
-\usepackage{paralist}% very flexible & customisable lists (eg. enumerate/itemize, etc.)
-\usepackage{verbatim}% adds environment for commenting out blocks of text & for better verbatim
-% make it possible to include more than one captioned figure/table in a single float
-% These packages are all incorporated in the memoir class to one degree or another...
-
-%%% HEADERS & FOOTERS
-\usepackage{fancyhdr}% This should be set AFTER setting up the page geometry
- % options: empty , plain , fancy
-\renewcommand{\headrulewidth}{0pt} % customise the layout...
-\lhead{}\chead{}\rhead{}
-\lfoot{}\cfoot{\thepage}\rfoot{}
-
-%%% SECTION TITLE APPEARANCE
-\usepackage{sectsty}
-\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
-% (This matches ConTeXt defaults)
-
-%%% ToC (table of contents) APPEARANCE
-\usepackage[nottoc,notlof,notlot]{tocbibind}% Put the bibliography in the ToC
-\usepackage[titles,subfigure]{tocloft}% Alter the style of the Table of Contents
-\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
-\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
-
-\usepackage{csquotes}
-
-
-%%% END Article customizations
-
-%%% The "real" document content comes below...
-
-\title{Motion Browser}
-\author{Nigel D.\,Pegram}
-%\date{} % Activate to display a given date or no date (if empty),
-         % otherwise the current date is printed
-\end_preamble
 \use_default_options false
 \begin_modules
 csquotes
@@ -78,17 +14,17 @@ csquotes
 \language_package none
 \inputencoding utf8
 \fontencoding default
-\font_roman "default" "default"
+\font_roman "default" "BABEL Unicode"
 \font_sans "default" "default"
 \font_typewriter "default" "default"
 \font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
-\font_osf false
+\font_osf true
 \font_sf_scale 100 100
 \font_tt_scale 100 100
-\use_microtype false
+\use_microtype true
 \use_dash_ligatures true
 \graphics default
 \default_output_format default
@@ -110,7 +46,7 @@ csquotes
 \papersize a4paper
 \use_geometry true
 \use_package amsmath 1
-\use_package amssymb 0
+\use_package amssymb 1
 \use_package cancel 0
 \use_package esint 1
 \use_package mathdots 0
@@ -143,7 +79,7 @@ csquotes
 \dynamic_quotes 0
 \papercolumns 1
 \papersides 1
-\paperpagestyle fancy
+\paperpagestyle default
 \tracking_changes false
 \output_changes false
 \html_math_output 0
@@ -152,6 +88,18 @@ csquotes
 \end_header
 
 \begin_body
+
+\begin_layout Title
+Motion Browser
+\end_layout
+
+\begin_layout Author
+Nigel D.
+\begin_inset space \thinspace{}
+\end_inset
+
+Pegram
+\end_layout
 
 \begin_layout Standard
 \begin_inset CommandInset toc
@@ -236,74 +184,92 @@ It is supposed to work with the following motion.conf options set as shown
 \end_layout
 
 \begin_layout Verbatim
+
 		pre_capture 8		(works for me with a framerate of 6)
 \end_layout
 
 \begin_layout Verbatim
+
 		post_capture 8		(ie)
 \end_layout
 
 \begin_layout Verbatim
+
 		output_all off
 \end_layout
 
 \begin_layout Verbatim
+
 		output_normal best (or) first
 \end_layout
 
 \begin_layout Verbatim
+
 		output_motion off
 \end_layout
 
 \begin_layout Verbatim
+
 		text_event %Y%m%d%H%M%S
 \end_layout
 
 \begin_layout Verbatim
+
 		ffmpeg_cap_new on
 \end_layout
 
 \begin_layout Verbatim
+
 		ffmpeg_video_codec msmpeg4
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_log_image on
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_log_snapshot off
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_log_mpeg on
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_log_timelapse off
 \end_layout
 
 \begin_layout Verbatim
+
 		sql_query INSERT ...	(I use the default)
 \end_layout
 
 \begin_layout Verbatim
+
 		mysql_db motion		(my database name)
 \end_layout
 
 \begin_layout Verbatim
+
 		mysql_host localhost
 \end_layout
 
 \begin_layout Verbatim
+
 		mysql_user ...		(the user name i created in MySQL)
 \end_layout
 
 \begin_layout Verbatim
+
 		mysql_password ...	(the password associated with user)
 \end_layout
 
 \begin_layout Verbatim
+
 	
 \end_layout
 
@@ -343,14 +309,17 @@ www-data
 \end_layout
 
 \begin_layout Verbatim
+
 		sudo chgrp -R www-data /var/lib/motion
 \end_layout
 
 \begin_layout Verbatim
+
 		sudo chmod -R g+rw /var/lib/motion
 \end_layout
 
 \begin_layout Verbatim
+
 	
 \end_layout
 
@@ -363,55 +332,68 @@ Use the following to create your mySQL table.
 \end_layout
 
 \begin_layout Verbatim
+
 		CREATE TABLE `security` (
 \end_layout
 
 \begin_layout Verbatim
+
 		  `camera` int(11) DEFAULT NULL,
 \end_layout
 
 \begin_layout Verbatim
+
 		  `filename` varchar(80) NOT NULL DEFAULT '',
 \end_layout
 
 \begin_layout Verbatim
+
 		  `frame` int(11) DEFAULT NULL,
 \end_layout
 
 \begin_layout Verbatim
+
 		  `file_type` int(11) DEFAULT NULL,
 \end_layout
 
 \begin_layout Verbatim
+
 		  `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE
  CURRENT_TIMESTAMP,
 \end_layout
 
 \begin_layout Verbatim
+
 		  `text_event` varchar(40) NOT NULL DEFAULT '0000-00-00 00:00:00',
 \end_layout
 
 \begin_layout Verbatim
+
 		  `event_time_stamp` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
 \end_layout
 
 \begin_layout Verbatim
+
 		  `file_size` varchar(36) NOT NULL DEFAULT '0',
 \end_layout
 
 \begin_layout Verbatim
+
 		  KEY `time_stamp` (`time_stamp`),
 \end_layout
 
 \begin_layout Verbatim
+
 		  KEY `event_time_stamp` (`event_time_stamp`)
 \end_layout
 
 \begin_layout Verbatim
+
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8
 \end_layout
 
 \begin_layout Verbatim
+
 	
 \end_layout
 
@@ -504,30 +486,37 @@ video
 
 \begin_deeper
 \begin_layout Verbatim
+
 # Alias for streaming video data for MotionBrowser 	
 \end_layout
 
 \begin_layout Verbatim
+
 alias "/MotionBrowser/video/" "/var/lib/motion/" 	
 \end_layout
 
 \begin_layout Verbatim
+
 <Directory "/var/lib/motion/">
 \end_layout
 
 \begin_layout Verbatim
+
 	Options none
 \end_layout
 
 \begin_layout Verbatim
+
 	AllowOverride none 		
 \end_layout
 
 \begin_layout Verbatim
+
 	Require all granted
 \end_layout
 
 \begin_layout Verbatim
+
 </Directory>
 \end_layout
 
@@ -652,10 +641,24 @@ You must not set this so high that no recordings are retained.
 
 \noun on
 disk space used other than by motion (%) + free space buffer (%) + motion
- video recording space (%) ≦ 100%
+ video recording space (%) ≤ 100%
 \end_layout
 
 \end_deeper
+\begin_layout Description
+fileAgeing This specifies the maximum age a video or image can be before
+ being deleted.
+ This is expressed as a number of days.
+ If you wish to keep videos for a maximum of four weeks, this should be
+ set to 28.
+ Files younger than this will be deleted if the free space on the disk falls
+ below the value set by 
+\noun on
+freeSpaceBuffer
+\noun default
+.
+\end_layout
+
 \end_deeper
 \begin_layout Section
 History
@@ -671,6 +674,11 @@ Totally rewritten to use CSS div elements rather than tables, so as to degrade
  Also rewritten to use object-based coding, rather than procedural coding
  (as in the original), to ease maintenance.
  Code also separated into more discrete units to ease maintenance.
+\end_layout
+
+\begin_layout Standard
+Added disk space reservation code.
+ Also added code to remove files based on date.
 \end_layout
 
 \begin_layout Standard

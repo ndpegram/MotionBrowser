@@ -4,6 +4,8 @@
  * 
  */
 
+require_once $_SESSION['root_dir'].'/classes/diskCleaner.php' ;;
+
 ?>
 <script type="text/javascript" src="./js/main.js"></script>
 
